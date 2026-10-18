@@ -17,13 +17,15 @@ public class AuthService {
   private final JdbcTemplate db;
   private final Tokens tokens;
   private final RateLimits limits;
+  private final AccountAccessPolicy access;
   private final Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(16, 32, 1, 19456, 2);
   private final String dummyHash = encoder.encode(Tokens.random());
 
-  public AuthService(JdbcTemplate db, Tokens tokens, RateLimits limits) {
+  public AuthService(JdbcTemplate db, Tokens tokens, RateLimits limits, AccountAccessPolicy access) {
     this.db = db;
     this.tokens = tokens;
     this.limits = limits;
+    this.access = access;
   }
 
   public record Signup(
@@ -51,6 +53,7 @@ public class AuthService {
   @Transactional
   public Map<String, Object> signup(Signup s, String ip) {
     limits.hit("signup:" + ip, 10, 3600);
+    if (!access.allowsSignup(s.email)) throw new ApiException(403, "REGISTRATION_CLOSED");
     if (!s.password.matches("(?s)(?=.*[A-Za-z])(?=.*[0-9]).{10,64}"))
       throw ApiException.invalid("password", "INVALID_VALUE", "영문·숫자 포함 10~64자로 입력하세요.");
     if (!s.password.equals(s.passwordConfirmation))
@@ -119,7 +122,7 @@ public class AuthService {
         db.queryForList("SELECT id,password_hash FROM users WHERE email=? FOR UPDATE", email);
     String h = users.isEmpty() ? dummyHash : (String) users.getFirst().get("password_hash");
     boolean valid = encoder.matches(l.password, h);
-    if (users.isEmpty() || !valid) throw new ApiException(401, "UNAUTHENTICATED");
+    if (users.isEmpty() || !valid || !access.allows(email)) throw new ApiException(401, "UNAUTHENTICATED");
     limits.clear(key);
     UUID user = (UUID) users.getFirst().get("id"), sid = UUID.randomUUID();
     db.update(
@@ -144,14 +147,15 @@ public class AuthService {
     if (raw == null) throw new ApiException(401, "UNAUTHENTICATED");
     var rows =
         db.queryForList(
-            "SELECT s.id,s.user_id,s.revoked_at,s.expires_at FROM auth_sessions s JOIN"
+            "SELECT s.id,s.user_id,s.revoked_at,s.expires_at,u.email FROM auth_sessions s JOIN users u ON u.id=s.user_id JOIN"
                 + " refresh_tokens t ON t.session_id=s.id WHERE t.token_hash=? FOR UPDATE OF s",
             Tokens.hash(raw));
     if (rows.isEmpty()) throw new ApiException(401, "UNAUTHENTICATED");
     var s = rows.getFirst();
     UUID sid = (UUID) s.get("id");
     limits.hit("refresh:" + sid, 30, 60);
-    if (s.get("revoked_at") != null
+    if (!access.allows((String) s.get("email"))
+        || s.get("revoked_at") != null
         || !((java.sql.Timestamp) s.get("expires_at")).toInstant().isAfter(Instant.now()))
       throw new ApiException(401, "UNAUTHENTICATED");
     var token =
@@ -168,14 +172,12 @@ public class AuthService {
   public Tokens.Identity authenticate(String raw) {
     if (raw == null) throw new ApiException(401, "UNAUTHENTICATED");
     var id = tokens.verify(raw, false);
-    Integer n =
-        db.queryForObject(
-            "SELECT count(*) FROM auth_sessions s JOIN users u ON u.id=s.user_id WHERE s.id=? AND"
-                + " s.user_id=? AND s.revoked_at IS NULL AND s.expires_at>now()",
-            Integer.class,
-            id.session(),
-            id.user());
-    if (n == null || n != 1) throw new ApiException(401, "UNAUTHENTICATED");
+    var rows = db.queryForList(
+        "SELECT u.email FROM auth_sessions s JOIN users u ON u.id=s.user_id WHERE s.id=? AND"
+            + " s.user_id=? AND s.revoked_at IS NULL AND s.expires_at>now()",
+        id.session(), id.user());
+    if (rows.size() != 1 || !access.allows((String) rows.getFirst().get("email")))
+      throw new ApiException(401, "UNAUTHENTICATED");
     return id;
   }
 

@@ -1,0 +1,4 @@
+PASS actual Neon metadata-only observation and empty database
+PASS verifier cannot read personal rows or modify deletion ledger
+PASS missing registration blocked; verified first registration accepted once
+PASS live provider/SQL revalidation and Ed25519 nonce-bound decision; wrong target denied

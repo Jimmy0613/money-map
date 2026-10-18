@@ -81,3 +81,8 @@ REQ-R01의 설정 누락 시 개방 문제를 보완했다. Backend는 외부 �
 ## Neon 실제 연결 검증 (2026-10-18)
 
 공식 Neon 스킬9개/CLI8.8.0/프로젝트 한정 OAuth MCP를 설정했다. 지정 production 브랜치의 Postgres 정책 plan/deploy는 변경 없이 성공했다. 기존 .env 값은 유지하고 Neon 변수3개만 추가했다. 기존 JDBC/Flyway를 유지하는 명시적 neon 프로필을 구현했다. Backend 단위·HTTP46PASS와 bootJar 성공, npm run build 성공, 별도 schema-only Neon 브랜치에서 실제 브라우저 가입·로그인·거래 저장/재조회·통계·탈퇴/세션 거부 PASS다. 상세 변경/실패/증거는 [neon-setup.md](neon-setup.md)를 따른다. 운영 HTTPS 배포와 RecoveryGate의 관리형DB/최초 등록 경로는 미완료다. 원본 상위71개33PASS/38NOT_RUN 판정은 유지한다.
+
+
+## 2026-10-18 운영 최초 등록 준비
+
+Docker29.8.0 및 기존 money-map-db-1 healthy를 읽기 전용 확인했다. 기존 DB/컨테이너는 초기화하지 않았다. Cloudflare Wrangler4.151.1 OAuth와 MCP OAuth 연결 완료, 공식 스킬19개 설치. Workers SQLite Durable Object는 공식 무료 플랜 지원 범위를 확인했으며 유료 전환 명령은 사용하지 않았다. 계정 구독 목록 API는 현재 권한으로 조회할 수 없었고 별도 테스트 Worker 배포는 성공했다. 실제 Neon은PG18.6이며 Flyway 지원 버전 경고는 유지한다. 테스트 브랜치의 빈 별도 DB와 메타데이터 전용 로그인으로 연결을 검증했다. 공개 운영 개방 여부는 배포 기록의 HTTP 결과를 따른다.

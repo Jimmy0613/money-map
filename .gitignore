@@ -17,3 +17,6 @@ frontend/test-results/
 *.tsbuildinfo
 .neon
 node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*

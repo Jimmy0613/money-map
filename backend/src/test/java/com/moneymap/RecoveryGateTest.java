@@ -8,6 +8,20 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.web.*;
 
 class RecoveryGateTest {
+  @Test void renderCommitMustMatchRegisteredDeploymentBeforeAnyDatabaseRead() throws Exception {
+    var env = new MockEnvironment().withProperty("RENDER_GIT_COMMIT", "new-commit")
+        .withProperty("app.recovery.deployment", "registered-commit")
+        .withProperty("app.recovery.environment", "production")
+        .withProperty("app.recovery.authority-url", "https://example.invalid/decision")
+        .withProperty("app.recovery.public-key", Base64.getEncoder().encodeToString(
+            java.security.KeyPairGenerator.getInstance("Ed25519").generateKeyPair().getPublic().getEncoded()));
+    byte[] a = new byte[32], b = new byte[32]; Arrays.fill(b, (byte) 1);
+    var secrets = new Secrets(Base64.getEncoder().encodeToString(a), Base64.getEncoder().encodeToString(b),
+        "https://example.invalid", true, env);
+    var db = org.mockito.Mockito.mock(org.springframework.jdbc.core.JdbcTemplate.class);
+    assertFalse(new RecoveryGate(secrets, db, new ObjectMapper(), env).allows());
+    org.mockito.Mockito.verifyNoInteractions(db);
+  }
   @Test void productionDefaultsClosedEvenWithExplicitFalse() throws Exception {
     for (String flag : List.of("false", "")) {
       var env = new MockEnvironment();

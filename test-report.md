@@ -255,3 +255,13 @@ DB 재시작 테스트의 첫 실행은 Docker의 동적 공개 포트 변경을
 ## Neon 실제 연결 검증 (2026-10-18)
 
 공식 Neon 스킬9개/CLI8.8.0/프로젝트 한정 OAuth MCP를 설정했다. 지정 production 브랜치의 Postgres 정책 plan/deploy는 변경 없이 성공했다. 기존 .env 값은 유지하고 Neon 변수3개만 추가했다. 기존 JDBC/Flyway를 유지하는 명시적 neon 프로필을 구현했다. Backend 단위·HTTP46PASS와 bootJar 성공, npm run build 성공, 별도 schema-only Neon 브랜치에서 실제 브라우저 가입·로그인·거래 저장/재조회·통계·탈퇴/세션 거부 PASS다. 상세 변경/실패/증거는 [neon-setup.md](neon-setup.md)를 따른다. 운영 HTTPS 배포와 RecoveryGate의 관리형DB/최초 등록 경로는 미완료다. 원본 상위71개33PASS/38NOT_RUN 판정은 유지한다.
+
+
+## 개인 계정 접근 제한 검증 (2026-10-18)
+
+명시적 APP_ACCESS_RESTRICTED/APP_ALLOWED_EMAILS 설정으로 가입·로그인·refresh·access 인증을 제한했다. 활성화 상태의 빈 목록은 전부 거부한다. 개인정보는 비공개 배포 환경 파일에만 기록했다. 단위·HTTP51PASS, 실제 PostgreSQL 통합24PASS 및 bootJar 성공이다(evidence/personal-access-checks.log, evidence/personal-access-integration.log). 최초 통합 실행은 Docker 연결 실패였고 Docker Desktop 시작 및 소켓 지정 뒤 재실행 성공했다. 신규 DB bootstrap/운영 개방은 미완료이며 운영 배포 전이다. 강제 차단 유지.
+
+
+## 신규 DB bootstrap 실제 검증 (2026-10-18)
+
+Backend 단위/HTTP53PASS, 실제 PostgreSQL 통합25PASS와 bootJar 성공. Worker 정책5PASS/공식 Workers Vitest 런타임4PASS, 실제 Cloudflare 테스트 Worker+Neon의 최초 일회 등록/서명/잘못된 대상 거부 PASS. local 우회 없는 prod,neon Java 서버의 실제 서명 수락과 미허용 가입 거부, 허용 합성 계정 signup/login/access/refresh 및 탈퇴/세션 거부 PASS. 별도 프런트 복사본의 npm run build 성공. 증거 목록/실패 수정 경과는 bootstrap-deployment.md 참조. 실제 운영 Render 연결·개방은 이 로컬/격리 검증과 구분한다. 상위71개33PASS/38NOT_RUN 및 전체 복원 미완료 판정 유지.

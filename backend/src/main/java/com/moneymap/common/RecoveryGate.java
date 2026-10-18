@@ -22,6 +22,9 @@ public class RecoveryGate {
   private final JdbcTemplate db;
   private final ObjectMapper json;
   private final String environment, deployment, endpoint, encodedKey;
+  private final String authorityToken;
+  private final String runtimeRevision;
+  private final int decisionTimeout;
   private final HttpClient http = HttpClient.newBuilder()
       .connectTimeout(Duration.ofMillis(500)).followRedirects(HttpClient.Redirect.NEVER).build();
   private final Semaphore inFlight = new Semaphore(8);
@@ -34,11 +37,17 @@ public class RecoveryGate {
     deployment = config.getProperty("app.recovery.deployment", "");
     endpoint = config.getProperty("app.recovery.authority-url", "");
     encodedKey = config.getProperty("app.recovery.public-key", "");
+    authorityToken = config.getProperty("app.recovery.authority-token", "");
+    runtimeRevision = config.getProperty("RENDER_GIT_COMMIT", "");
+    decisionTimeout = config.getProperty("app.recovery.timeout-ms", Integer.class, 750);
+    if (decisionTimeout < 100 || decisionTimeout > 5000)
+      throw new IllegalStateException("Invalid recovery timeout");
   }
 
   public boolean allows() {
     if (secrets.recoveryRequired) return false;
     if (secrets.local) return true;
+    if (!runtimeRevision.isBlank() && !runtimeRevision.equals(deployment)) return false;
     if (environment.isBlank() || deployment.isBlank() || endpoint.isBlank() || encodedKey.isBlank())
       return false;
     if (!inFlight.tryAcquire()) return false;
@@ -54,10 +63,12 @@ public class RecoveryGate {
       String nonce = UUID.randomUUID().toString();
       byte[] request = json.writeValueAsBytes(Map.of("environment", environment,
           "deployment", deployment, "target", target, "nonce", nonce));
-      pending = http.sendAsync(HttpRequest.newBuilder(uri).timeout(Duration.ofMillis(700))
-          .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofByteArray(request))
+      var builder = HttpRequest.newBuilder(uri).timeout(Duration.ofMillis(decisionTimeout - 50))
+          .header("Content-Type", "application/json");
+      if (!authorityToken.isBlank()) builder.header("Authorization", "Bearer " + authorityToken);
+      pending = http.sendAsync(builder.POST(HttpRequest.BodyPublishers.ofByteArray(request))
           .build(), ignored -> new BoundedBody());
-      var response = pending.get(750, TimeUnit.MILLISECONDS);
+      var response = pending.get(decisionTimeout, TimeUnit.MILLISECONDS);
       if (response.statusCode() != 200) return false;
       var envelope = json.readTree(response.body());
       if (!envelope.isObject() || envelope.size() != 2

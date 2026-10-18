@@ -27,3 +27,8 @@ liveness를 health check로 지정하는 이유는 서버 프로세스 배포와
 5. 관리형 DB에 맞는 정당한 신규 bootstrap/개방 증거·갱신 및 개인/시연 접근 범위를 구현·검증한 뒤 API를 개방한다.
 
 현재 APP_RECOVERY_REQUIRED를 false로 바꾸는 것만으로는 RecoveryGate가 열리지 않는다. 실제 최신성 증거 없는 복원·가짜 RELEASED 응답·local 예외를 운영 개방 수단으로 사용하지 않는다. 공개 서버가 실행됐다는 이유로 로그인 가능한 실사용 서비스 완료라고 보고하지 않는다.
+
+
+## 2026-10-18 신규 빈 Neon DB bootstrap 보완
+
+정상 신규 빈 DB를 위한 독립 Cloudflare Durable Object 등록과 실시간 Neon 관찰·서명 경로를 추가했다. 상세 실행 경계와 증거는 [bootstrap-deployment.md](bootstrap-deployment.md)를 따른다. 기존 복원 상태 전이와 WAL 최신성·privacy 재삭제·ingress 조건은 완화하지 않는다. 초기화/복원/계보·스키마 변경은 기존 등록을 BLOCKED로 보존하며 이 초기 등록 경로로 다시 열 수 없다. 실제 WAL 전체 복원 승인은 여전히 미구현/미검증이다. 신규 운영 연결 결과는 배포 기록에 별도로 남긴다.

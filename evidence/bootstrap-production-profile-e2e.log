@@ -1,0 +1,4 @@
+PASS production profile accepts real Cloudflare signed decision (no local bypass)
+PASS unlisted signup rejected through real production filter chain
+PASS allowed synthetic signup/login/access/refresh with live external verification
+PASS synthetic account removed and previous session denied

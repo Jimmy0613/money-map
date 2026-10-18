@@ -1,0 +1,17 @@
+{
+  "name": "money-map-recovery-authority",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:runtime": "vitest run"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.4",
+    "vitest": "^4.1.12",
+    "wrangler": "^4.151.1"
+  }
+}

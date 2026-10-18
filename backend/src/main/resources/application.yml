@@ -33,9 +33,15 @@ management:
         readiness:
           include: readinessState,db
 app:
+  access:
+    restricted: ${APP_ACCESS_RESTRICTED:false}
+    signup-enabled: ${APP_SIGNUP_ENABLED:true}
+    allowed-emails: ${APP_ALLOWED_EMAILS:}
   recovery-required: ${APP_RECOVERY_REQUIRED:false}
   recovery:
     authority-url: ${RECOVERY_AUTHORITY_URL:}
+    authority-token: ${RECOVERY_AUTHORITY_TOKEN:}
+    timeout-ms: ${RECOVERY_AUTHORITY_TIMEOUT_MS:750}
     public-key: ${RECOVERY_AUTHORITY_PUBLIC_KEY:}
     environment: ${RECOVERY_ENVIRONMENT:}
     deployment: ${RECOVERY_DEPLOYMENT:}

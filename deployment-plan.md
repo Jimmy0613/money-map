@@ -69,3 +69,20 @@ Neon CLI/스킬/OAuth MCP 설정, 지정 프로젝트 연결과 실제 브랜치
 ## 프런트 주소 확보와 Render 서버 준비 (2026-10-18)
 
 Vercel https://money-map-frontend-murex.vercel.app/login 의 로그인 화면을 확인했다. 아직 BACKEND_INTERNAL_URL은 임시 목적지다. Render 허용 APP_ORIGIN을 실제 Vercel 주소로 맞췄으며, Free/Docker/Singapore/backend 설정을 확인했다. 로그인 차단 상태로 서버 실행부터 확인할 계획과 liveness health check를 render-deployment.md에 기록했다. 사용자 데이터/기존 실행본은 유지한다.
+
+
+## Render 실행과 Vercel 연결 점검 (2026-10-18)
+
+Render 주소 https://money-map-r459.onrender.com 에서 liveness200/UP 및 readiness·csrf503/RECOVERY_REQUIRED를 확인했다(evidence/render-first-health.json). Vercel의 BACKEND_INTERNAL_URL 변경 후 재배포를 진행했다. 첫 외부 재확인은 양쪽 HTTP 시간 초과였으며, 브라우저에서 Vercel /api/v1/auth/csrf를 열자 Render의 SERVICE WAKING UP 페이지가 전달됐다. 따라서 실제 서버로의 프록시 전달은 관찰했지만, 이번 재배포 뒤 정상 JSON 응답까지 확인한 상태와 구분한다. 최신 HTTP 결과는 evidence/vercel-render-link.json을 따른다.
+
+
+재확인: evidence/vercel-render-link-retry.json에서 Vercel /api/v1/auth/csrf가503 RECOVERY_REQUIRED, Render liveness가200 UP을 반환했다. Vercel→Render 요청 전달을 실제 응답으로 확인했다. 현재 서비스는 로그인 차단 상태이며 정상 신규 DB의 운영 등록 절차와 개인/시연 접근 범위를 구현·검증해야 한다.
+
+
+## 개인 계정 접근 제한 구현 (2026-10-18)
+
+사용자가 지정한 이메일은 Git 소스/증거 문서에 넣지 않고 로컬 비공개 Render 환경 파일에만 보관했다. `APP_ACCESS_RESTRICTED=true`와 `APP_ALLOWED_EMAILS`로 가입·로그인·refresh·access token 인증을 제한한다. 제한 활성화 상태에서 목록이 비어 있으면 전부 거부한다. 일반 개발 환경의 기존 동작은 기본 설정에서 유지한다. 허용 목록에서 제거된 사용자의 기존 세션도 다음 인증/갱신 시 거부한다. 이메일 제한은 메일 소유권 인증을 대신하지 않으므로 최초 계정 등록은 운영 차단 상태/통제된 개방 과정에서 진행해야 한다.
+
+단위 테스트 51개 성공 및 bootJar 빌드 성공(evidence/personal-access-checks.log). 변경 코드는 아직 운영에 배포하지 않았다. 신규 DB bootstrap은 미구현이다. 기존 recovery 계약은 매 요청 독립 서명 증거를 요구하며 단순 env 등록이나 Neon 브랜치 식별만으로 이를 충족한다고 판정하지 않는다. 강제 차단을 유지한다.
+
+추가 회귀: Docker Desktop 실행/소켓 지정 후 실제 PostgreSQL 통합24개 성공. 개인정보를 포함한 배포 설정은 비공개 파일에만 준비했고 아직 Render에 적용하지 않았다.

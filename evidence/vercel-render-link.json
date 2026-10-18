@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-18",
+  "checks": [
+    {
+      "baseUrl": "https://money-map-frontend-murex.vercel.app",
+      "path": "/api/v1/auth/csrf",
+      "status": "connection failed"
+    },
+    {
+      "baseUrl": "https://money-map-r459.onrender.com",
+      "path": "/actuator/health/liveness",
+      "status": "connection failed"
+    }
+  ]
+}

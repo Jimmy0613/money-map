@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-18",
+  "checks": [
+    {
+      "name": "frontend",
+      "status": 503,
+      "result": "RECOVERY_REQUIRED"
+    },
+    {
+      "name": "backend",
+      "status": 200,
+      "result": "UP"
+    }
+  ]
+}

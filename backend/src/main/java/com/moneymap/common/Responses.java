@@ -39,6 +39,7 @@ public class Responses {
       case "SERVICE_UNAVAILABLE" -> "잠시 후 다시 시도하세요.";
       case "RECOVERY_REQUIRED" -> "서비스 안전 점검 중입니다. 잠시 후 다시 시도하세요.";
       case "EMAIL_EXISTS" -> "이미 사용 중인 이메일입니다.";
+      case "REGISTRATION_CLOSED" -> "현재 회원가입을 받지 않습니다.";
       default -> "요청을 처리할 수 없습니다. 입력과 현재 상태를 확인하세요.";
     };
   }

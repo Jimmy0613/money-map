@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-18",
+  "baseUrl": "https://money-map-r459.onrender.com",
+  "checks": [
+    {
+      "path": "/actuator/health/liveness",
+      "status": 200,
+      "result": "UP"
+    },
+    {
+      "path": "/actuator/health/readiness",
+      "status": 503,
+      "result": "RECOVERY_REQUIRED"
+    },
+    {
+      "path": "/api/v1/auth/csrf",
+      "status": 503,
+      "result": "RECOVERY_REQUIRED"
+    }
+  ]
+}

@@ -57,3 +57,8 @@ Envelope는 `payload`(원본 JSON bytes의 Base64), `signature`(그 bytes에 대
 Python 검사는 임시 SQLite와 합성 Ed25519 키를 사용하며 실제 루프백 HTTP 응답 검증도 포함한다. Backend 검사는 실제 Testcontainers PostgreSQL과 서명 HTTP 응답으로 DB 교체/재시작/스키마 변경, nonce 재사용, 서명 위조, 만료, 장애, 상태/대상 불일치를 검사한다. 기존 비즈니스 계약 검사에서는 권위 서버만 mock하고, 실제 gate는 별도 통합 검사로 분리했다. 자세한 개수·로그는 test-report.md 최신 절 참조.
 
 남음: 운영 호스트/독립 저장소 선택, WAL·fence·ingress 실제 검증기 및 bootstrap/갱신 실행기 구현·연결, 비밀키 관리, 외부 TLS, 백업 암호화/보존 정책, 실제 전체 복원 훈련. 기존 restore-public.py는 여전히 releaseAllowed=false를 유지한다. 현재 도구를 운영 복원 전체 완료로 판정하지 않는다.
+
+
+## 2026-10-18 신규 빈 Neon DB bootstrap 보완
+
+정상 신규 빈 DB를 위한 독립 Cloudflare Durable Object 등록과 실시간 Neon 관찰·서명 경로를 추가했다. 상세 실행 경계와 증거는 [bootstrap-deployment.md](bootstrap-deployment.md)를 따른다. 기존 복원 상태 전이와 WAL 최신성·privacy 재삭제·ingress 조건은 완화하지 않는다. 초기화/복원/계보·스키마 변경은 기존 등록을 BLOCKED로 보존하며 이 초기 등록 경로로 다시 열 수 없다. 실제 WAL 전체 복원 승인은 여전히 미구현/미검증이다. 신규 운영 연결 결과는 배포 기록에 별도로 남긴다.

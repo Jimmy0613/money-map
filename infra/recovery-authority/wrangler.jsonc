@@ -1,0 +1,42 @@
+{
+  "name": "money-map-recovery-authority",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-10-18",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": false,
+      "head_sampling_rate": 0.01
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01
+    }
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "REGISTRY",
+        "class_name": "InitialRegistry"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "InitialRegistry"
+      ]
+    }
+  ],
+  "vars": {
+    "NEON_PROJECT_ID": "wispy-leaf-78515154",
+    "NEON_BRANCH_ID": "br-twilight-shape-aob4z652",
+    "RECOVERY_ENVIRONMENT": "production",
+    "RECOVERY_DEPLOYMENT": "UNREGISTERED",
+    "NEON_ENDPOINT_ID": "ep-delicate-cake-aoq0bn7q"
+  }
+}

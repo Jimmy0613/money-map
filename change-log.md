@@ -175,3 +175,13 @@ Frontend38, Backend 단위·HTTP37/통합11, 생산 Mock E2E2, 타입/lint/생�
 ## CHG-019 Vercel 주소 및 Render 차단 배포 준비 (2026-10-18)
 
 Vercel 공개 로그인 화면을 확인하고 Render APP_ORIGIN을 실제 주소로 연결했다. 신규 운영 키/DB URL은 비공개 환경 파일로 분리했다. 서버 첫 배포의 liveness 검사와 API503 차단, 실제 연결/개방 전 남은 조건을 render-deployment.md에 기록했다. APP_RECOVERY_REQUIRED=true 유지. 네트워크 노출을 로그인 개방 완료로 판정하지 않는다.
+
+
+## CHG-020 개인 계정 접근 제한 (2026-10-18)
+
+명시적 APP_ACCESS_RESTRICTED/APP_ALLOWED_EMAILS 설정으로 가입·로그인·refresh·access 인증을 제한했다. 활성화 상태의 빈 목록은 전부 거부한다. 개인정보는 비공개 배포 환경 파일에만 기록했다. 단위·HTTP51PASS, 실제 PostgreSQL 통합24PASS 및 bootJar 성공이다(evidence/personal-access-checks.log, evidence/personal-access-integration.log). 최초 통합 실행은 Docker 연결 실패였고 Docker Desktop 시작 및 소켓 지정 뒤 재실행 성공했다. 신규 DB bootstrap/운영 개방은 미완료이며 운영 배포 전이다. 강제 차단 유지.
+
+
+## CHG-021 신규 DB bootstrap 및 Cloudflare 설정 (2026-10-18)
+
+독립 Cloudflare Durable Object에 신규 빈 Neon DB를 한 번만 등록하고 매 요청 provider/SQL 관찰 뒤 기존 nonce·Ed25519 계약으로 증거를 발급한다. V6는 개인정보를 반환하지 않는 최소 실행 권한 함수를 추가한다. Render 실제 commit 결합, 공개 회원가입 닫기, 로컬 본인 등록 UI 준비를 포함한다. 공식 Cloudflare 스킬19개/MCP OAuth 및 Wrangler도 연결했다. 신규/복원 경로를 구분하며 WAL 복원 승인은 대체하지 않는다. 상세는 bootstrap-deployment.md와 cloudflare-setup.md를 따른다.
