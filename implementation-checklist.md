@@ -151,3 +151,8 @@ I-03~07 관련 R-02~07 소스/로컬 회귀 보완 완료. Frontend38/Backend37�
 REQ-R01의 설정 누락 시 개방 문제를 보완했다. Backend는 외부 권위의 새 nonce/서명/현재 DB·환경·배포 결합이 없으면 기본 차단한다. 독립 recovery-authority.py에는 pin된 검증기, 상태 순서, 세대 CAS, 작업자 lease, 감사 이력 및 최대60초 승인 만료를 구현했다. 합성 증거로 실제 최신 WAL을 입증했다고 판정하지 않는다. 실제 WAL/fence/ingress 검증기, 신규 bootstrap·갱신 실행기와 운영 배포는 남아 있다. [실행 계약](recovery-authority-contract.md) 참조.
 
 중단 전 최종 실행 결과 Backend 단위·HTTP42/실제 PostgreSQL 통합24/제어 도구11PASS 및 bootJar 성공을 재확인했다. 기존 비즈니스 테스트는 권위 서버를 mock하고 실제 gate는 별도 DB·서명 HTTP 통합11개로 검증한다. 이번 재개에서는 같은 테스트를 재실행했다고 기록하지 않는다. 원본 추적표33PASS/38NOT_RUN, 기존 DB/.env 및 휴대폰 실행본 보존.
+
+
+## Neon 실제 연결 검증 (2026-10-18)
+
+공식 Neon 스킬9개/CLI8.8.0/프로젝트 한정 OAuth MCP를 설정했다. 지정 production 브랜치의 Postgres 정책 plan/deploy는 변경 없이 성공했다. 기존 .env 값은 유지하고 Neon 변수3개만 추가했다. 기존 JDBC/Flyway를 유지하는 명시적 neon 프로필을 구현했다. Backend 단위·HTTP46PASS와 bootJar 성공, npm run build 성공, 별도 schema-only Neon 브랜치에서 실제 브라우저 가입·로그인·거래 저장/재조회·통계·탈퇴/세션 거부 PASS다. 상세 변경/실패/증거는 [neon-setup.md](neon-setup.md)를 따른다. 운영 HTTPS 배포와 RecoveryGate의 관리형DB/최초 등록 경로는 미완료다. 원본 상위71개33PASS/38NOT_RUN 판정은 유지한다.

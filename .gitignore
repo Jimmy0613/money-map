@@ -15,3 +15,5 @@ frontend/coverage/
 frontend/playwright-report/
 frontend/test-results/
 *.tsbuildinfo
+.neon
+node_modules/

@@ -166,3 +166,12 @@ Frontend38, Backend 단위·HTTP37/통합11, 생산 Mock E2E2, 타입/lint/생�
 미구현 항목 구현 요청에 따라 Backend RecoveryGate, 독립 SQLite 권위 서버/CLI, 서명·nonce·DB 결합, 상태/세대/lease·검증기 공개키 pin을 추가했다. 2026-09-25 최종 실행은 단위·HTTP42/실제 DB24/제어11PASS와 bootJar 성공이다. 2026-10-18 재개에서 결과를 확인하고 문서/manifest를 갱신했다. 상세 계약은 recovery-authority-contract.md다.
 
 기존 필수 범위와 무료 조건은 유지한다. 실제 WAL/쓰기 차단/ingress 검증기 및 bootstrap·갱신 자동화는 미구현이며 새 프로토콜만으로 운영 완료를 주장하지 않는다. 신규 운영 빌드는 증거 없이 기본 차단되므로 기존 휴대폰 실행본에 무조건 교체하지 않았다. 기존 사용자 DB/.env/실행 환경을 보존했다.
+
+
+## CHG-018 Neon 도구 설정과 실제 DB 연결 (2026-10-18)
+공식 Neon 스킬9개/CLI8.8.0/프로젝트 한정 OAuth MCP를 설정했다. 지정 production 브랜치의 Postgres 정책 plan/deploy는 변경 없이 성공했다. 기존 .env 값은 유지하고 Neon 변수3개만 추가했다. 기존 JDBC/Flyway를 유지하는 명시적 neon 프로필을 구현했다. Backend 단위·HTTP46PASS와 bootJar 성공, npm run build 성공, 별도 schema-only Neon 브랜치에서 실제 브라우저 가입·로그인·거래 저장/재조회·통계·탈퇴/세션 거부 PASS다. 상세 변경/실패/증거는 [neon-setup.md](neon-setup.md)를 따른다. 운영 HTTPS 배포와 RecoveryGate의 관리형DB/최초 등록 경로는 미완료다. 원본 상위71개33PASS/38NOT_RUN 판정은 유지한다.
+
+
+## CHG-019 Vercel 주소 및 Render 차단 배포 준비 (2026-10-18)
+
+Vercel 공개 로그인 화면을 확인하고 Render APP_ORIGIN을 실제 주소로 연결했다. 신규 운영 키/DB URL은 비공개 환경 파일로 분리했다. 서버 첫 배포의 liveness 검사와 API503 차단, 실제 연결/개방 전 남은 조건을 render-deployment.md에 기록했다. APP_RECOVERY_REQUIRED=true 유지. 네트워크 노출을 로그인 개방 완료로 판정하지 않는다.

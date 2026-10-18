@@ -1,0 +1,7 @@
+PASS npm run build (isolated production copy)
+PASS Spring Boot startup, Flyway migrations and Neon readiness
+PASS real Neon signup through Next.js and Spring Boot
+PASS real Neon login/session
+PASS real Neon transaction write and persisted reload
+PASS real Neon statistics from persisted transaction
+PASS synthetic account deletion and revoked session

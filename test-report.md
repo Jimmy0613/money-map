@@ -250,3 +250,8 @@ REQ-R02~04 보완 후 Frontend55PASS/실패0, TypeScript와ESLint 종료0, 독�
 DB 재시작 테스트의 첫 실행은 Docker의 동적 공개 포트 변경을 반영하지 않아 실패했다. 새 포트를 다시 읽도록 테스트 fixture를 수정한 후 최종 회귀 전체가 통과했다. 실패 로그는 evidence/recovery-backend-restart-fixture-failure.log에 보존했다. 테스트는 전용 Testcontainers DB만 생성·재시작·정리했다.
 
 실제 WAL·최신 삭제 commit 검증기, bootstrap/갱신 실행기, ingress 연결, 운영 암호화/보존, 실기기 새 빌드와 새 gate를 포함한 운영 부하는 미검증/미구현 범위로 유지한다. 기존 부하 수치를 새 권위 서버 왕복이 포함된 성능으로 재사용하지 않는다. Frontend55 및 생산 Mock2는 이전 검증 근거이며 이번 Backend 작업에서 재실행하지 않았다. 상위71개33PASS/38NOT_RUN 유지.
+
+
+## Neon 실제 연결 검증 (2026-10-18)
+
+공식 Neon 스킬9개/CLI8.8.0/프로젝트 한정 OAuth MCP를 설정했다. 지정 production 브랜치의 Postgres 정책 plan/deploy는 변경 없이 성공했다. 기존 .env 값은 유지하고 Neon 변수3개만 추가했다. 기존 JDBC/Flyway를 유지하는 명시적 neon 프로필을 구현했다. Backend 단위·HTTP46PASS와 bootJar 성공, npm run build 성공, 별도 schema-only Neon 브랜치에서 실제 브라우저 가입·로그인·거래 저장/재조회·통계·탈퇴/세션 거부 PASS다. 상세 변경/실패/증거는 [neon-setup.md](neon-setup.md)를 따른다. 운영 HTTPS 배포와 RecoveryGate의 관리형DB/최초 등록 경로는 미완료다. 원본 상위71개33PASS/38NOT_RUN 판정은 유지한다.

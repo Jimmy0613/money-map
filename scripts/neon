@@ -1,0 +1,11 @@
+#!/bin/sh
+# Use this repository's isolated CLI without changing system Node/npm configuration.
+set -eu
+project_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+export PATH="$project_root/.tooling/node/node_modules/node/bin:$project_root/.tooling/neon-cli/bin:$PATH"
+export NPM_CONFIG_PREFIX="$project_root/.tooling/neon-cli"
+if [ ! -x "$project_root/.tooling/neon-cli/bin/neon" ]; then
+  echo 'Neon CLI is missing. Install neon in .tooling/neon-cli before using this wrapper.' >&2
+  exit 1
+fi
+exec "$project_root/.tooling/neon-cli/bin/neon" "$@"

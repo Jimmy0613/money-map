@@ -1,11 +1,151 @@
 [
   {
+    "path": ".agents/skills/neon-ai-gateway/SKILL.md",
+    "sha256": "eafda7c2ede9fcd24dc68f6d46334a37a6dedcbc4fb9e323ac10fb2df8a95312"
+  },
+  {
+    "path": ".agents/skills/neon-auth/SKILL.md",
+    "sha256": "5f91f328235382f3e9afef449729e304a531848a90c02b40c4fd1192709e0319"
+  },
+  {
+    "path": ".agents/skills/neon-auth/references/managed-auth.md",
+    "sha256": "382c00feeb2f3cc12dbe9b881a43339eef25741d4bc4b70d43c63d2311587dd9"
+  },
+  {
+    "path": ".agents/skills/neon-auth/references/self-managed.md",
+    "sha256": "2c53afcd667a9d3e9df9d7bf3eef2aec94ae4a0ec01c7f65852a965267bc127a"
+  },
+  {
+    "path": ".agents/skills/neon-functions/SKILL.md",
+    "sha256": "67faeb351691ffa20723d8cff6b8c527aaa05c4b36338ff3fea6d031e9abf449"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/ai-sdk.md",
+    "sha256": "3bca13c980a6634ce3dd53533145c9b93f5b3f87f777b62b66ed5f582dce3370"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/function-triggers.md",
+    "sha256": "a54ed9599ebdcd340141f6a6f3b9770ef1d8406a936515c929444fc6a9c695eb"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/mastra-studio.md",
+    "sha256": "01b7d421a36e64a704854b9fafe99ddc3d262d6d1da4af6eb44b12968064a0b0"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/mcp.md",
+    "sha256": "45c7a48c22b4cdb2deaecae40a17cd9d55755c36ae288d2ddad0dfcf111f03e9"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/native-binaries.md",
+    "sha256": "04d39d8dc2e822e6e2189752ae01fdff5d85f175059b6209df1c77e105941ae0"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/production-hardening.md",
+    "sha256": "1b3f0eb3e13aae1d1bdea3e32b476b6e1135276da6b8b51d4db30df0326b71c8"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/sentry.md",
+    "sha256": "be93790a9b62e0a78a575cebbc094ee7d93af57dbb1cdd88fe011595407b9e58"
+  },
+  {
+    "path": ".agents/skills/neon-functions/references/sse.md",
+    "sha256": "331caf1e37de5a3d68258fa9d7b83e6afb2215491d21ca21a5e24b7114b91b3d"
+  },
+  {
+    "path": ".agents/skills/neon-object-storage/SKILL.md",
+    "sha256": "21a99301ef7f811d5ca58a71c51af1d40c31b70893da912ee7028f76afccff40"
+  },
+  {
+    "path": ".agents/skills/neon-postgres-branches/SKILL.md",
+    "sha256": "9f47d5a49553a465837c1e8b2d90a90aac72a5313a996c081027290f259a8d71"
+  },
+  {
+    "path": ".agents/skills/neon-postgres-egress-optimizer/SKILL.md",
+    "sha256": "d7536270b6dd59a66fa5daf1578cc55a5b761d7163f6f6b1596662481b8d5d9b"
+  },
+  {
+    "path": ".agents/skills/neon-postgres/SKILL.md",
+    "sha256": "2a678875655810d33e42284de50d19a8c669691a39c2924d2c03f770068a1a87"
+  },
+  {
+    "path": ".agents/skills/neon-postgres/references/full-text-search.md",
+    "sha256": "ddeb529f7a6c520b4a94007f6196c47ed8f632b764b8be31e37a7b51324c8186"
+  },
+  {
+    "path": ".agents/skills/neon-postgres/references/hybrid-search.md",
+    "sha256": "4cd691c80744e64696661dad03eea4e0eb668493e97b82c16400477f1e6c1ecc"
+  },
+  {
+    "path": ".agents/skills/neon-postgres/references/lakebase-search-drizzle.md",
+    "sha256": "5f62c91d98e1d8cc2981b07e12e8ffeacbe4d855bb2f91897c1c8d4d625932db"
+  },
+  {
+    "path": ".agents/skills/neon-postgres/references/vector-search.md",
+    "sha256": "1a8e15b0ff2b965c791b19945fc36f444e47f5aeb1fa321291e609e15f0347f6"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/SKILL.md",
+    "sha256": "fb23ec04c6301c661d52e8733fb6186f3fa8d8bf287675ea1ff4180e221d181a"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/references/mutations.md",
+    "sha256": "9a80e05fcbaec95dc02ccdc5295d451191430f53c74f12563fc63279912e3d96"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/references/queries.md",
+    "sha256": "5494d4231312d8c7a3ca7933e655257c4061d1415c52297d7c5b876a14da7ecd"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/references/reactivity.md",
+    "sha256": "3d902cb29ae0ca64ce09ca34c6ed9af8d1cf00da892b5c7e721796a4e55a5bc3"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/references/ssr.md",
+    "sha256": "5643b6fc515b09240dfb9c598ea0ea783f1a235fc6dda50a53e028eec350ab59"
+  },
+  {
+    "path": ".agents/skills/neon-realtime/references/subscribing.md",
+    "sha256": "a2f5afb37cf8081225025c999bfb92c911ce5e6c4f9d43ec20bb7a2f58492027"
+  },
+  {
+    "path": ".agents/skills/neon/SKILL.md",
+    "sha256": "0a90876a53bac24f337aa7555b12e96b59e8f75bc7e485d26e95929965361c61"
+  },
+  {
+    "path": ".agents/skills/neon/references/auth.md",
+    "sha256": "c2c609f25d6936c8df52989889ffff738f55b5100259e9193173ed07891f49f0"
+  },
+  {
+    "path": ".agents/skills/neon/references/claimable-neon.md",
+    "sha256": "4622e8c718b09360fda508379a4cd3470b79c8e024f35b2fcd9c349585d9260b"
+  },
+  {
+    "path": ".agents/skills/neon/references/function-triggers.md",
+    "sha256": "a72aadc3e63464db7f618abb6daa7f119eb76cf213f27a88c84f7aa92b4dd254"
+  },
+  {
+    "path": ".agents/skills/neon/references/logs-loki.md",
+    "sha256": "fb338ad4d75e3d6c594945bd24d64a4134860fc2f554cd3273c27dd79769c889"
+  },
+  {
+    "path": ".agents/skills/neon/references/parse-env.md",
+    "sha256": "f43eb0d40570b06437ea3a93662ab528bad4d5c44c9c28c45f993aaa269e10bd"
+  },
+  {
+    "path": ".agents/skills/neon/references/sdk.md",
+    "sha256": "b9376b5bb1658d9d926a560a7be632a0aaa4fd12e60f38c3ba5050bd35989da0"
+  },
+  {
+    "path": ".codex/config.toml",
+    "sha256": "c486a431dc491e5f63140a74ac88425d0a36a363ea00f9e2628e446e11306712"
+  },
+  {
     "path": ".env.example",
     "sha256": "68e85218cb9bba52fc0335350a2e0980aaf1ac3b571b95e6d5375939a516c099"
   },
   {
     "path": ".gitignore",
-    "sha256": "714ff17a42601ac1d4df311f173bde74b12200c1fffbe59e73b2504e835597e4"
+    "sha256": "e46b07ca656f848c955ddf27cf1ef528780b07f7a1b393255195d04233d64f89"
   },
   {
     "path": "README.md",
@@ -116,6 +256,10 @@
     "sha256": "cf1c0baa6dcad3aeb3c74ee87d6b8b840b8835431303f58a410636151c6a51d9"
   },
   {
+    "path": "backend/src/main/java/com/moneymap/common/NeonEnvironment.java",
+    "sha256": "1c35219bda89e3e6bc9407389ca75ca8513d77f0f2c7839f88612548ddc982f8"
+  },
+  {
     "path": "backend/src/main/java/com/moneymap/common/RecoveryGate.java",
     "sha256": "2247a58b39335c59ac314a5dc0c316e4b65c731ed8fa3bb85f50b69177de041b"
   },
@@ -164,6 +308,10 @@
     "sha256": "e132bdbd87ae42ad5526bb55d0235a53453742f1e0594ffdc9683204c1764a7d"
   },
   {
+    "path": "backend/src/main/resources/META-INF/spring.factories",
+    "sha256": "fa9eaffd720965167a7774c72ad5b7976471715e8e5ef17f2b3f3a45c2db72b9"
+  },
+  {
     "path": "backend/src/main/resources/application-local.yml",
     "sha256": "93b3f890183ed85bb8e24bc5c1ed9006bbc1d5543e4133611f4d0c244a50c359"
   },
@@ -204,6 +352,10 @@
     "sha256": "59dccec27201581f59409997f2db0ba7ccae8e0d86d5c82888377245e65cce5d"
   },
   {
+    "path": "backend/src/test/java/com/moneymap/NeonEnvironmentTest.java",
+    "sha256": "c2e52d87832cb3ff5edfa068f902873758a624fe9c8ecff00edd1dc446e81de8"
+  },
+  {
     "path": "backend/src/test/java/com/moneymap/PerformanceTest.java",
     "sha256": "bddbfb63b2726d893de043d3b786e4d34d147c18af253a3e70a265e03a523efb"
   },
@@ -241,7 +393,11 @@
   },
   {
     "path": "change-log.md",
-    "sha256": "20d13539d0ebb6586ec828bcdd8edba64ac1445436aeda972a8a49fd71c78a52"
+    "sha256": "654be256ca8cbeb212c77997bcc0e73e111511103add1e6c2d0848710b053688"
+  },
+  {
+    "path": "deployment-plan.md",
+    "sha256": "17a67c027f68802bf0a97f6ca4c9c4dbd3770f1edcbed0ca46cc7d9ffe76022e"
   },
   {
     "path": "docker-compose.yml",
@@ -249,7 +405,7 @@
   },
   {
     "path": "environment-check.md",
-    "sha256": "e2087ba4645b3c8f975cf73df0bf516fa73fd3c2a3264c867829995c790df090"
+    "sha256": "53dcf7d3e1d8868b836f00c5f36103f3c1653646951698fde765bd89f13411fc"
   },
   {
     "path": "erd.md",
@@ -461,7 +617,7 @@
   },
   {
     "path": "implementation-checklist.md",
-    "sha256": "0ab35bc89fdcd5052497a750078d12d6399132ccfaeffb9ad41a608dfb4c8bba"
+    "sha256": "b932bb92aabcd1e8eefedb35a547e8f6b0a4c0add5cda07d3070c5a0d5369682"
   },
   {
     "path": "mac-handoff.md",
@@ -476,6 +632,22 @@
     "sha256": "6a0eebee6770fe7b2c2e9cf4a0dab8c8274bc283042c032caec751db8f1d0605"
   },
   {
+    "path": "neon-setup.md",
+    "sha256": "abc51477610e7dc54559e95032408c48a8c835bd687a73a1db23e0dd6979b9be"
+  },
+  {
+    "path": "neon.ts",
+    "sha256": "dcc567e40e681d8184962c85a48002949c3e3ab07674c5643e84b75ae2d6d009"
+  },
+  {
+    "path": "package-lock.json",
+    "sha256": "ef12337e41fa3e85191003592b5ff7c94875c36782411e947c484ee66af6dad1"
+  },
+  {
+    "path": "package.json",
+    "sha256": "f45be4d1dbfbd39fc01dcadcbf690140536e3e9ab2f9b6415077f91f0c3e2d30"
+  },
+  {
     "path": "recovery-authority-contract.md",
     "sha256": "caed561aa8901e482f24de372c96f412361f8930971d89bf11a706be60dfe208"
   },
@@ -486,6 +658,10 @@
   {
     "path": "region-data.md",
     "sha256": "b4420eedff40e2ccf2e7289d779d5527abd5a39f40a6d6936d20e7c65418d0e0"
+  },
+  {
+    "path": "render-deployment.md",
+    "sha256": "8c81827957e2246686fa5012b6e3839c3e7187329522fcbf9e71299ec9f8786f"
   },
   {
     "path": "requirement-test-matrix.md",
@@ -520,12 +696,24 @@
     "sha256": "1c20aed132ac0d7faabc284651693653705abbf4108dc3464e0fe63bcb69a582"
   },
   {
+    "path": "scripts/check-neon-connection.py",
+    "sha256": "39563fcbd7b5bdd57dc04d4bf80953773d624f2368bbc395db175c187721f5f6"
+  },
+  {
+    "path": "scripts/e2e-neon.cjs",
+    "sha256": "1f685ea69156d205f0325d4d6ffc1712d9fc5ae737e3c4ddea0091943235d342"
+  },
+  {
     "path": "scripts/local-env.py",
     "sha256": "772ad859a277b806b86c2da9567cff32b0ccc5de85fe0aacd178ea75325f0474"
   },
   {
     "path": "scripts/mobile-preview.py",
     "sha256": "655c3eaffe04502f2eb38b468f360bdd390ee7667a41d0185721bfbb95b11cc1"
+  },
+  {
+    "path": "scripts/neon",
+    "sha256": "da4fb90b73153c60b7af8e3789efb8ee1480af4051dc939b438ff8470d4056c7"
   },
   {
     "path": "scripts/recovery-authority.py",
@@ -552,7 +740,11 @@
     "sha256": "90573727d3171008d12d50ce4428267e38849597faac9bd212952448fbf2e275"
   },
   {
+    "path": "skills-lock.json",
+    "sha256": "b847880e0dd891222abec65f7fccbdf1e1b2a70d94a691ac66d1900e6cb924e6"
+  },
+  {
     "path": "test-report.md",
-    "sha256": "d7b7f6a36df0ba86ed5efed1ba556aabcc571f8d8053d7f20e869817a92b445e"
+    "sha256": "527dcebc3247ae7d94e8371bd30340663fb0d2995d90bdd8118e93119a07e260"
   }
 ]

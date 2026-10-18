@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@neon/config": "^1.9.2",
+    "@neon/env": "^1.6.3"
+  },
+  "name": "money-map",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix frontend run build",
+    "build:backend": "./backend/gradlew -p backend bootJar --no-daemon"
+  }
+}
