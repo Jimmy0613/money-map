@@ -86,3 +86,25 @@ Render 주소 https://money-map-r459.onrender.com 에서 liveness200/UP 및 read
 단위 테스트 51개 성공 및 bootJar 빌드 성공(evidence/personal-access-checks.log). 변경 코드는 아직 운영에 배포하지 않았다. 신규 DB bootstrap은 미구현이다. 기존 recovery 계약은 매 요청 독립 서명 증거를 요구하며 단순 env 등록이나 Neon 브랜치 식별만으로 이를 충족한다고 판정하지 않는다. 강제 차단을 유지한다.
 
 추가 회귀: Docker Desktop 실행/소켓 지정 후 실제 PostgreSQL 통합24개 성공. 개인정보를 포함한 배포 설정은 비공개 파일에만 준비했고 아직 Render에 적용하지 않았다.
+
+## 신규 운영 DB 등록 완료 / Render 연결 대기 (2026-10-18)
+
+검증된 소스 커밋 `9f7cb262df62856152c46df894607e9c89519265`를 main에 push했다. 운영 Neon의 사용자/삭제/세션/거래 0을 확인하고 V6와 메타데이터 전용 역할을 추가했다. 독립 Cloudflare Worker https://money-map-recovery-authority.mjlee95613.workers.dev 에서 실제 초기 관찰/일회 등록/운영 전용 Ed25519 서명 검증이 성공했다(`evidence/bootstrap-production-registration.log`). 등록 직전 실제 Render API503 RECOVERY_REQUIRED를 확인했다.
+
+Render에 적용할 비공개 차이 파일은 `.tooling/render-setup/backend-bootstrap.env`(0600, 10개 변수)이다. 기존 DB/JWT/cursor 환경 값은 유지하며 공개 회원가입은 false다. 현재 Render 환경에는 이 파일을 아직 적용하지 않았다. 브라우저 도구의 새 인증 정보 입력 handoff 규칙에 따라 사용자 직접 가져오기/저장이 필요하다. 현재 API 로그인 가능 상태로 보고하지 않는다. 적용 뒤 실제 Render/Vercel200, 미허용 가입 거부, 본인 로컬 등록과 HTTPS 로그인 검증이 남아 있다.
+
+실제 Render commit을 등록한 배포에 결합했으므로, 후속 증거 문서만의 commit도 main에 push하면 새 자동 배포가 차단될 수 있다. 현재 증거 갱신은 로컬에 보존하고 배포 결합을 갱신하지 않은 임의 추가 push를 하지 않는다.
+
+## Render 연결 성공 / 본인 계정 등록 대기 (2026-10-18)
+
+사용자가 중복 APP_RECOVERY_REQUIRED를 false 하나로 정리하고 저장·재빌드·배포했다. Render 배포 `dep-dbadp5e1egvs73aaq540`가 커밋 `9f7cb26`으로 Live인 것을 확인했다. 실제 HTTPS Render liveness/readiness와 Vercel `/api/v1/auth/csrf` 모두 200이다(`evidence/bootstrap-live-deployment.json`). 허용된 이메일도 공개 signup에서 403 REGISTRATION_CLOSED로 거부되는 것을 확인했다(`evidence/bootstrap-public-signup-closed.json`). 검증 요청은 termsAccepted=false였으며 계정/동의를 만들지 않았다.
+
+본인이 직접 비밀번호를 정하고 동의할 수 있게 `scripts/personal-registration.py`를 실행했다. 임시 frontend localhost:3004/signup, backend 127.0.0.1:8086이 200으로 응답한다. 터널 없이 loopback만 바인딩했고 기존 Docker DB/개발 서버는 보존했다. 화면을 열어 전달했으며 비밀번호 입력·동의·가입 제출은 사용자가 직접 수행한다. 등록 완료 후 이번 임시 프로세스만 종료하고 실제 Vercel HTTPS 로그인/데이터 저장을 검증해야 한다. 이 절차는 아직 완료로 보고하지 않는다.
+
+## 본인 계정 저장 확인 (2026-10-18)
+
+사용자의 가입 완료 안내 뒤 운영 DB의 사용자 1명/기본 카테고리 16개를 집계로 확인했다. 이메일·비밀번호·사용자 행 내용은 조회하지 않았다. 임시 등록 launcher를 정상적으로 인터럽트하여 이번에 시작한 두 서버만 종료했다. 실제 HTTPS Vercel 로그인 화면을 열어 사용자에게 전달했다. 로그인 자격 증명은 사용자가 직접 입력하며 실제 로그인 성공과 실사용 거래 저장은 이후 확인 대상이다. 증거는 `evidence/personal-registration-verified.json`을 따른다.
+
+## 본인 HTTPS 로그인 확인 (2026-10-19)
+
+사용자가 실제 배포 주소에서 로그인 완료를 알렸다. Vercel HTTPS 홈에서 로그아웃/설정과 거래 기록·지도·통계 링크가 있는 인증 후 대시보드를 읽기 전용 확인했다. 비밀번호·쿠키·토큰은 읽지 않았다. 증거는 `evidence/production-personal-login-confirmed.json`과 동일 이름 jpg다. 본인이 입력한 첫 운영 거래의 저장/새로고침 유지 검증은 아직 남아 있으며, 임의 개인 거래를 생성하지 않았다.

@@ -1,0 +1,11 @@
+{
+  "accountCount": 1,
+  "defaultCategoryCount": 16,
+  "passwordRead": false,
+  "emailRead": false,
+  "temporaryServersStopped": {
+    "3004": true,
+    "8086": true
+  },
+  "productionReadinessAfterSignup": 200
+}

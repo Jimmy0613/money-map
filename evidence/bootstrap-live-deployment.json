@@ -1,0 +1,17 @@
+[
+  {
+    "name": "render_liveness",
+    "status": 200,
+    "result": "UP"
+  },
+  {
+    "name": "render_readiness",
+    "status": 200,
+    "result": "UP"
+  },
+  {
+    "name": "vercel_csrf",
+    "status": 200,
+    "result": "csrf_ready"
+  }
+]

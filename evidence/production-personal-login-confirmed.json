@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-19",
+  "origin": "https://money-map-frontend-murex.vercel.app",
+  "userConfirmedLogin": true,
+  "authenticatedDashboardObserved": true,
+  "logoutControlObserved": true,
+  "passwordOrCookiesRead": false,
+  "personalTransactionWrittenByAgent": false,
+  "productionTransactionPersistenceCheck": "pending_user_entry"
+}

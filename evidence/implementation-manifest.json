@@ -425,7 +425,7 @@
   },
   {
     "path": "deployment-plan.md",
-    "sha256": "0389426ba0637454d2ebacb993e540de96d27a3580715144825191acfddc4f39"
+    "sha256": "18fcaf50f144889c8b714be754378d2fcd751f0d2646ffc23e284322ff36cddf"
   },
   {
     "path": "docker-compose.yml",
@@ -829,6 +829,6 @@
   },
   {
     "path": "test-report.md",
-    "sha256": "6a1f33c8cfac9217e1de611b0301f0c58f53d8582538eec8d33cc1a97b83dfe7"
+    "sha256": "837694460ce4bf04264a236e6521a68f60aee6bcd15deb7654c6ddf9bf21b3d9"
   }
 ]

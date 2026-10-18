@@ -265,3 +265,7 @@ DB 재시작 테스트의 첫 실행은 Docker의 동적 공개 포트 변경을
 ## 신규 DB bootstrap 실제 검증 (2026-10-18)
 
 Backend 단위/HTTP53PASS, 실제 PostgreSQL 통합25PASS와 bootJar 성공. Worker 정책5PASS/공식 Workers Vitest 런타임4PASS, 실제 Cloudflare 테스트 Worker+Neon의 최초 일회 등록/서명/잘못된 대상 거부 PASS. local 우회 없는 prod,neon Java 서버의 실제 서명 수락과 미허용 가입 거부, 허용 합성 계정 signup/login/access/refresh 및 탈퇴/세션 거부 PASS. 별도 프런트 복사본의 npm run build 성공. 증거 목록/실패 수정 경과는 bootstrap-deployment.md 참조. 실제 운영 Render 연결·개방은 이 로컬/격리 검증과 구분한다. 상위71개33PASS/38NOT_RUN 및 전체 복원 미완료 판정 유지.
+
+운영 최초 등록 추가 증거: `evidence/bootstrap-production-registration.log`의 4개 PASS는 실제 운영 Neon 빈 상태/실제 ingress 차단/외부 일회 등록/운영 서명 검증이다. Render 환경 적용 뒤의 공개 서비스 정상 응답이나 개인 계정 로그인 완료 증거와 구분한다.
+
+Render 환경 적용 뒤 실제 liveness/readiness와 Vercel csrf 200 및 허용 이메일의 공개 signup 403 REGISTRATION_CLOSED를 추가 확인했다(`evidence/bootstrap-live-deployment.json`, `evidence/bootstrap-public-signup-closed.json`). 동의/계정을 생성하지 않는 거부 검사다. 로컬 본인 등록 화면은 loopback에서 200으로 열었으나 실제 본인 가입/배포 로그인/실사용 저장은 사용자 입력 이후 확인 대상이다.
