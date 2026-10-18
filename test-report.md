@@ -269,3 +269,9 @@ Backend 단위/HTTP53PASS, 실제 PostgreSQL 통합25PASS와 bootJar 성공. Wor
 운영 최초 등록 추가 증거: `evidence/bootstrap-production-registration.log`의 4개 PASS는 실제 운영 Neon 빈 상태/실제 ingress 차단/외부 일회 등록/운영 서명 검증이다. Render 환경 적용 뒤의 공개 서비스 정상 응답이나 개인 계정 로그인 완료 증거와 구분한다.
 
 Render 환경 적용 뒤 실제 liveness/readiness와 Vercel csrf 200 및 허용 이메일의 공개 signup 403 REGISTRATION_CLOSED를 추가 확인했다(`evidence/bootstrap-live-deployment.json`, `evidence/bootstrap-public-signup-closed.json`). 동의/계정을 생성하지 않는 거부 검사다. 로컬 본인 등록 화면은 loopback에서 200으로 열었으나 실제 본인 가입/배포 로그인/실사용 저장은 사용자 입력 이후 확인 대상이다.
+
+## 문서 커밋 푸시 후 재검증 (2026-10-19)
+
+`a111eb4`를 main에 push했다. Render Root Directory는 `backend/`이며 문서 변경으로 새 백엔드 배포가 발생하지 않았다. 운영은 기존 등록 커밋 `9f7cb26`의 Live 상태를 유지한다. 프런트 55개, 백엔드 53개, 실제 PostgreSQL 통합 25개, 권위 서버 정책 5개 및 공식 런타임 4개 테스트가 모두 성공했다. 프런트 프로덕션 빌드/lint와 Backend bootJar도 성공했다.
+
+Worker 런타임의 최초 실행은 샌드박스 localhost 권한으로 실패했으며 허용된 실행 환경에서 재실행하여 통과했다. 운영 API는 Render 절전 해제 중 timeout/일시 503이 있었지만 이후 liveness/readiness 모두 200/UP, Vercel 홈과 CSRF 프록시 200 및 XSRF 쿠키 발급을 확인했다. 브라우저 새로고침의 세션 확인 후 로그인 화면으로 이동하여 인증 후 운영 거래 CRUD는 재검증하지 않았다. 개인 데이터/비밀번호는 입력하지 않았으며 운영 DB를 변경하지 않았다. 상세 결과: `evidence/post-push-verification-20261019.json`.

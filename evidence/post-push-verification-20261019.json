@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-19",
+  "pushedCommit": "a111eb4",
+  "renderLiveCommit": "9f7cb262df62856152c46df894607e9c89519265",
+  "renderRootDirectory": "backend/",
+  "backendAutoDeployTriggered": false,
+  "frontendTests": {"passed": 55, "failed": 0},
+  "frontendBuild": "PASS",
+  "frontendLint": "PASS",
+  "backendTests": {"passed": 53, "failed": 0},
+  "postgresIntegrationTests": {"passed": 25, "failed": 0},
+  "backendBootJar": "PASS",
+  "authorityPolicyTests": {"passed": 5, "failed": 0},
+  "authorityRuntimeTests": {"passed": 4, "failed": 0},
+  "live": {
+    "frontendHome": 200,
+    "backendLiveness": {"status": 200, "health": "UP"},
+    "backendReadiness": {"status": 200, "health": "UP"},
+    "frontendCsrfProxy": {"status": 200, "xsrfCookieIssued": true}
+  },
+  "initialIssues": [
+    "Sandbox blocked Worker runtime localhost binding; passed after authorized execution outside sandbox.",
+    "Render cold start caused timeouts and a temporary 503; subsequent health and CSRF checks passed."
+  ],
+  "authenticatedProductionCrud": "NOT_RUN: browser reached login after session check; no credentials or personal transactions entered",
+  "productionDataModified": false
+}
