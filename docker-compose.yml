@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:17.6
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-money_map}
+      POSTGRES_USER: ${POSTGRES_USER:-money_map}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  backend:
+    profiles: [app]
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-money_map}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-money_map}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET required}
+      CURSOR_SECRET: ${CURSOR_SECRET:?CURSOR_SECRET required}
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:3000}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
+      APP_RECOVERY_REQUIRED: ${APP_RECOVERY_REQUIRED:-false}
+      RECOVERY_AUTHORITY_URL: ${RECOVERY_AUTHORITY_URL:-}
+      RECOVERY_AUTHORITY_PUBLIC_KEY: ${RECOVERY_AUTHORITY_PUBLIC_KEY:-}
+      RECOVERY_ENVIRONMENT: ${RECOVERY_ENVIRONMENT:-}
+      RECOVERY_DEPLOYMENT: ${RECOVERY_DEPLOYMENT:-}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+    ports: ["127.0.0.1:${BACKEND_PORT:-8080}:8080"]
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  frontend:
+    profiles: [app]
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_KAKAO_MAP_APP_KEY: ${NEXT_PUBLIC_KAKAO_MAP_APP_KEY:-}
+    environment:
+      BACKEND_INTERNAL_URL: http://backend:8080
+    ports: ["127.0.0.1:${FRONTEND_PORT:-3000}:3000"]
+    depends_on:
+      backend: {condition: service_healthy}
+volumes:
+  pgdata:

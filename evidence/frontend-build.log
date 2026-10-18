@@ -1,0 +1,38 @@
+
+> money-map-frontend@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.ts took 62ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1400ms
+  Running TypeScript ...
+  Finished TypeScript in 1514ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/11) ...
+  Generating static pages using 7 workers (2/11) 
+  Generating static pages using 7 workers (5/11) 
+  Generating static pages using 7 workers (8/11) 
+✓ Generating static pages using 7 workers (11/11) in 252ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /login
+├ ○ /map
+├ ○ /settings
+├ ○ /settings/categories
+├ ○ /signup
+├ ○ /statistics
+├ ○ /transactions
+├ ƒ /transactions/[id]
+├ ƒ /transactions/[id]/edit
+└ ○ /transactions/new
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

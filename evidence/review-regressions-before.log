@@ -1,0 +1,1190 @@
+
+ RUN  v3.2.4 /Users/lmj/money-map/frontend
+
+ ❯ src/tests/review-regressions.test.tsx (3 tests | 3 failed) 3187ms
+   × 연속 카테고리 이름 변경과 보관은 매번 최신 버전을 전송한다 1087ms
+     → expected [ '"0"', '"0"', '"1"' ] to deeply equal [ '"0"', '"1"', '"2"' ]
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<main[39m
+        [33mid[39m=[32m"content"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0m카테고리 관리[0m
+        [36m</h1>[39m
+        [36m<form[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m유형[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"EXPENSE"[39m
+              [36m>[39m
+                [0m지출[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"INCOME"[39m
+              [36m>[39m
+                [0m수입[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m새 카테고리[0m
+            [36m<input[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mrequired[39m=[32m""[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m/>[39m
+          [36m<button>[39m
+            [0m추가[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<ul[39m
+          [33mclass[39m=[32m"list"[39m
+        [36m>[39m
+          [36m<li>[39m
+            [36m<p>[39m
+              [0m둘째[0m
+              [0m [0m
+              [36m<span[39m
+                [33mclass[39m=[32m"badge"[39m
+              [36m>[39m
+                [0m보관[0m
+              [36m</span>[39m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mrole[39m=[32m"status"[39m
+            [36m/>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+   × 조회가 SDK보다 먼저 끝나도 준비된 지도에 Marker를 표시한다 1069ms
+     → expected "spy" to be called with arguments: [ [ { …(6) } ], Any<Function> ]
+
+Number of calls: 0
+
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<main[39m
+        [33mid[39m=[32m"content"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0m소비 지도[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"muted"[39m
+        [36m>[39m
+          [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"filters"[39m
+          [36m>[39m
+            [36m<label>[39m
+              [0m시작일[0m
+              [36m<input[39m
+                [33mtype[39m=[32m"date"[39m
+                [33mvalue[39m=[32m"2026-09-01"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m종료일[0m
+              [36m<input[39m
+                [33mtype[39m=[32m"date"[39m
+                [33mvalue[39m=[32m"2026-09-30"[39m
+              [36m/>[39m
+            [36m</label>[39m
+          [36m</div>[39m
+          [36m<fieldset>[39m
+            [36m<legend>[39m
+              [0m카테고리 · 미선택 시 전체[0m
+            [36m</legend>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"actions"[39m
+            [36m/>[39m
+          [36m</fieldset>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m필터 초기화[0m
+        [36m</button>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"소비 지도"[39m
+          [33mclass[39m=[32m"map-canvas"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m북[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m남[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m동[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m서[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m확대[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m축소[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m현재 영역[0m
+            [0m [0m
+            [36m<strong>[39m
+              [0m1,000원[0m
+            [36m</strong>[39m
+            [0m ·[0m
+            [0m [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m기간 전체 [0m
+            [0m1,000원[0m
+            [0m · 위치 없는 지출[0m
+            [0m [0m
+            [0m0[0m
+            [0m건[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<h2>[39m
+          [0m지도 결과 목록[0m
+        [36m</h2>[39m
+        [36m<ul[39m
+          [33mclass[39m=[32m"list"[39m
+        [36m>[39m
+          [36m<li>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"quiet"[39m
+            [36m>[39m
+              [0m합성 위치[0m
+              [0m · [0m
+              [0m1,000원[0m
+              [0m · [0m
+              [0m1[0m
+              [0m건[0m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+        [36m<dialog[39m
+          [33maria-labelledby[39m=[32m"marker-title"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"marker-title"[39m
+            [36m/>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"quiet"[39m
+            [36m>[39m
+              [0m닫기[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</dialog>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+   × 상세409 뒤 최신 지도 revision을 받은 다음 상세를 다시 조회한다 1030ms
+     → Unable to find an element with the text: 합성 주소. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mid[39m=[32m"content"[39m
+    [36m>[39m
+      [36m<h1>[39m
+        [0m소비 지도[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"muted"[39m
+      [36m>[39m
+        [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"filters"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m시작일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-01"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m종료일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-30"[39m
+            [36m/>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m카테고리 · 미선택 시 전체[0m
+          [36m</legend>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"actions"[39m
+          [36m/>[39m
+        [36m</fieldset>[39m
+      [36m</div>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"quiet"[39m
+      [36m>[39m
+        [0m필터 초기화[0m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"소비 지도"[39m
+        [33mclass[39m=[32m"map-canvas"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m북[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m남[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m동[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m서[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m확대[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m축소[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m현재 영역[0m
+          [0m [0m
+          [36m<strong>[39m
+            [0m1,000원[0m
+          [36m</strong>[39m
+          [0m ·[0m
+          [0m [0m
+          [0m1[0m
+          [0m건[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m기간 전체 [0m
+          [0m1,000원[0m
+          [0m · 위치 없는 지출[0m
+          [0m [0m
+          [0m0[0m
+          [0m건[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<h2>[39m
+        [0m지도 결과 목록[0m
+      [36m</h2>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+            [0m · [0m
+            [0m1,000원[0m
+            [0m · [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<dialog[39m
+        [33maria-labelledby[39m=[32m"marker-title"[39m
+        [33mopen[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"row"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"marker-title"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+          [36m</h2>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m닫기[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m변경됨[0m
+          [36m</p>[39m
+          [36m<button>[39m
+            [0m다시 시도[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</dialog>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mid[39m=[32m"content"[39m
+    [36m>[39m
+      [36m<h1>[39m
+        [0m소비 지도[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"muted"[39m
+      [36m>[39m
+        [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"filters"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m시작일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-01"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m종료일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-30"[39m
+            [36m/>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m카테고리 · 미선택 시 전체[0m
+          [36m</legend>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"actions"[39m
+          [36m/>[39m
+        [36m</fieldset>[39m
+      [36m</div>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"quiet"[39m
+      [36m>[39m
+        [0m필터 초기화[0m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"소비 지도"[39m
+        [33mclass[39m=[32m"map-canvas"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m북[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m남[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m동[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m서[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m확대[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m축소[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m현재 영역[0m
+          [0m [0m
+          [36m<strong>[39m
+            [0m1,000원[0m
+          [36m</strong>[39m
+          [0m ·[0m
+          [0m [0m
+          [0m1[0m
+          [0m건[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m기간 전체 [0m
+          [0m1,000원[0m
+          [0m · 위치 없는 지출[0m
+          [0m [0m
+          [0m0[0m
+          [0m건[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<h2>[39m
+        [0m지도 결과 목록[0m
+      [36m</h2>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+            [0m · [0m
+            [0m1,000원[0m
+            [0m · [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<dialog[39m
+        [33maria-labelledby[39m=[32m"marker-title"[39m
+        [33mopen[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"row"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"marker-title"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+          [36m</h2>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m닫기[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m변경됨[0m
+          [36m</p>[39m
+          [36m<button>[39m
+            [0m다시 시도[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</dialog>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/review-regressions.test.tsx > 연속 카테고리 이름 변경과 보관은 매번 최신 버전을 전송한다
+AssertionError: expected [ '"0"', '"0"', '"1"' ] to deeply equal [ '"0"', '"1"', '"2"' ]
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<main[39m
+        [33mid[39m=[32m"content"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0m카테고리 관리[0m
+        [36m</h1>[39m
+        [36m<form[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m유형[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"EXPENSE"[39m
+              [36m>[39m
+                [0m지출[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"INCOME"[39m
+              [36m>[39m
+                [0m수입[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m새 카테고리[0m
+            [36m<input[39m
+              [33mmaxlength[39m=[32m"30"[39m
+              [33mrequired[39m=[32m""[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m/>[39m
+          [36m<button>[39m
+            [0m추가[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<ul[39m
+          [33mclass[39m=[32m"list"[39m
+        [36m>[39m
+          [36m<li>[39m
+            [36m<p>[39m
+              [0m둘째[0m
+              [0m [0m
+              [36m<span[39m
+                [33mclass[39m=[32m"badge"[39m
+              [36m>[39m
+                [0m보관[0m
+              [36m</span>[39m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mrole[39m=[32m"status"[39m
+            [36m/>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+- Expected
++ Received
+
+  [
+    "\"0\"",
++   "\"0\"",
+    "\"1\"",
+-   "\"2\"",
+  ]
+
+ ❯ src/tests/review-regressions.test.tsx:43:40
+     41|   vi.spyOn(window, "confirm").mockReturnValue(true);
+     42|   fireEvent.click(screen.getByRole("button", { name: "보관" }));
+     43|   await waitFor(() => expect(versions).toEqual(['"0"', '"1"', '"2"']));
+       |                                        ^
+     44|   await waitFor(() => expect(screen.queryByLabelText("분류 이름")).not.toB…
+     45| });
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/tests/review-regressions.test.tsx > 조회가 SDK보다 먼저 끝나도 준비된 지도에 Marker를 표시한다
+AssertionError: expected "spy" to be called with arguments: [ [ { …(6) } ], Any<Function> ]
+
+Number of calls: 0
+
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<main[39m
+        [33mid[39m=[32m"content"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0m소비 지도[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"muted"[39m
+        [36m>[39m
+          [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"filters"[39m
+          [36m>[39m
+            [36m<label>[39m
+              [0m시작일[0m
+              [36m<input[39m
+                [33mtype[39m=[32m"date"[39m
+                [33mvalue[39m=[32m"2026-09-01"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0m종료일[0m
+              [36m<input[39m
+                [33mtype[39m=[32m"date"[39m
+                [33mvalue[39m=[32m"2026-09-30"[39m
+              [36m/>[39m
+            [36m</label>[39m
+          [36m</div>[39m
+          [36m<fieldset>[39m
+            [36m<legend>[39m
+              [0m카테고리 · 미선택 시 전체[0m
+            [36m</legend>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"actions"[39m
+            [36m/>[39m
+          [36m</fieldset>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m필터 초기화[0m
+        [36m</button>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"소비 지도"[39m
+          [33mclass[39m=[32m"map-canvas"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m북[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m남[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m동[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m서[0m
+            [0m쪽[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m확대[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m축소[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m현재 영역[0m
+            [0m [0m
+            [36m<strong>[39m
+              [0m1,000원[0m
+            [36m</strong>[39m
+            [0m ·[0m
+            [0m [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m기간 전체 [0m
+            [0m1,000원[0m
+            [0m · 위치 없는 지출[0m
+            [0m [0m
+            [0m0[0m
+            [0m건[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<h2>[39m
+          [0m지도 결과 목록[0m
+        [36m</h2>[39m
+        [36m<ul[39m
+          [33mclass[39m=[32m"list"[39m
+        [36m>[39m
+          [36m<li>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"quiet"[39m
+            [36m>[39m
+              [0m합성 위치[0m
+              [0m · [0m
+              [0m1,000원[0m
+              [0m · [0m
+              [0m1[0m
+              [0m건[0m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+        [36m<dialog[39m
+          [33maria-labelledby[39m=[32m"marker-title"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"row"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"marker-title"[39m
+            [36m/>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"quiet"[39m
+            [36m>[39m
+              [0m닫기[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</dialog>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ src/tests/review-regressions.test.tsx:58:39
+     56|   await screen.findByText(/합성 위치 ·/);
+     57|   await act(async () => { ready({ mount: () => ({ markers, dispose: vi…
+     58|   await waitFor(() => expect(markers).toHaveBeenCalledWith([marker], e…
+       |                                       ^
+     59| });
+     60| it("상세409 뒤 최신 지도 revision을 받은 다음 상세를 다시 조회한다", async () => {
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/tests/review-regressions.test.tsx > 상세409 뒤 최신 지도 revision을 받은 다음 상세를 다시 조회한다
+TestingLibraryElementError: Unable to find an element with the text: 합성 주소. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mid[39m=[32m"content"[39m
+    [36m>[39m
+      [36m<h1>[39m
+        [0m소비 지도[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"muted"[39m
+      [36m>[39m
+        [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"filters"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m시작일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-01"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m종료일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-30"[39m
+            [36m/>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m카테고리 · 미선택 시 전체[0m
+          [36m</legend>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"actions"[39m
+          [36m/>[39m
+        [36m</fieldset>[39m
+      [36m</div>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"quiet"[39m
+      [36m>[39m
+        [0m필터 초기화[0m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"소비 지도"[39m
+        [33mclass[39m=[32m"map-canvas"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m북[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m남[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m동[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m서[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m확대[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m축소[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m현재 영역[0m
+          [0m [0m
+          [36m<strong>[39m
+            [0m1,000원[0m
+          [36m</strong>[39m
+          [0m ·[0m
+          [0m [0m
+          [0m1[0m
+          [0m건[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m기간 전체 [0m
+          [0m1,000원[0m
+          [0m · 위치 없는 지출[0m
+          [0m [0m
+          [0m0[0m
+          [0m건[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<h2>[39m
+        [0m지도 결과 목록[0m
+      [36m</h2>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+            [0m · [0m
+            [0m1,000원[0m
+            [0m · [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<dialog[39m
+        [33maria-labelledby[39m=[32m"marker-title"[39m
+        [33mopen[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"row"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"marker-title"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+          [36m</h2>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m닫기[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m변경됨[0m
+          [36m</p>[39m
+          [36m<button>[39m
+            [0m다시 시도[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</dialog>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<main[39m
+      [33mid[39m=[32m"content"[39m
+    [36m>[39m
+      [36m<h1>[39m
+        [0m소비 지도[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"muted"[39m
+      [36m>[39m
+        [0m지출을 장소별로 살펴보세요. 위치 없는 기록도 기간 합계에 포함합니다.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"filters"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0m시작일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-01"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0m종료일[0m
+            [36m<input[39m
+              [33mtype[39m=[32m"date"[39m
+              [33mvalue[39m=[32m"2026-09-30"[39m
+            [36m/>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+        [36m<fieldset>[39m
+          [36m<legend>[39m
+            [0m카테고리 · 미선택 시 전체[0m
+          [36m</legend>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"actions"[39m
+          [36m/>[39m
+        [36m</fieldset>[39m
+      [36m</div>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"quiet"[39m
+      [36m>[39m
+        [0m필터 초기화[0m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"소비 지도"[39m
+        [33mclass[39m=[32m"map-canvas"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m북[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m남[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m동[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m서[0m
+          [0m쪽[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m확대[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"quiet"[39m
+        [36m>[39m
+          [0m축소[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0m현재 영역[0m
+          [0m [0m
+          [36m<strong>[39m
+            [0m1,000원[0m
+          [36m</strong>[39m
+          [0m ·[0m
+          [0m [0m
+          [0m1[0m
+          [0m건[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0m기간 전체 [0m
+          [0m1,000원[0m
+          [0m · 위치 없는 지출[0m
+          [0m [0m
+          [0m0[0m
+          [0m건[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<h2>[39m
+        [0m지도 결과 목록[0m
+      [36m</h2>[39m
+      [36m<ul[39m
+        [33mclass[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+            [0m · [0m
+            [0m1,000원[0m
+            [0m · [0m
+            [0m1[0m
+            [0m건[0m
+          [36m</button>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+      [36m<dialog[39m
+        [33maria-labelledby[39m=[32m"marker-title"[39m
+        [33mopen[39m=[32m""[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"row"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"marker-title"[39m
+          [36m>[39m
+            [0m합성 위치[0m
+          [36m</h2>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"quiet"[39m
+          [36m>[39m
+            [0m닫기[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0m변경됨[0m
+          [36m</p>[39m
+          [36m<button>[39m
+            [0m다시 시도[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</dialog>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/tests/review-regressions.test.tsx:76:16
+     74|   show(<MapPage />);
+     75|   fireEvent.click(await screen.findByText(/합성 위치 ·/));
+     76|   await screen.findByText("합성 주소");
+       |                ^
+     77|   expect(events).toEqual(["map1", "detail1", "map2", "detail2"]);
+     78| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  12:55:59
+   Duration  3.89s (transform 75ms, setup 104ms, collect 117ms, tests 3.19s, environment 279ms, prepare 41ms)
+

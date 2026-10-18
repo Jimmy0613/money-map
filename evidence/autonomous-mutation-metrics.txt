@@ -1,0 +1,7 @@
+MUTATION_PERFORMANCE users=10 seedRowsPerUser=10000 warmupSeconds=60 measurementSeconds=300 pacing=closed-loop timing=loopback-http-wall-clock
+MUTATION_PERFORMANCE route=POST /transactions count=103622 p95Ms=10 limitMs=500
+MUTATION_PERFORMANCE route=GET /transactions/{id} count=103624 p95Ms=3 limitMs=500
+MUTATION_PERFORMANCE route=PUT /transactions/{id} count=103622 p95Ms=10 limitMs=500
+MUTATION_PERFORMANCE route=DELETE /transactions/{id} count=103620 p95Ms=7 limitMs=500
+MUTATION_PERFORMANCE route=PATCH /categories/{id} count=103622 p95Ms=8 limitMs=500
+MUTATION_PERFORMANCE httpErrors=0 types=[]

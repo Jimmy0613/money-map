@@ -1,0 +1,10 @@
+{
+  "knownSecretValuesPrinted": false,
+  "scannedFiles": 67,
+  "knownSecretMatchCount": 0,
+  "filesWithMatch": [],
+  "requestLogCount": 242,
+  "structuredFieldsPresent": true,
+  "syntheticEmailAndAuthCookieAbsent": true,
+  "scope": "Known local secret matching and local app logs only; no production proxy/unknown-secret guarantee."
+}

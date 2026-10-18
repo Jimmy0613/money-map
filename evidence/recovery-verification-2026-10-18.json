@@ -1,0 +1,77 @@
+{
+  "reviewedAt": "2026-10-18",
+  "executionDate": "2026-09-25",
+  "rerunOnReview": false,
+  "suites": {
+    "test": [
+      {
+        "name": "com.moneymap.HttpContractTest",
+        "tests": "12",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.MapDiagnosticsTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.RecoveryGateTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.RequestLogPrivacyTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.RulesTest",
+        "tests": "16",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.SecurityUnitTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.StatisticsFixtureTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0"
+      }
+    ],
+    "integrationTest": [
+      {
+        "name": "com.moneymap.PostgresIntegrationTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0"
+      },
+      {
+        "name": "com.moneymap.RecoveryAuthorityIntegrationTest",
+        "tests": "11",
+        "failures": "0",
+        "errors": "0"
+      }
+    ]
+  },
+  "authorityTests": {
+    "tests": 11,
+    "failures": 0,
+    "evidence": "evidence/recovery-authority-tests.log"
+  },
+  "build": "PASS",
+  "limitations": [
+    "Actual WAL/fencing/ingress verifier not implemented",
+    "Bootstrap and renewal runner not implemented",
+    "Production deployment and device verification pending",
+    "Previous performance numbers exclude the new authority round trip"
+  ]
+}

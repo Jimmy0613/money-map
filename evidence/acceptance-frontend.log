@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /Users/lmj/money-map/frontend
+
+ ✓ src/tests/map-diagnostics.test.ts (3 tests) 71ms
+ ✓ src/tests/location-picker.test.tsx (3 tests) 98ms
+ ✓ src/tests/auth-fields.test.tsx (1 test) 108ms
+ ✓ src/tests/location-races.test.tsx (8 tests) 307ms
+ ✓ src/tests/form-location-failure.test.tsx (2 tests) 305ms
+ ✓ src/tests/money-location.test.ts (9 tests) 17ms
+ ✓ src/tests/review-regressions.test.tsx (13 tests) 619ms
+ ✓ src/tests/api.test.ts (5 tests) 28ms
+ ✓ src/tests/map-state.test.tsx (11 tests) 1263ms
+   ✓ 지도 화면을 다시 열면 선택한 기간과 이동한 중심을 복원한다  335ms
+   ✓ 늦은 이전 영역 응답이 최신 영역 결과를 덮어쓰지 않는다  635ms
+
+ Test Files  9 passed (9)
+      Tests  55 passed (55)
+   Start at  17:49:59
+   Duration  2.39s (transform 387ms, setup 1.47s, collect 1.20s, tests 2.82s, environment 4.03s, prepare 787ms)
+

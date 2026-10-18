@@ -1,0 +1,77 @@
+[
+  {
+    "name": "01. 소비 위치 기록 지도 기반 가계부 - 사전 전제 프롬프트 (최종본).docx",
+    "bytes": 13927,
+    "sha256": "a353bbe63fd39450739a3b852ce9ae2b9061acad25bdaddfc98af04a861309f8"
+  },
+  {
+    "name": "02. 소비 위치 기록 지도 기반 가계부 - 요구사항 분석 프롬프트 (최종본).docx",
+    "bytes": 11392,
+    "sha256": "54cd46d963a266a2825358cb03d943e79aa9bfe3ee189f894e9b239a5ef4256f"
+  },
+  {
+    "name": "03. 소비 위치 기록 지도 기반 가계부 - 설계 프롬프트 (최종본).docx",
+    "bytes": 12280,
+    "sha256": "640e5801cbed3505fcbbd6fd1531a16277517b5d77b48fabea5be1732e789315"
+  },
+  {
+    "name": "04. 소비 위치 기록 지도 기반 가계부 - 코딩 프롬프트 (최종본).docx",
+    "bytes": 11842,
+    "sha256": "4468c4f5a10ad9e36720aa05af258486905b3242c7f43a6f5c52ecb7672bae2e"
+  },
+  {
+    "name": "05. 소비 위치 기록 지도 기반 가계부 - 테스트 프롬프트 (최종본).docx",
+    "bytes": 12481,
+    "sha256": "29cad0babc115b25ce8ab2f08d0d7d6707c7e22caf024cae23e70e02f6813064"
+  },
+  {
+    "name": "06. 소비 위치 기록 지도 기반 가계부 - 사전 샌드박스 테스트 프롬프트 (최종본).docx",
+    "bytes": 11040,
+    "sha256": "9c5109bee6dcb88d39a28f8f158644076dd0409df45f99c6e45215d03f561878"
+  },
+  {
+    "name": "api-spec.md",
+    "bytes": 21010,
+    "sha256": "03605acea00d9bc12c240d82226c481d2fcfbb402ede0da479048fe8e0a85535"
+  },
+  {
+    "name": "architecture.md",
+    "bytes": 27378,
+    "sha256": "bcb7843aca56dc89630dcb89743accd80fc1057f0939c3014f12ab5407a6d317"
+  },
+  {
+    "name": "change-log.md",
+    "bytes": 10838,
+    "sha256": "a7acffa1f239eb83a84d1ecbc88586f32e2c6d3263fff894b01c4d6cdaafc595"
+  },
+  {
+    "name": "erd.md",
+    "bytes": 13919,
+    "sha256": "9da957b9bb9bbf308160b877c6f737d368c1a89c711340f269d7b1c3a21a1ea7"
+  },
+  {
+    "name": "implementation-checklist.md",
+    "bytes": 8028,
+    "sha256": "d60a72bfddb21b2abb7c61f776ff6684e921499c5c32f163f846a162fdae30ee"
+  },
+  {
+    "name": "mac-handoff.md",
+    "bytes": 7276,
+    "sha256": "0b86cc966d17d4c036c2a00b9a64baef96f4db5e7d2c29ac906c4a7320545171"
+  },
+  {
+    "name": "mac-transfer-files.md",
+    "bytes": 3414,
+    "sha256": "3af6cc9c1de3071c51c41a6cb6a16aae0358e891e39a67653c1fe90940e4c5e7"
+  },
+  {
+    "name": "requirement-test-matrix.md",
+    "bytes": 15729,
+    "sha256": "0ff87338ba400239b0caf267570e44d7a4a4cf6f69cacada9a5aac14b4aedf48"
+  },
+  {
+    "name": "requirements.md",
+    "bytes": 62183,
+    "sha256": "fa53718981c2cb27752fc1328d78d75d2ccdcdb8c3f12c8b38f8938209d18b96"
+  }
+]

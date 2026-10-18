@@ -1,0 +1,53 @@
+{
+  "users": 10,
+  "rowsPerUser": 10000,
+  "warmupSeconds": 60,
+  "measurementSeconds": 300,
+  "pacing": "closed-loop",
+  "httpErrors": 0,
+  "result": "PASS",
+  "routes": [
+    {
+      "route": "/transactions",
+      "count": 1375,
+      "p95Ms": 207,
+      "limitMs": 500
+    },
+    {
+      "route": "/statistics/summary",
+      "count": 1374,
+      "p95Ms": 435,
+      "limitMs": 1000
+    },
+    {
+      "route": "/statistics/categories",
+      "count": 1378,
+      "p95Ms": 476,
+      "limitMs": 1000
+    },
+    {
+      "route": "/statistics/places",
+      "count": 1375,
+      "p95Ms": 440,
+      "limitMs": 1000
+    },
+    {
+      "route": "/statistics/regions",
+      "count": 1373,
+      "p95Ms": 509,
+      "limitMs": 1000
+    },
+    {
+      "route": "/statistics/monthly-comparison",
+      "count": 1373,
+      "p95Ms": 566,
+      "limitMs": 1000
+    },
+    {
+      "route": "/map/markers",
+      "count": 1376,
+      "p95Ms": 689,
+      "limitMs": 1000
+    }
+  ]
+}

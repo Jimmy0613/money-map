@@ -1,0 +1,10 @@
+{
+  "source": "https://www.code.go.kr/stdcode/regCodeL.do",
+  "download": "https://www.code.go.kr/etc/codeFullDown.do",
+  "retrieved": "2026-09-18",
+  "version": "code.go.kr-2026-09-18",
+  "sha256": "44b96f4a86ad102057463a05aae8842f1d706d3e9e69d2dfc409023bf75ca56b",
+  "rows": 53387,
+  "region_rows": 512,
+  "current_region_rows": 269
+}

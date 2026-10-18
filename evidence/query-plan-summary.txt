@@ -1,0 +1,1 @@
+QUERY_PLAN rows=10000 returned=21 nodes=Limit:,Sort:,Nested Loop:,Nested Loop:,Nested Loop:,Index Scan:categories_user_id_id_type_key,Bitmap Heap Scan:,Bitmap Index Scan:transaction_filter,Index Scan:transaction_locations_pkey,Materialize:,Index Scan:places_user_id_id_key executionMs=14.411

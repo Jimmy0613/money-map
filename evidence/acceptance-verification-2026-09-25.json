@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-25",
+  "frontendTests": 55,
+  "failures": 0,
+  "typecheckExit": 0,
+  "lintExit": 0,
+  "productionBuildExit": 0,
+  "productionMockE2E": 2,
+  "originalMatrixRowsUnchanged": true,
+  "recoveryControlPlane": "DESIGNED_NOT_IMPLEMENTED",
+  "backendDbPerformance": "not rerun in this change",
+  "phonePreview": "unchanged"
+}

@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:43205) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43205) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=false) (7.3s)
+  ✓  2 frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=true) (9.1s)
+
+  2 passed (17.5s)

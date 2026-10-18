@@ -1,0 +1,1 @@
+{"result": "PASS", "checks": ["digest mismatch blocked", "public-only restore", "latest synthetic ledger replay", "deleted user and related rows absent", "survivor preserved", "sessions and refresh tokens removed", "stale ledger release denied", "no published ports"], "existingDatabasesModified": false}

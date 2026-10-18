@@ -1,0 +1,49 @@
+server:
+  port: ${BACKEND_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/money_map}
+    username: ${SPRING_DATASOURCE_USERNAME:money_map}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  flyway:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db
+app:
+  recovery-required: ${APP_RECOVERY_REQUIRED:false}
+  recovery:
+    authority-url: ${RECOVERY_AUTHORITY_URL:}
+    public-key: ${RECOVERY_AUTHORITY_PUBLIC_KEY:}
+    environment: ${RECOVERY_ENVIRONMENT:}
+    deployment: ${RECOVERY_DEPLOYMENT:}
+  origin: ${APP_ORIGIN:http://localhost:3000}
+  jwt-secret: ${JWT_SECRET}
+  cursor-secret: ${CURSOR_SECRET}
+  cookie-secure: ${AUTH_COOKIE_SECURE:true}
+logging:
+  level:
+    org.hibernate: WARN
+    org.springframework.web: WARN

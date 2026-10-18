@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/lmj/money-map/scripts/test-restore.py", line 41, in <module>
+    result = r.stage(archive, ledger, hashlib.sha256(ledger.read_bytes()).hexdigest())
+  File "/Users/lmj/money-map/scripts/restore-public.py", line 81, in stage
+    when = datetime.fromisoformat(row['deleted_at'].replace('Z', '+00:00'))
+ValueError: Invalid isoformat string: '2026-09-24T03:42:19.87321+00:00'

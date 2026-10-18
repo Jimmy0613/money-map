@@ -1,0 +1,1 @@
+Harness preparation failure: POST /transactions returned400 because required nullable memo/location keys were omitted. No measured samples. Fixed by serializing the approved Transaction DTO with explicit null fields.

@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-19",
+  "matrixRows": 71,
+  "requirementIds": 43,
+  "matrixColumns": 8,
+  "sourceManifestFiles": 114,
+  "backendSuites": {
+    "test": {
+      "tests": 34,
+      "failures": 0
+    },
+    "integrationTest": {
+      "tests": 11,
+      "failures": 0
+    },
+    "performanceTest": {
+      "tests": 1,
+      "failures": 0
+    }
+  },
+  "performanceIsPreviousRun": true,
+  "reportsUtf8NoBom": true
+}

@@ -1,0 +1,15 @@
+
+> money-map-frontend@0.1.0 e2e
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:6413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium-mobile] › e2e/mock-flow.spec.ts:2:5 › Mock API: 로그인 → 위치 없이 거래 등록 → 상세 (1.4s)
+  ✓  2 [chromium-mobile] › e2e/mock-flow.spec.ts:127:5 › 로그아웃 대기는 새로고침에서도 개인 API보다 먼저 차단한다 (445ms)
+
+  2 passed (3.6s)

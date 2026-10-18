@@ -1,0 +1,39 @@
+
+Running 2 tests using 1 worker
+
+(node:43099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=false) (12.3s)
+  ✘  2 frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=true) (11.1s)
+
+
+  1) frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=true) ─────────────
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: '다시 만나 반가워요' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: '다시 만나 반가워요' })[22m
+
+
+      121 |       await expect(
+      122 |         second.getByRole("heading", { name: "다시 만나 반가워요" }),
+    > 123 |       ).toBeVisible();
+          |         ^
+      124 |       await second.close();
+      125 |     }
+      126 |     await expect(
+        at /Users/lmj/money-map/frontend/e2e-real/live-flow.spec.ts:123:9
+
+    Error Context: .tooling/mobile-preview/test-results/live-flow-실제-API-DB-CRUD·인증-commit-후-응답-유실-true-/error-context.md
+
+  1 failed
+    frontend/e2e-real/live-flow.spec.ts:5:7 › 실제 API/DB CRUD·인증 (commit 후 응답 유실=true) ──────────────
+  1 passed (24.7s)

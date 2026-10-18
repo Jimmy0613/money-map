@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /Users/lmj/money-map/frontend
+
+ ✓ src/tests/money-location.test.ts (9 tests) 20ms
+ ✓ src/tests/location-picker.test.tsx (3 tests) 87ms
+ ✓ src/tests/api.test.ts (5 tests) 28ms
+ ✓ src/tests/auth-fields.test.tsx (1 test) 103ms
+ ✓ src/tests/location-races.test.tsx (8 tests) 227ms
+
+ Test Files  5 passed (5)
+      Tests  26 passed (26)
+   Start at  19:08:43
+   Duration  984ms (transform 207ms, setup 742ms, collect 551ms, tests 465ms, environment 1.61s, prepare 351ms)
+

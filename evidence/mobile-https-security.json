@@ -1,0 +1,10 @@
+{
+  "origin": "https://cube-wesley-touched-acids.trycloudflare.com",
+  "loginHttpStatus": 200,
+  "csrfHttpStatus": 200,
+  "csrfNoStore": true,
+  "csrfCookieSecure": true,
+  "csrfCookieSameSite": "Lax",
+  "unauthenticatedPrivateApi": 401,
+  "foreignOriginRejected": 403
+}

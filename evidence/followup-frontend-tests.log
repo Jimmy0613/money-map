@@ -1,0 +1,18 @@
+
+> money-map-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.4 /Users/lmj/money-map/frontend
+
+ ✓ src/tests/api.test.ts (5 tests) 29ms
+ ✓ src/tests/location-picker.test.tsx (3 tests) 81ms
+ ✓ src/tests/money-location.test.ts (9 tests) 21ms
+ ✓ src/tests/auth-fields.test.tsx (1 test) 124ms
+ ✓ src/tests/location-races.test.tsx (6 tests) 192ms
+
+ Test Files  5 passed (5)
+      Tests  24 passed (24)
+   Start at  13:39:47
+   Duration  1.01s (transform 222ms, setup 739ms, collect 547ms, tests 447ms, environment 1.84s, prepare 358ms)
+

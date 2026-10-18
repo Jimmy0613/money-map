@@ -1,0 +1,10 @@
+CREATE INDEX category_selection ON categories(user_id,type,sort_order,id);
+CREATE INDEX transaction_page ON transactions(user_id,transaction_date DESC,created_at DESC,id DESC);
+CREATE INDEX transaction_filter ON transactions(user_id,type,category_id,transaction_date);
+CREATE INDEX location_bbox ON transaction_locations(user_id,latitude,longitude);
+CREATE INDEX location_place ON transaction_locations(user_id,place_id);
+CREATE INDEX location_region ON transaction_locations(user_id,region_key);
+CREATE INDEX sessions_user ON auth_sessions(user_id);
+CREATE INDEX sessions_expiry ON auth_sessions(expires_at);
+CREATE INDEX refresh_session ON refresh_tokens(session_id);
+CREATE INDEX aliases_names ON region_aliases(sido_normalized,sigungu_normalized,valid_from);

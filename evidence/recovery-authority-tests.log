@@ -1,0 +1,16 @@
+test_actual_http_signature_and_immediate_generation_revocation (__main__.AuthorityTests) ... ok
+test_expired_signed_receipt_and_tampered_signature_rejected (__main__.AuthorityTests) ... ok
+test_full_ordered_signed_workflow_and_expiry (__main__.AuthorityTests) ... ok
+test_generation_cas_worker_lease_and_old_signed_receipt (__main__.AuthorityTests) ... ok
+test_missing_state_and_unregistered_fail_closed (__main__.AuthorityTests) ... ok
+test_process_restart_preserves_block_and_audit (__main__.AuthorityTests) ... ok
+test_reconciliation_and_ingress_failure_stay_blocked (__main__.AuthorityTests) ... ok
+test_restored_application_configuration_cannot_select_old_generation (__main__.AuthorityTests) ... ok
+test_skipped_stage_and_wrong_target_rejected (__main__.AuthorityTests) ... ok
+test_untrusted_verifier_cannot_self_authorize (__main__.AuthorityTests) ... ok
+test_wal_gap_wrong_timeline_and_lsn_rejected (__main__.AuthorityTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.830s
+
+OK

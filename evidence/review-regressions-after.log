@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 /Users/lmj/money-map/frontend
+
+ ✓ src/tests/review-regressions.test.tsx (3 tests) 123ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  12:56:33
+   Duration  633ms (transform 66ms, setup 64ms, collect 102ms, tests 123ms, environment 172ms, prepare 33ms)
+
