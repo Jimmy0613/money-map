@@ -21,6 +21,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  recovery-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify proof rejection and real PostgreSQL container restart
+        working-directory: backend
+        run: ./gradlew integrationTest --tests com.moneymap.RecoveryAuthorityIntegrationTest --no-daemon
+      - name: Retain test evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: recovery-integration-${{ github.sha }}
+          path: backend/build/test-results/integrationTest/
+          retention-days: 14
+          if-no-files-found: error
   image:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
