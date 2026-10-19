@@ -17,7 +17,7 @@
 
 서버 단위·HTTP·대기 용량 테스트 69개와 빌드가 통과했다. 의존성 업데이트 후 격리 PostgreSQL 통합 16개가 통과했다. 프런트 테스트 66개, 타입·lint·빌드, Worker 정책 6개·런타임 10개도 통과했다. 별도 Neon DB와 Worker에서 실제 배포 등록 갱신·서명·재실행 거부·차단 상태 보존을 검증했다.
 
-Docker Desktop 오류로 컨테이너 재시작 통합 테스트와 컨테이너 OS 전체 보안 검사는 수행하지 않았다. Docker 설정과 기존 데이터는 변경하지 않았다. Java 실행 의존성 검사에는 사용하지 않는 SSE view fragments·XsltView에 관한 Spring Web MVC 권고 2개가 남아 있다. 상세 내용은 [보안 점검](security-review-2026-10-19.md)을 따른다.
+후속 작업에서 GitHub의 격리 환경으로 컨테이너 재시작 통합 테스트 11개와 전체 앱 이미지 검사를 완료했다. 로컬 Docker 설정과 기존 데이터는 변경하지 않았다. 미사용 보조 실행 파일을 제거한 이미지의 비 Java High·Critical은 0건이며 중·하위 권고는 남아 있다. Java 실행 의존성 검사에는 사용하지 않는 SSE view fragments·XsltView에 관한 Spring Web MVC 권고 2개가 남아 있다. 상세 결과와 검사 범위는 [컨테이너 점검](container-security-2026-10-19.md) 및 [보안 점검](security-review-2026-10-19.md)을 따른다.
 
 ## 실제 계정 사용량
 
