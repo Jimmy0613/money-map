@@ -114,6 +114,15 @@ test("Mock API: 로그인 → 위치 없이 거래 등록 → 상세", async ({ 
   expect(saved).toBeNull();
   await page.getByLabel("금액 · 원").fill("12000");
   await page.getByLabel("카테고리", { exact: true }).selectOption("c");
+  // A valid transaction must not be submitted by Enter in the place search.
+  await openLocation.click();
+  const placeQuery = page.getByRole("textbox", { name: "장소 검색어" });
+  await placeQuery.fill("서울시청");
+  await placeQuery.press("Enter");
+  await expect(page.getByText(/지도 키가 설정되지 않았습니다/)).toBeVisible();
+  await expect(page).toHaveURL(/\/transactions\/new$/);
+  expect(saved).toBeNull();
+  await page.getByRole("button", { name: "위치 없이 계속하기" }).click();
   await page.getByRole("button", { name: "저장", exact: true }).click();
   await expect(page.getByRole("heading", { name: "거래 상세" })).toBeVisible();
   await expect(page.getByText("12,000원", { exact: true })).toBeVisible();

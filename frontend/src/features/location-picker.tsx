@@ -270,6 +270,10 @@ export function LocationPicker({
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(event) => {
+                  // Search is debounced; Enter must not submit the transaction form.
+                  if (event.key === "Enter") event.preventDefault();
+                }}
                 placeholder="두 글자 이상 입력"
               />
             </label>
