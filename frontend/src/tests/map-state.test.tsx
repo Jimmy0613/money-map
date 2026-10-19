@@ -11,6 +11,7 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { validPeriod } from "../shared/ui";
 import MapPage from "../app/map/page";
 import { ApiError } from "../shared/api";
+import { initialViewport } from "../features/map-adapter";
 const mocks = vi.hoisted(() => ({
   api: vi.fn(),
   mount: vi.fn(),
@@ -116,6 +117,110 @@ it("지도 화면을 다시 열면 선택한 기간과 이동한 중심을 복�
     longitude: 128.5,
     level: 7,
   });
+  expect(
+    mocks.api.mock.calls.filter(([path]) =>
+      String(path).startsWith("/transactions?"),
+    ),
+  ).toHaveLength(1);
+});
+
+it("initial map centers on the latest located expense and shows its month", async () => {
+  mocks.api.mockImplementation(async (path: string) => {
+    if (path.startsWith("/transactions?")) {
+      const query = new URLSearchParams(path.split("?")[1]);
+      expect(Object.fromEntries(query)).toEqual({
+        from: "0001-01-01",
+        to: "2026-09-24",
+        type: "EXPENSE",
+        hasLocation: "true",
+        sort: "date_desc",
+        size: "1",
+      });
+      return {
+        items: [
+          {
+            transactionDate: "2026-08-12",
+            location: { latitude: "35.179600", longitude: "129.075600" },
+          },
+        ],
+      };
+    }
+    return path.startsWith("/map/markers?") ? result : { items: [] };
+  });
+  show();
+  await waitFor(() => expect(mocks.mount).toHaveBeenCalledOnce());
+  expect(mocks.mount.mock.calls[0][1]).toMatchObject({
+    latitude: 35.1796,
+    longitude: 129.0756,
+  });
+  expect(screen.getByLabelText("시작일")).toHaveValue("2026-08-01");
+  expect(screen.getByLabelText("종료일")).toHaveValue("2026-08-31");
+  const idle = mocks.mount.mock.calls[0][2];
+  act(() =>
+    idle({
+      ...initialViewport,
+      south: "35",
+      north: "36",
+      west: "129",
+      east: "130",
+      latitude: 35.1796,
+      longitude: 129.0756,
+    }),
+  );
+  await waitFor(() =>
+    expect(
+      mocks.api.mock.calls.some(
+        ([path]) =>
+          String(path).startsWith("/map/markers?") &&
+          String(path).includes("south=35") &&
+          String(path).includes("from=2026-08-01"),
+      ),
+    ).toBe(true),
+  );
+});
+
+it.each(["empty", "error"])(
+  "initial map falls back safely when latest expense lookup is %s",
+  async (mode) => {
+    mocks.api.mockImplementation(async (path: string) => {
+      if (path.startsWith("/transactions?") && mode === "error")
+        throw new Error("Lookup unavailable");
+      return path.startsWith("/map/markers?") ? result : { items: [] };
+    });
+    show();
+    await waitFor(() => expect(mocks.mount).toHaveBeenCalledOnce());
+    expect(mocks.mount.mock.calls[0][1]).toEqual(initialViewport);
+    expect(screen.getByLabelText("시작일")).toHaveValue("2026-09-01");
+  },
+);
+
+it("unmount cancels the initial expense lookup without mounting a late map", async () => {
+  let resolveLatest!: (value: unknown) => void;
+  let signal: AbortSignal | undefined;
+  mocks.api.mockImplementation(async (path: string, options) => {
+    if (path.startsWith("/transactions?")) {
+      signal = options.signal;
+      return new Promise((resolve) => {
+        resolveLatest = resolve;
+      });
+    }
+    return path.startsWith("/map/markers?") ? result : { items: [] };
+  });
+  const view = show();
+  await waitFor(() => expect(resolveLatest).toBeDefined());
+  view.unmount();
+  expect(signal?.aborted).toBe(true);
+  await act(async () =>
+    resolveLatest({
+      items: [
+        {
+          transactionDate: "2026-08-12",
+          location: { latitude: "35", longitude: "129" },
+        },
+      ],
+    }),
+  );
+  expect(mocks.mount).not.toHaveBeenCalled();
 });
 it("늦은 이전 영역 응답이 최신 영역 결과를 덮어쓰지 않는다", async () => {
   let resolveOld!: (value: unknown) => void;

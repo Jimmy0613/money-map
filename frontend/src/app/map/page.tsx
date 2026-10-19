@@ -17,6 +17,7 @@ import {
   type Marker,
   type Markers,
   type MarkerDetails,
+  type TransactionPage,
 } from "../../shared/types";
 import {
   initialViewport,
@@ -30,6 +31,8 @@ subscribeAuth(() => {
 });
 export default function Page() {
   const { user } = useAuth();
+  const today = user!.today;
+  const initialSaved = useRef(saved);
   const [filter, setFilter] = useState(
     () => saved?.filter || monthFilter(user!.today),
   );
@@ -51,12 +54,32 @@ export default function Page() {
   useEffect(() => {
     let live = true;
     let timer: ReturnType<typeof setTimeout>;
-    kakaoAdapter()
-      .then((a) => {
+    const controller = new AbortController();
+    const restored = initialSaved.current;
+    const latest = restored
+      ? Promise.resolve(null)
+      : api<TransactionPage>(
+          `/transactions?from=0001-01-01&to=${today}&type=EXPENSE&hasLocation=true&sort=date_desc&size=1`,
+          { signal: controller.signal },
+        )
+          .then((data) => data.items[0] ?? null)
+          .catch(() => null);
+    Promise.all([kakaoAdapter(), latest])
+      .then(([a, transaction]) => {
         if (live && el.current) {
+          const start = restored?.viewport || initialViewport;
+          const location = transaction?.location;
+          // Show the selected expense even when its month differs from today.
+          if (location) setFilter(monthFilter(transaction.transactionDate));
           handle.current = a.mount(
             el.current,
-            saved?.viewport || initialViewport,
+            location
+              ? {
+                  ...start,
+                  latitude: Number(location.latitude),
+                  longitude: Number(location.longitude),
+                }
+              : start,
             (v) => {
               clearTimeout(timer);
               timer = setTimeout(() => {
@@ -72,14 +95,15 @@ export default function Page() {
       });
     return () => {
       live = false;
+      controller.abort();
       clearTimeout(timer);
       handle.current?.dispose();
       handle.current = null;
     };
-  }, [attempt]);
+  }, [attempt, today]);
   useEffect(() => {
-    saved = { filter, viewport };
-  }, [filter, viewport]);
+    if (readyHandle) saved = { filter, viewport };
+  }, [filter, viewport, readyHandle]);
   const q = filterQuery(filter, true);
   for (const k of ["south", "north", "west", "east", "level"] as const)
     q.set(k, String(viewport[k]));
