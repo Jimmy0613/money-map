@@ -121,3 +121,26 @@ Origin·본문 검사 순서와 외부 검증 전 전체 요청 예산, 설정 �
 실제 DB 통합 검증을 위해 Docker Desktop을 시작했으나 내부 dockerInference 초기화 오류가 발생했다. Docker 초기화·재설치·기존 데이터 삭제는 하지 않았으며, 실제 PostgreSQL 통합 검증은 미완료다.
 
 추가로 체험 계정 로그인 분당 10회, 동시 보관 세션 10개, 세션별 토큰 60개 상한을 구현했다. 새 로그인에서 체험 계정의 오래된 세션만 정리하고, 토큰 한도 도달 시 세션을 철회해 재로그인을 요구한다. 소비된 토큰의 재사용 검사는 유지한다. 서버 단위·HTTP 테스트는 66개 및 bootJar 빌드 성공으로 갱신됐다. 운영 적용과 실제 DB 통합 검증은 별도 단계다.
+
+## 후속 실행: 서버 의존성
+
+기존 문단은 당시 상태다. 이후 Docker 대신 격리 로컬 PostgreSQL로 통합 검사 16개를 통과했고, 별도 Neon DB와 Cloudflare 검증 Worker에서 실제 등록 갱신·서명·차단 보존도 확인했다. 공개 체험 초기 배포와 사용자 직접 가입을 진행했으며 최종 운영 상태는 public-demo-setup.md의 최신 기록을 따른다.
+
+실제 Gradle runtimeClasspath의 Maven 좌표·버전을 OSV querybatch로 조회했다. 초기 82개 패키지에서 23개 권고가 검출되어 동일 계열의 수정판을 적용했다.
+
+| 구성 요소 | 이전 | 수정판 |
+|---|---|---|
+| PostgreSQL JDBC | 42.7.11 | 42.7.14 |
+| Jackson BOM | 2.21.4 | 2.21.8 |
+| Tomcat | 10.1.55 | 10.1.61 |
+| Bouncy Castle | 1.83 | 1.86 |
+| Log4j API 계열 | 2.24.3 | 2.25.5 |
+
+특히 JDBC GHSA-j92g-9f8w-j867은 실제 사용 중인 channelBinding=require의 강제 검사를 보완하므로 업데이트했다. 업데이트 후 서버 단위·HTTP 66개, 실제 격리 PostgreSQL 통합 16개, bootJar 빌드가 통과했다. 새 실행 의존성 83개를 재조회한 결과 Spring Web MVC 6.2.19의 다음 두 권고만 남았다.
+
+- GHSA-j9f9-w8pj-32f8: SSE에서 view fragments를 렌더링할 때의 스트림 손상. 현재 서버는 JSON RestController이며 SSE·FragmentsRendering을 사용하지 않는다.
+- GHSA-pc63-qcmh-9cmg: XsltView 경로 제한. 현재 XsltView·XML 템플릿·ViewResolver를 사용하지 않는다.
+
+현재 소스에서 해당 조건은 확인되지 않았지만 스캐너 결과를 숨기거나 0건이라고 보고하지 않는다. 공개 Maven Central의 현 6.2 계열에 수정판이 없으며, 이 기능을 도입하거나 프레임워크를 변경할 때 다시 검토한다. Spring 7/Boot 4 전환은 단순 패치가 아닌 별도 호환성 작업이다. OSV 조회는 알려진 의존성 권고 검사이며 침투 시험, 컨테이너 OS 전체 검사, 서비스 무결점 보증을 대신하지 않는다.
+
+참고: https://google.github.io/osv.dev/api/ , https://github.com/pgjdbc/pgjdbc/security/advisories/GHSA-j92g-9f8w-j867 , https://github.com/advisories/GHSA-j9f9-w8pj-32f8 , https://github.com/advisories/GHSA-pc63-qcmh-9cmg

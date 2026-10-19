@@ -5,6 +5,11 @@ plugins {
 }
 group = 'com.moneymap'
 version = '0.1.0'
+// Security patch versions within the existing framework and servlet generations.
+ext['tomcat.version'] = '10.1.61'
+ext['jackson-bom.version'] = '2.21.8'
+ext['postgresql.version'] = '42.7.14'
+ext['log4j2.version'] = '2.25.5'
 java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 repositories { mavenCentral() }
 dependencies {
@@ -15,7 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.83'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.86'
     implementation 'com.nimbusds:nimbus-jose-jwt:10.9'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
