@@ -228,7 +228,7 @@ text('개인 가계부의 범위를 정하고 실제 사용 중 발견한 자동
 text('URL 공개 전에는 개인 계정과 체험 데이터의 분리, 입력 기능의 체험 범위, 데이터·인증 상한과 가입 차단을 선택했습니다. 기능 성공뿐 아니라 오작동·자원 소진·다른 방문자의 체험 방해까지 고려하는 방향으로 범위를 확장했습니다.')
 section('AI 협업 방식과 검토 기준')
 text('설계 보완·코드 작성·원인 분석·문서 초안·자동 테스트 실행에 AI 코딩 에이전트를 활용했습니다. 직접 수행한 요구 정의와 실사용 테스트를 바탕으로 수정 방향을 전달하고, 결과를 테스트·코드·운영 화면·배포 상태로 대조했습니다.')
-text('보안 권고는 설치 버전과 실제 노출 조건을 구분하고, 테스트 결과는 환경별로 기록했습니다. 운영 키·비밀번호는 포트폴리오와 저장소에 넣지 않았습니다.',9.6)
+text('보안 권고는 설치 버전과 실제 노출 조건을 구분하고, 테스트 결과는 환경별로 기록했습니다. 개인 계정과 운영 인프라의 인증 정보는 공개 체험 계정과 분리해 관리합니다.',9.6)
 section('남은 개선 과제')
 rows([
     ('제3자·모바일 검증', '제3자 사용성 테스트와 모바일·다중 기기 흐름 검증. 현재 자동 테스트와 데스크톱 운영 확인을 대체하지 않는 후속 단계입니다.'),
@@ -237,7 +237,9 @@ rows([
 ])
 section('직접 확인할 수 있는 자료')
 text('서비스  https://money-map-frontend-murex.vercel.app/\n저장소  https://github.com/Jimmy0613/money-map',8.5,color=GREEN)
-text('검증 문서  public-demo-validation-2026-10-19.md\n보안·제약  public-demo-final-review-2026-10-19.md\n이미지 검사  container-security-2026-10-19.md',8.1,color=MUTED,gap=0)
+text('체험 이메일  demo@money-map.example  /  비밀번호  demo1q2w3e4r5%',9.2,True,gap=5)
+text('공유 체험 계정입니다. 실제 개인정보 입력을 피하고, 일부 기능·이용량 제한을 확인해주세요.',8.1,color=MUTED,gap=5)
+text('검증·보안·이미지 검사 결과는 저장소의 운영 점검 문서에서 확인할 수 있습니다.',8.1,color=MUTED,gap=0)
 c.save()
 (ROOT/'output/portfolio/money-map-portfolio-v2.md').write_text('\n'.join(source), encoding='utf-8')
 print(OUT)
