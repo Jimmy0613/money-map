@@ -88,6 +88,14 @@ button:disabled {
   color: var(--green);
   margin-left: 8px;
 }
+.danger {
+  border-color: #a52225;
+  background: #fff3f2;
+  color: #a52225;
+}
+.transaction-history-link {
+  margin-left: auto;
+}
 input,
 select,
 textarea {
@@ -222,6 +230,76 @@ nav a[aria-current] {
   width: 100%;
   border-radius: 14px;
   background: #e4ece3;
+}
+.map-container {
+  position: relative;
+  isolation: isolate;
+}
+.map-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 28px;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.map-direction-pad,
+.map-zoom-controls {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px #0000001f;
+}
+.map-direction-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(2, 44px);
+}
+.map-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #767676;
+}
+.map-control:hover {
+  background: #f1f3f2;
+  color: #333;
+}
+.map-control:active {
+  background: #e5e9e7;
+}
+.map-direction-north {
+  grid-area: 1 / 2;
+}
+.map-direction-south {
+  grid-area: 2 / 2;
+}
+.map-direction-south svg {
+  transform: rotate(180deg);
+}
+.map-direction-west {
+  grid-area: 2 / 1;
+}
+.map-direction-west svg {
+  transform: rotate(-90deg);
+}
+.map-direction-east {
+  grid-area: 2 / 3;
+}
+.map-direction-east svg {
+  transform: rotate(90deg);
+}
+.map-zoom-controls .map-control + .map-control {
+  border-top: 1px solid #e5e7eb;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 .notice {
   padding: 18px;

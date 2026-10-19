@@ -99,10 +99,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             <Link className="button" href={`/transactions/${id}/edit`}>
               수정
             </Link>
-            <button className="quiet" onClick={() => setConfirm(true)}>
+            <button className="danger" onClick={() => setConfirm(true)}>
               삭제
             </button>
-            <Link href="/transactions">내역</Link>
+            <Link className="button transaction-history-link" href="/transactions">
+              내역
+            </Link>
           </div>
           {confirm && (
             <div className="notice">
@@ -110,7 +112,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 {t.transactionDate}의 {money(t.amount)} 거래를 삭제할까요?
                 복구할 수 없습니다.
               </p>
-              <button disabled={busy} onClick={remove}>
+              <button className="danger" disabled={busy} onClick={remove}>
                 삭제 확인
               </button>
               <button className="quiet" onClick={() => setConfirm(false)}>

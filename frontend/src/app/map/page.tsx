@@ -217,34 +217,94 @@ export default function Page() {
           </button>
         </div>
       )}
-      <div className="map-canvas" ref={el} aria-label="소비 지도" />
-      <div className="actions">
-        {[
-          ["북", 0.01, 0],
-          ["남", -0.01, 0],
-          ["동", 0, 0.01],
-          ["서", 0, -0.01],
-        ].map(([label, lat, lon]) => (
-          <button
-            className="quiet"
-            key={label}
-            onClick={() => {
-              const h = handle.current;
-              if (h) {
-                const c = h.center();
-                h.move(c.latitude + Number(lat), c.longitude + Number(lon));
-              }
-            }}
+      <div className="map-container">
+        <div className="map-canvas" ref={el} aria-label="소비 지도" />
+        <div className="map-controls" role="group" aria-label="지도 조작">
+          <div
+            className="map-direction-pad"
+            role="group"
+            aria-label="지도 이동"
           >
-            {label}쪽
-          </button>
-        ))}
-        <button className="quiet" onClick={() => handle.current?.zoom(-1)}>
-          확대
-        </button>
-        <button className="quiet" onClick={() => handle.current?.zoom(1)}>
-          축소
-        </button>
+            {[
+              ["북", "north", 0.01, 0],
+              ["남", "south", -0.01, 0],
+              ["동", "east", 0, 0.01],
+              ["서", "west", 0, -0.01],
+            ].map(([label, direction, lat, lon]) => (
+              <button
+                type="button"
+                className={`map-control map-direction-${direction}`}
+                aria-label={`${label}쪽`}
+                title={`${label}쪽`}
+                key={label}
+                onClick={() => {
+                  const h = handle.current;
+                  if (h) {
+                    const c = h.center();
+                    h.move(c.latitude + Number(lat), c.longitude + Number(lon));
+                  }
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                >
+                  <path d="M8 3 14 13H2Z" fill="currentColor" />
+                </svg>
+              </button>
+            ))}
+          </div>
+          <div
+            className="map-zoom-controls"
+            role="group"
+            aria-label="지도 배율"
+          >
+            <button
+              type="button"
+              className="map-control"
+              aria-label="확대"
+              title="확대"
+              onClick={() => handle.current?.zoom(-1)}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 10h12M10 4v12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="map-control"
+              aria-label="축소"
+              title="축소"
+              onClick={() => handle.current?.zoom(1)}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 10h12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
       <Status
         loading={result.isLoading}
