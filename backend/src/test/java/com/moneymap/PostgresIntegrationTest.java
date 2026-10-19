@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.*;
 
 @SpringBootTest
@@ -29,7 +28,7 @@ class PostgresIntegrationTest {
     org.mockito.Mockito.when(recoveryGate.allows()).thenReturn(true);
   }
 
-  @Container static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.6");
+  @Container static TestPostgres postgres = new TestPostgres();
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry r) {

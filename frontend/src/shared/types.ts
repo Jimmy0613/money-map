@@ -1,5 +1,6 @@
 export type Kind = "INCOME" | "EXPENSE";
 export interface User {
+  demo?: boolean;
   id: string;
   email: string;
   displayName: string | null;

@@ -116,6 +116,7 @@ public class AuthService {
   public Credentials login(Login l, String ip) {
     limits.hit("login:" + ip, 30, 60);
     String email = l.email.strip().toLowerCase(Locale.ROOT);
+    if (access.isDemo(email)) limits.hit("demo-login:" + Tokens.hash(email), 10, 60);
     String key = "email:" + Tokens.hash(email);
     limits.hit(key, 5, 900);
     var users =
@@ -125,6 +126,14 @@ public class AuthService {
     if (users.isEmpty() || !valid || !access.allows(email)) throw new ApiException(401, "UNAUTHENTICATED");
     limits.clear(key);
     UUID user = (UUID) users.getFirst().get("id"), sid = UUID.randomUUID();
+    if (access.isDemo(email)) {
+      // The user row is locked above: parallel logins cannot overrun the session cap.
+      // Refresh rows cascade with their session; ordinary users are never pruned here.
+      db.update("DELETE FROM auth_sessions WHERE user_id=? AND (revoked_at IS NOT NULL OR expires_at<=now())", user);
+      db.update("DELETE FROM auth_sessions WHERE user_id=? AND id IN (SELECT id FROM auth_sessions"
+          + " WHERE user_id=? ORDER BY created_at DESC,id DESC OFFSET ?)",
+          user, user, access.demoSessions() - 1);
+    }
     db.update(
         "INSERT INTO auth_sessions(id,user_id,expires_at) VALUES (?,?,now()+interval '14 days')",
         sid,
@@ -164,6 +173,15 @@ public class AuthService {
     if (token.get("consumed_at") != null) {
       db.update("UPDATE auth_sessions SET revoked_at=now() WHERE id=?", sid);
       throw new ApiException(401, "REFRESH_REUSED");
+    }
+    if (access.isDemo((String) s.get("email"))) {
+      Integer count = db.queryForObject("SELECT count(*) FROM refresh_tokens WHERE session_id=?", Integer.class, sid);
+      if (count == null) throw new ApiException(503, "SERVICE_UNAVAILABLE");
+      if (count >= access.demoTokens()) {
+        // Commit the revocation on this failure; preserve consumed tokens for replay checks.
+        db.update("UPDATE auth_sessions SET revoked_at=now() WHERE id=?", sid);
+        throw new ApiException(401, "DEMO_SESSION_EXPIRED");
+      }
     }
     db.update("UPDATE refresh_tokens SET consumed_at=now() WHERE token_hash=?", Tokens.hash(raw));
     return issue((UUID) s.get("user_id"), sid);
@@ -216,13 +234,17 @@ public class AuthService {
         "today",
         LocalDate.now(ZoneId.of((String) u.get("timezone"))).toString(),
         "version",
-        u.get("version"));
+        u.get("version"),
+        "demo",
+        access.isDemo((String) u.get("email")));
   }
 
   @Transactional
   public void delete(UUID user, DeleteAccount d) {
-    var rows = db.queryForList("SELECT password_hash FROM users WHERE id=? FOR UPDATE", user);
+    var rows = db.queryForList("SELECT email,password_hash FROM users WHERE id=? FOR UPDATE", user);
     if (rows.isEmpty()) throw new ApiException(401, "UNAUTHENTICATED");
+    if (access.isDemo((String) rows.getFirst().get("email")))
+      throw new ApiException(403, "DEMO_PROTECTED");
     if (!"DELETE".equals(d.confirmation)) throw ApiException.invalid();
     if (!encoder.matches(d.currentPassword, (String) rows.getFirst().get("password_hash")))
       throw new ApiException(401, "UNAUTHENTICATED");

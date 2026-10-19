@@ -23,7 +23,7 @@ public class LedgerRepository {
   public Map<String, Object> user(UUID user, boolean lock) {
     var rows =
         query(
-            "SELECT id,timezone,data_revision FROM users WHERE id=?" + (lock ? " FOR UPDATE" : ""),
+            "SELECT id,email,timezone,data_revision FROM users WHERE id=?" + (lock ? " FOR UPDATE" : ""),
             user);
     if (rows.isEmpty()) throw new com.moneymap.common.ApiException(401, "UNAUTHENTICATED");
     return rows.getFirst();

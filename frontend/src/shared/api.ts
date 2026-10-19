@@ -114,7 +114,13 @@ export async function api<T>(
   const controller = new AbortController();
   active.add(controller);
   const abort = () => controller.abort();
+  let timedOut = false;
+  const timeout = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, 60000);
   options.signal?.addEventListener("abort", abort);
+  if (options.signal?.aborted) abort();
   try {
     const headers = new Headers(options.headers);
     if (options.body) headers.set("Content-Type", "application/json");
@@ -168,7 +174,16 @@ export async function api<T>(
       throw e;
     }
     return body.data as T;
+  } catch (error) {
+    if (timedOut && generation === epoch && !options.signal?.aborted)
+      throw new ApiError(
+        0,
+        "REQUEST_TIMEOUT",
+        "서버 응답이 지연되고 있습니다. 잠시 후 다시 시도하세요. 저장 요청이었다면 내역을 먼저 확인해 주세요.",
+      );
+    throw error;
   } finally {
+    clearTimeout(timeout);
     active.delete(controller);
     options.signal?.removeEventListener("abort", abort);
   }

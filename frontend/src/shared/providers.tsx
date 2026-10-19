@@ -9,6 +9,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   api,
+  ApiError,
   initializeAuthBarrier,
   isLogoutPending,
   logout,
@@ -40,6 +41,8 @@ export function Providers({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authAttempt, setAuthAttempt] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   async function reload() {
@@ -68,7 +71,14 @@ export function Providers({ children }: { children: ReactNode }) {
         .then((u) => {
           if (live) setUser(u);
         })
-        .catch(() => {})
+        .catch((e: unknown) => {
+          if (live && !(e instanceof ApiError && e.status === 401))
+            setAuthError(
+              e instanceof ApiError && e.code === "REQUEST_TIMEOUT"
+                ? "서버 시작 또는 응답이 지연되고 있습니다. 잠시 후 다시 연결해 주세요."
+                : "서버에 연결하지 못했습니다. 잠시 후 다시 연결해 주세요.",
+            );
+        })
         .finally(() => {
           if (live) setLoading(false);
         });
@@ -76,16 +86,17 @@ export function Providers({ children }: { children: ReactNode }) {
       live = false;
       unsub();
     };
-  }, [client]);
+  }, [client, authAttempt]);
   useEffect(() => {
     if (
       !loading &&
+      !authError &&
       !user &&
       !pending &&
       !["/login", "/signup"].includes(pathname)
     )
       router.replace("/login");
-  }, [loading, user, pending, pathname, router]);
+  }, [loading, authError, user, pending, pathname, router]);
   async function end() {
     setError("");
     try {
@@ -99,6 +110,7 @@ export function Providers({ children }: { children: ReactNode }) {
     return (
       <main>
         <p role="status">인증 상태 확인 중…</p>
+        <p>서버가 절전 상태이면 시작하는 데 1분 정도 걸릴 수 있습니다.</p>
       </main>
     );
   if (pending)
@@ -114,6 +126,22 @@ export function Providers({ children }: { children: ReactNode }) {
           </p>
         )}
         <button onClick={end}>로그아웃 다시 시도</button>
+      </main>
+    );
+  if (authError)
+    return (
+      <main>
+        <h1>서비스 연결을 확인해 주세요</h1>
+        <p role="alert">{authError}</p>
+        <button
+          onClick={() => {
+            setAuthError("");
+            setLoading(true);
+            setAuthAttempt((attempt) => attempt + 1);
+          }}
+        >
+          다시 연결
+        </button>
       </main>
     );
   if (!user && !["/login", "/signup"].includes(pathname))
@@ -138,6 +166,16 @@ export function Providers({ children }: { children: ReactNode }) {
             </div>
           )}
         </header>
+        {user?.demo && (
+          <aside className="demo-banner" aria-label="공개 체험 안내">
+            <strong>테스트 계정으로 로그인했습니다.</strong>
+            <span>
+              서비스 체험을 위해 일부 기능과 이용량이 제한됩니다. 입력한 기록은
+              다른 방문자와 공유되므로 실제 개인 정보나 소비 위치는 입력하지
+              마세요.
+            </span>
+          </aside>
+        )}
         {children}
         {user && (
           <nav aria-label="주요 메뉴">

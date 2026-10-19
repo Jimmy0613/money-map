@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { authorize, BindingMismatch, challenge, providerBinding, sameRegistration, sha, signedProof } from '../src/policy.mjs';
+import { authorize, BindingMismatch, challenge, providerBinding, sameRegistration, sha, signedProof, upgradeChallenge } from '../src/policy.mjs';
 
 const config = { NEON_PROJECT_ID: 'project', NEON_BRANCH_ID: 'br-original', NEON_ENDPOINT_ID: 'ep-original',
   RECOVERY_ENVIRONMENT: 'production', RECOVERY_DEPLOYMENT: 'deployment' };
@@ -8,6 +8,20 @@ const branch = { id: 'br-original', project_id: 'project', current_state: 'ready
   created_at: '2026-10-18T00:00:00Z' };
 const endpoint = { id: 'ep-original', project_id: 'project', branch_id: 'br-original', type: 'read_write',
   current_state: 'active', created_at: '2026-10-18T00:00:00Z' };
+
+test('upgrade accepts only the configured full commit and explicit previous commit and safe generation', () => {
+  const env = { ...config, RECOVERY_DEPLOYMENT: 'b'.repeat(40) };
+  const value = { environment: env.RECOVERY_ENVIRONMENT, deployment: env.RECOVERY_DEPLOYMENT,
+    previousDeployment: 'a'.repeat(40), expectedGeneration: 1,
+    target: 'c'.repeat(64), nonce: crypto.randomUUID() };
+  assert.deepEqual(upgradeChallenge(value, env), value);
+  for (const bad of [null, [], {}, { ...value, extra: true },
+    ...[0, -1, 1.5, '1', null, Number.MAX_SAFE_INTEGER].map(expectedGeneration => ({ ...value, expectedGeneration })),
+    ...['main', 'abc123', 'd'.repeat(40), null].map(deployment => ({ ...value, deployment })),
+    ...['main', '', value.deployment, null].map(previousDeployment => ({ ...value, previousDeployment })),
+    { ...value, environment: 'other' }, { ...value, target: 'invalid' }, { ...value, nonce: 'invalid' },
+  ]) assert.throws(() => upgradeChallenge(bad, env));
+});
 
 test('initial registration rejects restored, reset, imported, copied, pending and mismatched targets', () => {
   assert.ok(providerBinding(branch, endpoint, config));

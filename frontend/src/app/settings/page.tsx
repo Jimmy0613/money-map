@@ -37,37 +37,51 @@ export default function Page() {
         <p>시간대 {user?.timezone}</p>
         <Link href="/settings/categories">카테고리 관리</Link>
       </section>
-      <section className="card">
-        <h2>계정 탈퇴</h2>
-        <p>
-          활성 DB의 계정, 거래, 위치가 즉시 삭제됩니다. 복구할 수 없습니다.
-          백업은 최대 30일 후 만료됩니다.
-        </p>
-        <form onSubmit={remove}>
-          <label>
-            현재 비밀번호
-            <input
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <label>
-            삭제 확인 · DELETE 입력
-            <input
-              required
-              value={confirmation}
-              onChange={(e) => setConfirmation(e.target.value)}
-            />
-          </label>
-          <p role="alert">{error}</p>
-          <button disabled={busy || confirmation !== "DELETE"}>
-            계정과 데이터 삭제
-          </button>
-        </form>
-      </section>
+      {user?.demo ? (
+        <section className="card">
+          <h2>공개 체험 계정</h2>
+          <p>
+            샘플 기록을 등록하고 수정할 수 있습니다. 다른 방문자도 같은 기록을
+            볼 수 있으니 개인 정보나 실제 소비 위치는 입력하지 마세요.
+          </p>
+          <p>
+            체험 계정은 탈퇴할 수 없으며, 등록 가능한 데이터 수에 한도가
+            있습니다.
+          </p>
+        </section>
+      ) : (
+        <section className="card">
+          <h2>계정 탈퇴</h2>
+          <p>
+            활성 DB의 계정, 거래, 위치가 즉시 삭제됩니다. 복구할 수 없습니다.
+            백업은 최대 30일 후 만료됩니다.
+          </p>
+          <form onSubmit={remove}>
+            <label>
+              현재 비밀번호
+              <input
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+            <label>
+              삭제 확인 · DELETE 입력
+              <input
+                required
+                value={confirmation}
+                onChange={(e) => setConfirmation(e.target.value)}
+              />
+            </label>
+            <p role="alert">{error}</p>
+            <button disabled={busy || confirmation !== "DELETE"}>
+              계정과 데이터 삭제
+            </button>
+          </form>
+        </section>
+      )}
     </main>
   );
 }

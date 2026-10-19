@@ -18,6 +18,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 public class SecurityConfig {
+  @Bean
+  RequestAdmission requestAdmission(org.springframework.core.env.Environment env) {
+    return new RequestAdmission(env.getProperty("app.traffic.requests-per-minute", Integer.class, 300),
+        env.getProperty("app.traffic.mutations-per-minute", Integer.class, 60));
+  }
   public static String cookie(HttpServletRequest r, String name) {
     if (r.getCookies() != null)
       for (Cookie c : r.getCookies()) if (c.getName().equals(name)) return c.getValue();
@@ -26,7 +31,7 @@ public class SecurityConfig {
 
   @Bean
   SecurityFilterChain security(HttpSecurity h, Secrets s, AuthService auth, ObjectMapper mapper,
-      RecoveryGate recovery)
+      RecoveryGate recovery, RequestAdmission admission)
       throws Exception {
     CookieCsrfTokenRepository repo = CookieCsrfTokenRepository.withHttpOnlyFalse();
     repo.setCookiePath("/");
@@ -66,7 +71,7 @@ public class SecurityConfig {
             c.authenticationEntryPoint((r, w, e) -> write(mapper, r, w, 401, "UNAUTHENTICATED"))
                 .accessDeniedHandler((r, w, e) -> write(mapper, r, w, 403, "CSRF_INVALID")));
     h.addFilterBefore(
-        new RequestFilter(s, mapper, recovery::allows), org.springframework.web.filter.CorsFilter.class);
+        new RequestFilter(s, mapper, recovery::allows, admission), org.springframework.web.filter.CorsFilter.class);
     h.addFilterAfter(
         new OncePerRequestFilter() {
           @Override

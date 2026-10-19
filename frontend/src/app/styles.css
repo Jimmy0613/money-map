@@ -96,6 +96,15 @@ button:disabled {
 .transaction-history-link {
   margin-left: auto;
 }
+.demo-banner {
+  display: grid;
+  gap: 4px;
+  max-width: 1000px;
+  margin: 12px auto;
+  padding: 14px 24px;
+  background: #fff9ec;
+  border-left: 4px solid #c58e39;
+}
 input,
 select,
 textarea {

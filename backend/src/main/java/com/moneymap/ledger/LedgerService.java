@@ -4,6 +4,8 @@ import static com.moneymap.common.Rules.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moneymap.auth.Tokens;
+import com.moneymap.auth.AccountAccessPolicy;
+import com.moneymap.auth.RateLimits;
 import com.moneymap.common.*;
 import java.math.*;
 import java.time.*;
@@ -15,10 +17,27 @@ import org.springframework.transaction.annotation.*;
 public class LedgerService {
   private final LedgerRepository repo;
   private final ObjectMapper json;
+  private final AccountAccessPolicy access;
+  private final RateLimits limits;
 
-  public LedgerService(LedgerRepository repo, ObjectMapper json) {
+  public LedgerService(LedgerRepository repo, ObjectMapper json, AccountAccessPolicy access,
+      RateLimits limits) {
     this.repo = repo;
     this.json = json;
+    this.access = access;
+    this.limits = limits;
+  }
+
+  private boolean demoWrite(UUID user, Map<String, Object> owner) {
+    boolean demo = access.isDemo((String) owner.get("email"));
+    if (demo) limits.hit("demo-write:" + user, 30, 60);
+    return demo;
+  }
+
+  private void demoQuota(UUID user, String table, int maximum) {
+    var rows = repo.query("SELECT count(*) AS count FROM " + table + " WHERE user_id=?", user);
+    if (((Number) rows.getFirst().get("count")).longValue() >= maximum)
+      throw new ApiException(429, "DEMO_QUOTA_EXCEEDED");
   }
 
   public record Created(Map<String, Object> transaction, boolean replay) {}
@@ -53,6 +72,9 @@ public class LedgerService {
         throw new ApiException(409, "OPERATION_DELETED");
       }
     }
+    // The user row is already locked: concurrent creates cannot exceed the persistent cap.
+    // Count operation keys, including deleted transactions, so delete/create churn is bounded.
+    if (demoWrite(user, owner)) demoQuota(user, "operation_keys", access.demoCreates());
     category(user, w.categoryId(), w.type(), null);
     UUID id = UUID.randomUUID();
     repo.update(
@@ -81,6 +103,7 @@ public class LedgerService {
   @Transactional
   public Map<String, Object> replace(UUID user, UUID id, String match, Writes.Transaction input) {
     var owner = repo.user(user, true);
+    demoWrite(user, owner);
     var current = get(user, id);
     long v = version(match);
     if (((Number) current.get("version")).longValue() != v)
@@ -109,7 +132,7 @@ public class LedgerService {
 
   @Transactional
   public void delete(UUID user, UUID id, String match) {
-    repo.user(user, true);
+    demoWrite(user, repo.user(user, true));
     var t = get(user, id);
     if (((Number) t.get("version")).longValue() != version(match))
       throw new ApiException(412, "VERSION_CONFLICT");
@@ -219,7 +242,8 @@ public class LedgerService {
 
   @Transactional
   public Map<String, Object> createCategory(UUID user, Writes.Category w) {
-    repo.user(user, true);
+    var owner = repo.user(user, true);
+    if (demoWrite(user, owner)) demoQuota(user, "categories", access.demoCategories());
     String name = required(w.name(), 30);
     Rules.type(w.type());
     Writes.style(w.icon(), w.color());
@@ -244,7 +268,7 @@ public class LedgerService {
   @Transactional
   public Map<String, Object> patchCategory(
       UUID user, UUID id, String match, Map<String, Object> patch) {
-    repo.user(user, true);
+    demoWrite(user, repo.user(user, true));
     var rows = repo.query("SELECT * FROM categories WHERE user_id=? AND id=?", user, id);
     if (rows.isEmpty()) throw ApiException.missing();
     var c = rows.getFirst();

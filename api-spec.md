@@ -76,6 +76,8 @@ FR-002. 요청 {"email":"member@example.invalid","password":"<PASSWORD>"}. 200 �
 
 ### POST /auth/refresh
 
+공개 체험 계정으로 지정된 경우 세션당 refresh token 발급 수 상한을 적용한다. 최초 발급을 포함한 기본 상한은 60개이며, 소비된 토큰의 재사용 검사를 먼저 수행한다. 상한 도달은 세션 철회와 401 DEMO_SESSION_EXPIRED를 반환하고 재로그인으로 복구한다. 일반 계정에는 이 체험 한도를 적용하지 않는다.
+
 FR-002, FR-003. 요청 {}, refresh 쿠키 및 CSRF 필수. 200 응답 {"refreshed":true}와 교체한 두 쿠키. refresh 해시 원문은 JSON에 없음. 만료/재사용은 401, 재사용 시 세션 가족 폐기, 병렬 요청도 한 번만 회전한다. 응답 유실은 재로그인으로 복구한다.
 
 ### POST /auth/logout

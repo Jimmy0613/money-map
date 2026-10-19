@@ -13,6 +13,8 @@ public final class AccountAccessPolicy {
   private final boolean restricted;
   private final boolean signupEnabled;
   private final Set<String> emails;
+  private final Set<String> demoEmails;
+  private final int demoCreates, demoCategories, demoSessions, demoTokens;
 
   public AccountAccessPolicy(Environment env) {
     restricted = env.getProperty("app.access.restricted", Boolean.class, false);
@@ -20,6 +22,15 @@ public final class AccountAccessPolicy {
     emails = Arrays.stream(env.getProperty("app.access.allowed-emails", "").split(","))
         .map(AccountAccessPolicy::normalize).filter(s -> !s.isEmpty())
         .collect(Collectors.toUnmodifiableSet());
+    demoEmails = Arrays.stream(env.getProperty("app.demo.emails", "").split(","))
+        .map(AccountAccessPolicy::normalize).filter(s -> !s.isEmpty())
+        .collect(Collectors.toUnmodifiableSet());
+    demoCreates = env.getProperty("app.demo.max-created-transactions", Integer.class, 200);
+    demoCategories = env.getProperty("app.demo.max-categories", Integer.class, 40);
+    demoSessions = env.getProperty("app.demo.max-sessions", Integer.class, 10);
+    demoTokens = env.getProperty("app.demo.max-session-tokens", Integer.class, 60);
+    if (demoCreates < 1 || demoCategories < 16 || demoSessions < 1 || demoTokens < 1)
+      throw new IllegalArgumentException("Invalid demo quotas");
   }
 
   public boolean allows(String email) {
@@ -29,6 +40,15 @@ public final class AccountAccessPolicy {
   public boolean allowsSignup(String email) {
     return signupEnabled && allows(email);
   }
+
+  public boolean isDemo(String email) {
+    return email != null && demoEmails.contains(normalize(email));
+  }
+
+  public int demoCreates() { return demoCreates; }
+  public int demoCategories() { return demoCategories; }
+  public int demoSessions() { return demoSessions; }
+  public int demoTokens() { return demoTokens; }
 
   private static String normalize(String email) {
     return email.strip().toLowerCase(Locale.ROOT);

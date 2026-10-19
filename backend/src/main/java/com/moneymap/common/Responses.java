@@ -40,6 +40,10 @@ public class Responses {
       case "RECOVERY_REQUIRED" -> "서비스 안전 점검 중입니다. 잠시 후 다시 시도하세요.";
       case "EMAIL_EXISTS" -> "이미 사용 중인 이메일입니다.";
       case "REGISTRATION_CLOSED" -> "현재 회원가입을 받지 않습니다.";
+      case "RATE_LIMITED" -> "요청이 많습니다. 잠시 후 다시 시도하세요.";
+      case "DEMO_PROTECTED" -> "공개 체험 계정은 탈퇴할 수 없습니다.";
+      case "DEMO_SESSION_EXPIRED" -> "체험 세션이 만료되었습니다. 다시 로그인하세요.";
+      case "DEMO_QUOTA_EXCEEDED" -> "체험 계정의 등록 한도에 도달했습니다. 기존 기록의 조회와 수정은 계속할 수 있습니다.";
       default -> "요청을 처리할 수 없습니다. 입력과 현재 상태를 확인하세요.";
     };
   }
@@ -48,7 +52,8 @@ public class Responses {
   ResponseEntity<?> api(ApiException e, HttpServletRequest r) {
     r.setAttribute("errorCode", e.code);
     var response = ResponseEntity.status(e.status);
-    if (e.status == 429) response.header("Retry-After", "900");
+    if (e.status == 429 && !"DEMO_QUOTA_EXCEEDED".equals(e.code))
+      response.header("Retry-After", "900");
     return response.body(error(e.code, e.fields, r));
   }
 

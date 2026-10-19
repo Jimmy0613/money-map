@@ -13,6 +13,7 @@ public class RequestFilter extends OncePerRequestFilter {
   private final Secrets secrets;
   private final ObjectMapper mapper;
   private final java.util.function.BooleanSupplier recoveryAllows;
+  private final RequestAdmission admission;
   private final Logger log = LoggerFactory.getLogger(RequestFilter.class);
 
   public RequestFilter(Secrets s, ObjectMapper m) {
@@ -20,9 +21,15 @@ public class RequestFilter extends OncePerRequestFilter {
   }
 
   public RequestFilter(Secrets s, ObjectMapper m, java.util.function.BooleanSupplier gate) {
+    this(s, m, gate, new RequestAdmission(300, 60));
+  }
+
+  public RequestFilter(Secrets s, ObjectMapper m, java.util.function.BooleanSupplier gate,
+      RequestAdmission admission) {
     secrets = s;
     mapper = m;
     recoveryAllows = gate;
+    this.admission = admission;
   }
 
   @Override
@@ -33,12 +40,7 @@ public class RequestFilter extends OncePerRequestFilter {
     w.setHeader("X-Request-Id", Responses.id(r));
     w.setHeader("Cache-Control", "no-store");
     try {
-      if (!r.getRequestURI().equals("/actuator/health/liveness")
-          && (secrets.recoveryRequired
-              || (secrets.local && (!Set.of("127.0.0.1", "0:0:0:0:0:0:0:1", "::1")
-                  .contains(r.getRemoteAddr())))
-              || !recoveryAllows.getAsBoolean()))
-        throw new ApiException(503, "RECOVERY_REQUIRED");
+      HttpServletRequest admitted = r;
       String origin = r.getHeader("Origin");
       if (origin != null && !secrets.origin.equals(origin))
         throw new ApiException(403, "ORIGIN_DENIED");
@@ -48,7 +50,7 @@ public class RequestFilter extends OncePerRequestFilter {
         if (r.getContentLengthLong() > 16384) throw new ApiException(413, "PAYLOAD_TOO_LARGE");
         byte[] body = r.getInputStream().readNBytes(16385);
         if (body.length > 16384) throw new ApiException(413, "PAYLOAD_TOO_LARGE");
-        HttpServletRequest wrapped =
+        admitted =
             new HttpServletRequestWrapper(r) {
               @Override
               public ServletInputStream getInputStream() {
@@ -79,11 +81,20 @@ public class RequestFilter extends OncePerRequestFilter {
                         getInputStream(), java.nio.charset.StandardCharsets.UTF_8));
               }
             };
-        chain.doFilter(wrapped, w);
-      } else chain.doFilter(r, w);
+      }
+      if (!r.getRequestURI().equals("/actuator/health/liveness")) {
+        admission.check(!Set.of("GET", "HEAD", "OPTIONS").contains(r.getMethod()));
+        if (secrets.recoveryRequired
+            || (secrets.local && !Set.of("127.0.0.1", "0:0:0:0:0:0:0:1", "::1")
+                .contains(r.getRemoteAddr()))
+            || !recoveryAllows.getAsBoolean())
+          throw new ApiException(503, "RECOVERY_REQUIRED");
+      }
+      chain.doFilter(admitted, w);
     } catch (ApiException e) {
       r.setAttribute("errorCode", e.code);
       w.setStatus(e.status);
+      if (e.status == 429) w.setHeader("Retry-After", "60");
       w.setContentType("application/json");
       mapper.writeValue(w.getOutputStream(), Responses.error(e.code, r));
     } finally {

@@ -43,6 +43,26 @@ export function sameRegistration(record, observed) {
     && record.provider === observed.provider;
 }
 
+// Upgrades authorize code only. A restored or changed database needs the separate recovery flow.
+export function upgradeChallenge(value, env) {
+  if (!value || Object.keys(value).sort().join(',') !==
+      'deployment,environment,expectedGeneration,nonce,previousDeployment,target'
+      || typeof value.previousDeployment !== 'string'
+      || !/^[a-f0-9]{40}$/.test(value.previousDeployment)
+      || typeof value.deployment !== 'string' || !/^[a-f0-9]{40}$/.test(value.deployment)
+      || value.deployment === value.previousDeployment
+      || !Number.isSafeInteger(value.expectedGeneration) || value.expectedGeneration < 1
+      || value.expectedGeneration >= Number.MAX_SAFE_INTEGER) throw new Error('Invalid upgrade');
+  challenge({ environment: value.environment, deployment: value.deployment,
+    target: value.target, nonce: value.nonce }, env);
+  return value;
+}
+
+export function matchesUpgrade(record, value) {
+  return !!record && record.state === 'RELEASED' && record.environment === value.environment
+    && record.deployment === value.previousDeployment && record.generation === value.expectedGeneration;
+}
+
 export async function authorize(request, secret) {
   if (!secret || secret.length < 32) return false;
   const given = request.headers.get('Authorization') || '';

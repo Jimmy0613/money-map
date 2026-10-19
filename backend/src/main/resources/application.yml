@@ -33,6 +33,15 @@ management:
         readiness:
           include: readinessState,db
 app:
+  demo:
+    emails: ${APP_DEMO_EMAILS:}
+    max-created-transactions: ${APP_DEMO_MAX_CREATED_TRANSACTIONS:200}
+    max-categories: ${APP_DEMO_MAX_CATEGORIES:40}
+    max-sessions: ${APP_DEMO_MAX_SESSIONS:10}
+    max-session-tokens: ${APP_DEMO_MAX_SESSION_TOKENS:60}
+  traffic:
+    requests-per-minute: ${APP_REQUESTS_PER_MINUTE:300}
+    mutations-per-minute: ${APP_MUTATIONS_PER_MINUTE:60}
   access:
     restricted: ${APP_ACCESS_RESTRICTED:false}
     signup-enabled: ${APP_SIGNUP_ENABLED:true}

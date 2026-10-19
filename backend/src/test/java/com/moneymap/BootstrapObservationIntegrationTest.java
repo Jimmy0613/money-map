@@ -11,26 +11,26 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @Tag("integration")
 class BootstrapObservationIntegrationTest {
-  @Container static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.6");
+  @Container static TestPostgres postgres = new TestPostgres();
 
   @Test void metadataOnlyCapabilityMatchesBackendBindingAndDetectsExistingDeletionHistory() throws Exception {
     var owner = new JdbcTemplate(new DriverManagerDataSource(
         postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword()));
     Flyway.configure().dataSource(postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword())
         .load().migrate();
-    owner.execute("CREATE ROLE bootstrap_verifier LOGIN PASSWORD 'SyntheticVerifierOnly123'");
+    String role = "verifier_" + java.util.UUID.randomUUID().toString().replace("-", "");
+    owner.execute("CREATE ROLE " + role + " LOGIN PASSWORD 'SyntheticVerifierOnly123'");
     var verifier = new JdbcTemplate(new DriverManagerDataSource(
-        postgres.getJdbcUrl(), "bootstrap_verifier", "SyntheticVerifierOnly123"));
+        postgres.getJdbcUrl(), role, "SyntheticVerifierOnly123"));
     assertThrows(Exception.class, () -> verifier.queryForObject(
         "SELECT public.recovery_observation(true)::text", String.class));
-    owner.execute("GRANT EXECUTE ON FUNCTION public.recovery_observation(boolean) TO bootstrap_verifier");
+    owner.execute("GRANT EXECUTE ON FUNCTION public.recovery_observation(boolean) TO " + role);
     var json = new ObjectMapper();
     var observed = json.readTree(verifier.queryForObject(
         "SELECT public.recovery_observation(true)::text", String.class));

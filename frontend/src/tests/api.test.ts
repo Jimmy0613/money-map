@@ -11,7 +11,10 @@ import {
 } from "../shared/api";
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.useRealTimers();
+});
 afterAll(() => server.close());
 beforeEach(() => {
   initializeAuthBarrier();
@@ -25,6 +28,36 @@ it("오프라인 로그아웃은 지속되고 개인 요청이 차단된다", as
   await expect(api("/users/me")).rejects.toMatchObject({
     code: "LOGOUT_PENDING",
   });
+});
+it("지연된 저장 요청은 타임아웃으로 종료하고 자동 재전송하지 않는다", async () => {
+  vi.useFakeTimers();
+  const fetcher = vi.fn(
+    (_url: string, options: RequestInit) =>
+      new Promise<Response>((_resolve, reject) => {
+        options.signal?.addEventListener("abort", () =>
+          reject(new DOMException("aborted", "AbortError")),
+        );
+      }),
+  );
+  vi.stubGlobal("fetch", fetcher);
+  const result = expect(
+    api("/transactions", { method: "POST", body: "{}" }),
+  ).rejects.toMatchObject({ code: "REQUEST_TIMEOUT" });
+  await vi.advanceTimersByTimeAsync(60000);
+  await result;
+  expect(fetcher).toHaveBeenCalledTimes(1);
+});
+it("이미 취소된 요청의 취소 상태를 전달한다", async () => {
+  const controller = new AbortController();
+  controller.abort();
+  const fetcher = vi.fn((_url: string, options: RequestInit) => {
+    expect(options.signal?.aborted).toBe(true);
+    return Promise.reject(new DOMException("aborted", "AbortError"));
+  });
+  vi.stubGlobal("fetch", fetcher);
+  await expect(
+    api("/users/me", { signal: controller.signal }),
+  ).rejects.toMatchObject({ name: "AbortError" });
 });
 it("로그아웃 이후 늦은 응답은 버린다", async () => {
   let resolve!: (r: Response) => void;
