@@ -1,0 +1,57 @@
+name: Container security
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/container-security.yml'
+      - 'scripts/check-container-report.mjs'
+  pull_request:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/container-security.yml'
+      - 'scripts/check-container-report.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: container-security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Build isolated image without production secrets
+        run: docker build --pull -t money-map-security:${{ github.sha }} backend
+      - name: Install verified Grype
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/grype" reports
+          cd "$RUNNER_TEMP/grype"
+          curl --fail --location --retry 2 -o grype.tar.gz https://github.com/anchore/grype/releases/download/v0.120.1/grype_0.120.1_linux_amd64.tar.gz
+          echo '0a9ee97ef5ae2ee953b0a80098105052e846cdbe319a57d808b519c33cd1343d  grype.tar.gz' | sha256sum --check
+          tar -xzf grype.tar.gz grype
+          echo "$RUNNER_TEMP/grype" >> "$GITHUB_PATH"
+      - name: Scan complete built image
+        run: |
+          grype version > reports/scanner.txt
+          docker image inspect money-map-security:${{ github.sha }} > reports/image.json
+          grype docker:money-map-security:${{ github.sha }} -o json --file reports/container.json
+      - name: Check fixed high and critical OS findings
+        run: node scripts/check-container-report.mjs reports/container.json
+      - name: Retain full findings, including unfixed and Java advisories
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: container-security-${{ github.sha }}
+          path: reports/
+          retention-days: 14
+          if-no-files-found: error
