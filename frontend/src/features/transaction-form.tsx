@@ -47,6 +47,7 @@ export function TransactionForm({ existing }: { existing?: Transaction }) {
         },
   });
   const kind = useWatch({ control, name: "type" });
+  const categoryId = useWatch({ control, name: "categoryId" });
   const categories = useQuery({
     queryKey: ["categories", "all"],
     queryFn: () =>
@@ -184,6 +185,7 @@ export function TransactionForm({ existing }: { existing?: Transaction }) {
           <select
             aria-label="카테고리"
             aria-describedby="transaction-categoryId-error"
+            value={categoryId}
             {...register("categoryId", {
               required: "카테고리를 선택하세요.",
               validate: (id) =>
