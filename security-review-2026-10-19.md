@@ -1,6 +1,6 @@
 # 공개 회원가입 전 보안·가용성 점검
 
-최신 후속 결과: [컨테이너 보안 점검](container-security-2026-10-19.md). 격리 CI에서 전체 앱 이미지 검사와 컨테이너 재시작 통합 테스트 11개를 완료하고, 미사용 Pebble 실행 파일 제거를 운영에 반영했다. 아래 문단의 미완료 표시는 각 단계 당시 기록이다.
+최신 판정과 근거는 [최종 문서 대조](public-demo-final-review-2026-10-19.md), 이미지 증빙은 [컨테이너 보안 점검](container-security-2026-10-19.md)을 따른다. 격리 CI에서 전체 앱 이미지 검사와 컨테이너 재시작 통합 테스트 11개를 완료하고, 미사용 Pebble 실행 파일 제거를 운영에 반영했다. 아래는 초기 점검과 후속 작업의 이력이며, 당시의 미완료 표시·버전·정책을 현재 상태로 해석하지 않는다.
 
 기준일: 2026-10-19 / 소스: 4648aad / 판정: 보완 후 제한적으로 공개 권고.
 
@@ -143,6 +143,6 @@ Origin·본문 검사 순서와 외부 검증 전 전체 요청 예산, 설정 �
 - GHSA-j9f9-w8pj-32f8: SSE에서 view fragments를 렌더링할 때의 스트림 손상. 현재 서버는 JSON RestController이며 SSE·FragmentsRendering을 사용하지 않는다.
 - GHSA-pc63-qcmh-9cmg: XsltView 경로 제한. 현재 XsltView·XML 템플릿·ViewResolver를 사용하지 않는다.
 
-현재 소스에서 해당 조건은 확인되지 않았지만 스캐너 결과를 숨기거나 0건이라고 보고하지 않는다. 공개 Maven Central의 현 6.2 계열에 수정판이 없으며, 이 기능을 도입하거나 프레임워크를 변경할 때 다시 검토한다. Spring 7/Boot 4 전환은 단순 패치가 아닌 별도 호환성 작업이다. OSV 조회는 알려진 의존성 권고 검사이며 침투 시험, 컨테이너 OS 전체 검사, 서비스 무결점 보증을 대신하지 않는다.
+현재 소스에서 해당 조건은 확인되지 않았지만 스캐너 결과를 숨기거나 0건이라고 보고하지 않는다. Spring 공식 안내는 공개 수정판 7.0.9와 Enterprise Support 전용 6.2.20을 구분한다. 현재 공개 배포 경로에서 6.2 수정판을 적용하지 않았으며 유료 지원을 구입하지 않았다. 이 기능을 도입하거나 프레임워크를 변경할 때 다시 검토한다. Spring 7/Boot 4 전환은 단순 패치가 아닌 별도 호환성 작업이다. OSV 조회는 알려진 의존성 권고 검사이며 침투 시험, 컨테이너 OS 전체 검사, 서비스 무결점 보증을 대신하지 않는다.
 
 참고: https://google.github.io/osv.dev/api/ , https://github.com/pgjdbc/pgjdbc/security/advisories/GHSA-j92g-9f8w-j867 , https://github.com/advisories/GHSA-j9f9-w8pj-32f8 , https://github.com/advisories/GHSA-pc63-qcmh-9cmg
