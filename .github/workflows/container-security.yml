@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/container-security.yml'
       - 'scripts/check-container-report.mjs'
+      - 'backend/Dockerfile'
   pull_request:
     paths:
       - 'backend/**'
@@ -67,7 +68,7 @@ jobs:
           grype version > reports/scanner.txt
           docker image inspect money-map-security:${{ github.sha }} > reports/image.json
           grype docker:money-map-security:${{ github.sha }} -o json --file reports/container.json
-      - name: Check fixed high and critical OS findings
+      - name: Check fixed high and critical native image findings
         run: node scripts/check-container-report.mjs reports/container.json
       - name: Retain full findings, including unfixed and Java advisories
         if: always()

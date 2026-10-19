@@ -3,7 +3,8 @@ WORKDIR /app
 COPY . .
 RUN ./gradlew bootJar --no-daemon
 FROM eclipse-temurin:21-jre
-RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/* && useradd --system --uid 10001 app
+# Java is the entrypoint; the inherited Pebble service manager is not used.
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/* && rm -f /usr/bin/pebble && useradd --system --uid 10001 app
 WORKDIR /app
 COPY --from=build /app/build/libs/money-map-0.1.0.jar app.jar
 USER app
