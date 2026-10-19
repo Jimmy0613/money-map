@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 /** No cached permit: each protected request needs a fresh, nonce-bound authority decision. */
 @Component
 public class RecoveryGate {
+  private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(RecoveryGate.class);
   private final Secrets secrets;
   private final JdbcTemplate db;
   private final ObjectMapper json;
@@ -25,9 +26,8 @@ public class RecoveryGate {
   private final String authorityToken;
   private final String runtimeRevision;
   private final int decisionTimeout;
-  private final HttpClient http = HttpClient.newBuilder()
-      .connectTimeout(Duration.ofMillis(500)).followRedirects(HttpClient.Redirect.NEVER).build();
-  private final Semaphore inFlight = new Semaphore(8);
+  private final HttpClient http;
+  private final Semaphore inFlight = new Semaphore(8, true);
 
   public RecoveryGate(Secrets secrets, JdbcTemplate db, ObjectMapper json, Environment config) {
     this.secrets = secrets;
@@ -42,6 +42,8 @@ public class RecoveryGate {
     decisionTimeout = config.getProperty("app.recovery.timeout-ms", Integer.class, 750);
     if (decisionTimeout < 100 || decisionTimeout > 5000)
       throw new IllegalStateException("Invalid recovery timeout");
+    http = HttpClient.newBuilder().connectTimeout(Duration.ofMillis(Math.min(2000, decisionTimeout - 50)))
+        .followRedirects(HttpClient.Redirect.NEVER).build();
   }
 
   public boolean allows() {
@@ -50,7 +52,14 @@ public class RecoveryGate {
     if (!runtimeRevision.isBlank() && !runtimeRevision.equals(deployment)) return false;
     if (environment.isBlank() || deployment.isBlank() || endpoint.isBlank() || encodedKey.isBlank())
       return false;
-    if (!inFlight.tryAcquire()) return false;
+    // A page can issue several reads together. Queue briefly without increasing
+    // authority concurrency, caching decisions, or allowing unverified requests.
+    try {
+      if (!inFlight.tryAcquire(3000, TimeUnit.MILLISECONDS)) return denied("CAPACITY");
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      return false;
+    }
     CompletableFuture<HttpResponse<byte[]>> pending = null;
     try {
       URI uri = URI.create(endpoint);
@@ -69,7 +78,7 @@ public class RecoveryGate {
       pending = http.sendAsync(builder.POST(HttpRequest.BodyPublishers.ofByteArray(request))
           .build(), ignored -> new BoundedBody());
       var response = pending.get(decisionTimeout, TimeUnit.MILLISECONDS);
-      if (response.statusCode() != 200) return false;
+      if (response.statusCode() != 200) return denied("AUTHORITY_STATUS_" + response.statusCode());
       var envelope = json.readTree(response.body());
       if (!envelope.isObject() || envelope.size() != 2
           || !envelope.path("payload").isTextual() || !envelope.path("signature").isTextual()) return false;
@@ -97,11 +106,19 @@ public class RecoveryGate {
       return false;
     } catch (Exception e) {
       // Never log the URL, key, response, DB identity, or SQL error contents.
-      return false;
+      return denied(e instanceof java.util.concurrent.TimeoutException ? "DECISION_TIMEOUT"
+          : e instanceof java.util.concurrent.ExecutionException ? "AUTHORITY_CONNECTION"
+          : e instanceof org.springframework.dao.DataAccessException ? "DATABASE_CHECK"
+          : "VALIDATION");
     } finally {
       if (pending != null && !pending.isDone()) pending.cancel(true);
       inFlight.release();
     }
+  }
+
+  private boolean denied(String reason) {
+    LOG.warn("recoveryCheckDenied reason={}", reason);
+    return false;
   }
 
   /** Restart/replacement changes the binding and requires authority revalidation, never auto-release. */
