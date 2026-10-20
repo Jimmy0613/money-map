@@ -5,7 +5,12 @@ import { api } from "../shared/api";
 import { useAuth } from "../shared/providers";
 import { Status, SummaryCards, TransactionList } from "../shared/ui";
 import type { Summary, TransactionPage } from "../shared/types";
+import { Landing } from "../features/landing";
 export default function Home() {
+  const { user } = useAuth();
+  return user ? <Dashboard /> : <Landing />;
+}
+function Dashboard() {
   const { user } = useAuth();
   const summary = useQuery({
     queryKey: ["summary"],

@@ -19,9 +19,22 @@ import {
 import type { User } from "./types";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-const Auth = createContext<{ user: User | null; reload: () => Promise<void> }>({
+import {
+  ServerConnectionNotice,
+  type ConnectionState,
+} from "./server-connection-notice";
+const Auth = createContext<{
+  user: User | null;
+  reload: () => Promise<void>;
+  connection: ConnectionState;
+  elapsed: number;
+  retryConnection: () => void;
+}>({
   user: null,
   reload: async () => {},
+  connection: "ready",
+  elapsed: 0,
+  retryConnection: () => {},
 });
 export const useAuth = () => useContext(Auth);
 export function Providers({ children }: { children: ReactNode }) {
@@ -43,8 +56,30 @@ export function Providers({ children }: { children: ReactNode }) {
   const [error, setError] = useState("");
   const [authError, setAuthError] = useState("");
   const [authAttempt, setAuthAttempt] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
+  const publicPage = ["/", "/login", "/signup"].includes(pathname);
+  const connection: ConnectionState = loading
+    ? "connecting"
+    : authError
+      ? "failed"
+      : "ready";
+  function retryConnection() {
+    setAuthError("");
+    setElapsed(0);
+    setLoading(true);
+    setAuthAttempt((attempt) => attempt + 1);
+  }
+  useEffect(() => {
+    if (!loading) return;
+    const started = Date.now();
+    const timer = setInterval(
+      () => setElapsed(Math.floor((Date.now() - started) / 1000)),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [loading, authAttempt]);
   async function reload() {
     const u = await api<User>("/users/me");
     setUser(u);
@@ -59,7 +94,41 @@ export function Providers({ children }: { children: ReactNode }) {
     };
     const unsub = subscribeAuth(update);
     let live = true;
+    const controller = new AbortController();
+    // One bounded preparation cycle shared across client navigation.
+    const budget = setTimeout(() => {
+      controller.abort();
+      if (live) {
+        setAuthError("서버에 연결하지 못했습니다. 잠시 후 다시 연결해 주세요.");
+        setLoading(false);
+      }
+    }, 180000);
+    async function connect() {
+      while (!controller.signal.aborted) {
+        try {
+          const u = await api<User>("/users/me", { signal: controller.signal });
+          if (live) setUser(u);
+          return;
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) return;
+          if (e instanceof ApiError && e.status >= 400 && e.status < 500) break;
+          if (controller.signal.aborted) break;
+          await new Promise<void>((resolve) => {
+            function done() {
+              clearTimeout(timer);
+              controller.signal.removeEventListener("abort", done);
+              resolve();
+            }
+            const timer = setTimeout(done, 5000);
+            controller.signal.addEventListener("abort", done, { once: true });
+          });
+        }
+      }
+      if (live)
+        setAuthError("서버에 연결하지 못했습니다. 잠시 후 다시 연결해 주세요.");
+    }
     if (isLogoutPending()) {
+      clearTimeout(budget);
       queueMicrotask(() => {
         if (live) {
           setPending(true);
@@ -67,23 +136,14 @@ export function Providers({ children }: { children: ReactNode }) {
         }
       });
     } else
-      api<User>("/users/me")
-        .then((u) => {
-          if (live) setUser(u);
-        })
-        .catch((e: unknown) => {
-          if (live && !(e instanceof ApiError && e.status === 401))
-            setAuthError(
-              e instanceof ApiError && e.code === "REQUEST_TIMEOUT"
-                ? "서버 시작 또는 응답이 지연되고 있습니다. 잠시 후 다시 연결해 주세요."
-                : "서버에 연결하지 못했습니다. 잠시 후 다시 연결해 주세요.",
-            );
-        })
-        .finally(() => {
-          if (live) setLoading(false);
-        });
+      connect().finally(() => {
+        clearTimeout(budget);
+        if (live) setLoading(false);
+      });
     return () => {
       live = false;
+      controller.abort();
+      clearTimeout(budget);
       unsub();
     };
   }, [client, authAttempt]);
@@ -93,7 +153,7 @@ export function Providers({ children }: { children: ReactNode }) {
       !authError &&
       !user &&
       !pending &&
-      !["/login", "/signup"].includes(pathname)
+      !["/", "/login", "/signup"].includes(pathname)
     )
       router.replace("/login");
   }, [loading, authError, user, pending, pathname, router]);
@@ -106,11 +166,15 @@ export function Providers({ children }: { children: ReactNode }) {
       setError("서버 로그아웃을 확인하지 못했습니다. 연결 후 다시 시도하세요.");
     }
   }
-  if (loading)
+  if (loading && !publicPage)
     return (
-      <main>
-        <p role="status">인증 상태 확인 중…</p>
-        <p>서버가 절전 상태이면 시작하는 데 1분 정도 걸릴 수 있습니다.</p>
+      <main id="content">
+        <ServerConnectionNotice
+          state={connection}
+          elapsed={elapsed}
+          retry={retryConnection}
+        />
+        <Link href="/">소개로 돌아가기</Link>
       </main>
     );
   if (pending)
@@ -128,23 +192,15 @@ export function Providers({ children }: { children: ReactNode }) {
         <button onClick={end}>로그아웃 다시 시도</button>
       </main>
     );
-  if (authError)
+  if (authError && !publicPage)
     return (
       <main>
         <h1>서비스 연결을 확인해 주세요</h1>
         <p role="alert">{authError}</p>
-        <button
-          onClick={() => {
-            setAuthError("");
-            setLoading(true);
-            setAuthAttempt((attempt) => attempt + 1);
-          }}
-        >
-          다시 연결
-        </button>
+        <button onClick={retryConnection}>다시 연결</button>
       </main>
     );
-  if (!user && !["/login", "/signup"].includes(pathname))
+  if (!user && !["/", "/login", "/signup"].includes(pathname))
     return (
       <main>
         <p role="status">로그인 화면으로 이동 중…</p>
@@ -152,7 +208,9 @@ export function Providers({ children }: { children: ReactNode }) {
     );
   return (
     <QueryClientProvider client={client}>
-      <Auth.Provider value={{ user, reload }}>
+      <Auth.Provider
+        value={{ user, reload, connection, elapsed, retryConnection }}
+      >
         <header>
           <Link href="/" className="brand">
             Money Map <span>소비의 발자취</span>
