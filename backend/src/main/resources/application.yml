@@ -8,12 +8,6 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/money_map}
     username: ${SPRING_DATASOURCE_USERNAME:money_map}
     password: ${SPRING_DATASOURCE_PASSWORD}
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate.jdbc.time_zone: UTC
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -60,5 +54,4 @@ app:
   cookie-secure: ${AUTH_COOKIE_SECURE:true}
 logging:
   level:
-    org.hibernate: WARN
     org.springframework.web: WARN

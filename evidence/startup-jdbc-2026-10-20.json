@@ -1,0 +1,94 @@
+{
+  "scope": "Windows loopback warm PostgreSQL; not hosting cold start",
+  "jvm_flags": [
+    "-Xmx192m",
+    "-XX:MaxMetaspaceSize=128m",
+    "-XX:ReservedCodeCacheSize=48m",
+    "-XX:MaxDirectMemorySize=32m",
+    "-Xss512k"
+  ],
+  "results": [
+    {
+      "label": "before",
+      "iteration": 1,
+      "ready_seconds": 4.997,
+      "spring_seconds": 4.342,
+      "gc_pauses": 61,
+      "gc_pause_ms": 87.885,
+      "jpa_initialized": true
+    },
+    {
+      "label": "after",
+      "iteration": 1,
+      "ready_seconds": 4.182,
+      "spring_seconds": 3.426,
+      "gc_pauses": 39,
+      "gc_pause_ms": 64.931,
+      "jpa_initialized": false
+    },
+    {
+      "label": "after",
+      "iteration": 2,
+      "ready_seconds": 4.586,
+      "spring_seconds": 3.6,
+      "gc_pauses": 36,
+      "gc_pause_ms": 64.046,
+      "jpa_initialized": false
+    },
+    {
+      "label": "before",
+      "iteration": 2,
+      "ready_seconds": 4.975,
+      "spring_seconds": 4.277,
+      "gc_pauses": 41,
+      "gc_pause_ms": 74.817,
+      "jpa_initialized": true
+    },
+    {
+      "label": "before",
+      "iteration": 3,
+      "ready_seconds": 5.395,
+      "spring_seconds": 4.46,
+      "gc_pauses": 53,
+      "gc_pause_ms": 81.448,
+      "jpa_initialized": true
+    },
+    {
+      "label": "after",
+      "iteration": 3,
+      "ready_seconds": 4.185,
+      "spring_seconds": 3.453,
+      "gc_pauses": 37,
+      "gc_pause_ms": 67.279,
+      "jpa_initialized": false
+    }
+  ],
+  "jars": {
+    "before": {
+      "bytes": 69985395,
+      "libraries": 74,
+      "sha256": "2029c68519083d913b06f964d54e542c841a3ced756e1369f44229be9c3d8256"
+    },
+    "after": {
+      "bytes": 40671247,
+      "libraries": 54,
+      "sha256": "c6766b044627af5d083b9a8e807784fe344d5a901bae0bc791218fb8c988875a"
+    }
+  },
+  "median": {
+    "before": {
+      "ready_seconds": 4.997,
+      "spring_seconds": 4.342,
+      "gc_pause_ms": 81.448
+    },
+    "after": {
+      "ready_seconds": 4.185,
+      "spring_seconds": 3.453,
+      "gc_pause_ms": 64.931
+    }
+  },
+  "java_version": "Amazon Corretto 21.0.4.7.1 (both variants)",
+  "os": "Windows x64",
+  "database": "PostgreSQL 18.0, loopback, warmed, synthetic fixture only",
+  "before_source_commit": "847a2e0"
+}

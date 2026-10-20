@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/container-security.yml'
       - 'scripts/check-container-report.mjs'
-      - 'backend/Dockerfile'
+      - 'backend/**'
   pull_request:
     paths:
       - 'backend/**'
@@ -33,9 +33,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - name: Verify proof rejection and real PostgreSQL container restart
+      - name: Verify JDBC transactions, schema rejection, and PostgreSQL restart
         working-directory: backend
-        run: ./gradlew integrationTest --tests com.moneymap.RecoveryAuthorityIntegrationTest --no-daemon
+        run: ./gradlew test integrationTest --no-daemon
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
