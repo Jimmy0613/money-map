@@ -1,0 +1,83 @@
+{
+  "source": "Authenticated Render deploy log and Metrics UI",
+  "deployment": "dep-dbbbciavcj2c739li2c0",
+  "commit": "8c250df21fa4d73fbe2305afcb3ac02eb5e09a94",
+  "production_jfr_collected": false,
+  "plan_changed": false,
+  "observed_instance_limits": {
+    "cpu": 0.15,
+    "memory_mb": 512
+  },
+  "cpu_memory_usage_graphs_available": false,
+  "log_events": [
+    {
+      "marker": "application_start_log",
+      "timestamp": "2026-10-20T00:32:35.239Z"
+    },
+    {
+      "marker": "web_context_initialized",
+      "timestamp": "2026-10-20T00:33:08.538Z"
+    },
+    {
+      "marker": "flyway_database_identified",
+      "timestamp": "2026-10-20T00:33:27.341Z"
+    },
+    {
+      "marker": "schema_up_to_date",
+      "timestamp": "2026-10-20T00:33:30.241Z"
+    },
+    {
+      "marker": "tomcat_started",
+      "timestamp": "2026-10-20T00:33:56.943Z"
+    },
+    {
+      "marker": "application_started",
+      "timestamp": "2026-10-20T00:33:57.437Z"
+    }
+  ],
+  "inter_log_gaps": [
+    {
+      "start": "application_start_log",
+      "end": "web_context_initialized",
+      "seconds": 33.299
+    },
+    {
+      "start": "web_context_initialized",
+      "end": "flyway_database_identified",
+      "seconds": 18.803
+    },
+    {
+      "start": "flyway_database_identified",
+      "end": "schema_up_to_date",
+      "seconds": 2.9
+    },
+    {
+      "start": "schema_up_to_date",
+      "end": "tomcat_started",
+      "seconds": 26.702
+    },
+    {
+      "start": "tomcat_started",
+      "end": "application_started",
+      "seconds": 0.494
+    }
+  ],
+  "spring_reported_startup_seconds": 93.597,
+  "process_reported_elapsed_seconds": 104.391,
+  "web_context_reported_initialization_seconds": 32.296,
+  "flyway_reported_validation_seconds": 0.897,
+  "caveats": [
+    "One deployment, not a controlled before/after comparison.",
+    "Inter-log gaps include uninstrumented work and cannot be attributed to CPU or network alone.",
+    "Web context duration overlaps the adjacent log gaps.",
+    "No CPU usage, throttling or full-process memory measurement was available."
+  ],
+  "previous_deployment_observation": {
+    "deployment": "dep-dbarc5rm8hqs73bn389g",
+    "commit": "d2d0aade91525c51e18b3259d013f5c4a08330f6",
+    "started_timestamp": "2026-10-19T06:21:39.023Z",
+    "spring_reported_startup_seconds": 118.693,
+    "process_reported_elapsed_seconds": 130.088,
+    "controlled_comparison": false
+  }
+}
