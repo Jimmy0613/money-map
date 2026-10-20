@@ -45,6 +45,14 @@ JVM 상한은 두 실행 파일 모두 -Xmx192m, MaxMetaspaceSize=128m, Reserved
 
 단위·HTTP·대기 용량 69개와 실제 로컬 PostgreSQL 통합 19개, bootJar 빌드가 통과했다. 새 검증은 ORM 없는 기동과 JDBC 트랜잭션 관리자, 컬럼 누락·타입 변경 거부, DDL 롤백 후 정상 구조 복원을 다룬다. GitHub 격리 CI도 모든 backend 변경에서 단위·전체 PostgreSQL 통합 및 컨테이너 검사를 실행하도록 확장했다.
 
+## CI와 운영 반영
+
+- 변경 커밋: 8c250df21fa4d73fbe2305afcb3ac02eb5e09a94. [GitHub Actions 실행](https://github.com/Jimmy0613/money-map/actions/runs/39348114748)의 test·integrationTest와 이미지 검사 작업이 성공했다. 통합 XML은 일반 PostgreSQL 19개와 실제 컨테이너 재시작 11개, 합계 30개 모두 실패·오류·건너뜀 0이다. 단위·HTTP·대기 용량 69개는 로컬 실행에서도 통과했다.
+- 새 이미지 보고서는 Critical 2, Medium 119, Low 13이다. Critical은 기존 Spring Web MVC 6.2.19의 조건부 권고 2건이며 비 Java High·Critical은 0이다. JDBC 정리로 이 권고가 해결됐다고 주장하지 않는다. 실행 Java 패키지 62개를 OSV로 확인했고 새 권고는 없었다. 세부 노출 조건은 [문서 대조](public-demo-final-review-2026-10-19.md)를 따른다.
+- Render dep-dbbbciavcj2c739li2c0에서 위 커밋의 Live를 확인했다. 기존 데이터·서명 키를 보존하고 독립 등록을 RELEASED 세대 5로 갱신했다. readiness 200 UP, 동시 CSRF 조회 5건 모두 200, 공개 가입 403 REGISTRATION_CLOSED를 확인했다.
+- Vercel 서비스에서 기존 체험 세션으로 장소명 Enter 검색·장소 미리보기·위치 확정 후 별도 저장 버튼이 남는 동작을 확인했다. 촬영 중 거래 저장은 실행하지 않아 샘플 6건을 변경하지 않았다.
+- 운영 Spring 시작 로그는 93.597초(process running 104.391초)였다. 한 번의 배포 관측이며 이전 운영 실행과 조건을 맞춘 비교가 아니다. 로컬 16.2% 결과를 운영 절전 복귀 개선율로 확대하지 않는다. PostgreSQL 18.6에 대한 Flyway 지원 범위 경고도 남아 있으며 업그레이드 검증이 후속 과제다.
+
 ## 기술 근거
 
 - [Spring Boot 3.5 SQL 구성](https://docs.spring.io/spring-boot/3.5/reference/data/sql.html)

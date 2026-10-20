@@ -1,5 +1,7 @@
 # 컨테이너 보안 점검
 
+2026-10-20 재검사: JDBC 정리 커밋 8c250df의 [CI 실행](https://github.com/Jimmy0613/money-map/actions/runs/39348114748)이 성공했다. 전체 Critical 2·Medium 119·Low 13, 비 Java High·Critical 0으로 기존 Spring 조건부 권고가 남는다. 운영은 같은 커밋 Live·등록 세대 5이며 [최신 검증](startup-review-2026-10-20.md)을 따른다. 아래 이미지 ID와 세대 4는 10월 19일 검사 이력이다.
+
 남은 권고의 구체적 발생 조건, Spring 공식 등급과 스캐너 등급의 차이, 공개·유료 수정판 구분은 [최종 문서 대조](public-demo-final-review-2026-10-19.md)를 따른다.
 
 ## 검사 방식

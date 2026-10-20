@@ -1,6 +1,8 @@
 # 실제 테스트 보고서
 
-> 최신 종합 점검(2026-10-18): **개발·검증 진행 중, 배포 준비 완료 아님.** 복원 기본 차단·서명 응답 검증·독립 상태 제어 도구를 구현했습니다. 2026-09-25 최종 실행 근거는 Backend 단위·HTTP42/실제 PostgreSQL 통합24/제어 도구11PASS 및 bootJar 성공입니다. Frontend55/생산 Mock2는 이전 화면 보완 실행 근거입니다. 상위 추적표33PASS/38NOT_RUN 유지. [복원 실행 계약](recovery-authority-contract.md)에 구현과 남은 운영 검증기·배포 연결을 구분합니다. 아래 날짜별 기록은 당시 이력입니다.
+> 최신 추가 검증(2026-10-20): JDBC 전환 후 백엔드 단위·HTTP·대기 용량 69개, 실제 PostgreSQL·컨테이너 재시작 통합 30개 통과. Render 8c250df Live·readiness 200·등록 세대 5와 가입 차단을 확인했다. [측정 조건·CI·운영 근거](startup-review-2026-10-20.md)를 따른다. 아래의 이전 판정과 실행 수치는 당시 이력이며 전체 요구사항 완료나 전체 복원 훈련 성공을 의미하지 않는다.
+
+> 이전 종합 점검(2026-10-18): **개발·검증 진행 중, 배포 준비 완료 아님.** 복원 기본 차단·서명 응답 검증·독립 상태 제어 도구를 구현했습니다. 2026-09-25 최종 실행 근거는 Backend 단위·HTTP42/실제 PostgreSQL 통합24/제어 도구11PASS 및 bootJar 성공입니다. Frontend55/생산 Mock2는 이전 화면 보완 실행 근거입니다. 상위 추적표33PASS/38NOT_RUN 유지. [복원 실행 계약](recovery-authority-contract.md)에 구현과 남은 운영 검증기·배포 연결을 구분합니다. 아래 날짜별 기록은 당시 이력입니다.
 
 기록일: 2026-09-19 (Asia/Seoul). 대상: `/Users/lmj/money-map`의 신규 Backend/Frontend 및 V1~V5. 승인된 원본 15개를 읽고 환경 점검 후 구현했다. DOCX 6개는 해시 재검사에서도 원본과 일치하며 Markdown 원본은 `evidence/original-documents/`에 보존했다. Git 저장소가 없어 commit ID 대신 최종 소스 SHA manifest를 남긴다.
 

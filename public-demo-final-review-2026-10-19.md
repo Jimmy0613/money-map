@@ -17,7 +17,7 @@
 
 Grype/GitHub는 두 건을 Critical로 표시하지만 Spring 공식 분류는 각각 Low·Medium이다. 분류 출처 차이를 명시하고 원본 검사 수치를 바꾸지 않는다. 검사된 별도 앱 이미지의 전체 결과는 Critical 2, Medium 119, Low 13이며, 비 Java High·Critical은 0이었다. Medium·Low 항목 전체의 악용 가능성을 개별 판정한 것은 아니다. Render 내부 이미지 직접 추출 검사가 아니며 상세 증빙은 [컨테이너 점검](container-security-2026-10-19.md)을 따른다.
 
-현재 이미지 자동 실패 기준은 수정판 있는 비 Java High·Critical이다. Java는 원본 보고서에는 포함되지만 자동 실패 기준에서 제외되어 별도 검토가 필요하다. 검사는 일정 실행이 아니며, Dockerfile·검사 파일의 main 변경, backend 관련 PR, 수동 실행으로 동작한다. 매일 감시하거나 모든 main 코드 변경마다 실행한다고 설명해서는 안 된다.
+현재 이미지 자동 실패 기준은 수정판 있는 비 Java High·Critical이다. Java는 원본 보고서에는 포함되지만 자동 실패 기준에서 제외되어 별도 검토가 필요하다. 2026-10-20부터 backend 전체·검사 파일의 main 변경과 backend 관련 PR, 수동 실행으로 동작한다. 일정 실행이나 모든 main 파일 변경에 대한 검사는 아니다. JDBC 정리 이후에도 같은 권고 2건이 남으며 [최신 실행·운영 결과](startup-review-2026-10-20.md)를 따른다.
 
 ## 무료 제공량과 초과 시 동작
 

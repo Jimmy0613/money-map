@@ -27,9 +27,9 @@ MUTED = '#56675F'
 LINE = '#DCE5DF'
 PALE = '#F0F5F1'
 c = canvas.Canvas(str(OUT), pagesize=A4)
-c.setTitle('Money Map | Full-stack Portfolio | 2026-10-19')
+c.setTitle('Money Map | Full-stack Portfolio | 2026-10-20')
 c.setAuthor('Money Map')
-source = ['# Money Map - 제품 화면과 운영 개선 사례\n', '기준일: 2026-10-19. 운영 서버 d2d0aad / 공개 체험·보안 보완 반영.\n']
+source = ['# Money Map - 제품 화면과 운영 개선 사례\n', '개정일: 2026-10-20. JDBC 실행 구성 정리와 통제한 로컬 기동 비교 반영.\n']
 y = 0
 page = 0
 
@@ -60,7 +60,7 @@ def start(kicker, heading, sub):
     c.setFillColor(colors.HexColor(MUTED))
     c.setFont('KR', 8)
     c.drawString(M, H-34, 'MONEY MAP / FULL-STACK PORTFOLIO')
-    c.drawRightString(W-M, H-34, '2026.10.19')
+    c.drawRightString(W-M, H-34, '2026.10.20')
     c.setStrokeColor(colors.HexColor(LINE))
     c.line(M, 42, W-M, 42)
     c.setFont('KR', 7.5)
@@ -124,14 +124,87 @@ def flow(labels):
     y-=60
     source.append(' → '.join(labels).replace('\n', ' ')+'\n')
 
+def pair_screenshots():
+    global y
+    gap = 14
+    bw = (CW-gap)/2
+    entries = [('location-search.png', '① 장소 검색·미리보기'),
+               ('location-confirmed.png', '② 위치 확정 후 명시적 저장')]
+    height = 175
+    for i, (name, label) in enumerate(entries):
+        im = PILImage.open(SHOTS/name).convert('RGB')
+        x = M + i*(bw+gap)
+        c.setFillColor(colors.HexColor(PALE))
+        c.roundRect(x,y-height,bw,height,4,fill=1,stroke=0)
+        iw,ih = im.size
+        dw=min(bw,height*iw/ih);dh=dw*ih/iw
+        c.drawImage(ImageReader(im),x+(bw-dw)/2,y-dh,dw,dh)
+        c.setFillColor(colors.HexColor(MUTED));c.setFont('KR',7.8)
+        c.drawString(x,y-height-13,label)
+        source.append(f'![{label}](screenshots/{name})\n')
+    y -= height+32
+
+def sequence():
+    global y
+    left,right=M+90,W-M-90
+    c.setStrokeColor(colors.HexColor(LINE));c.setDash(2,3)
+    c.line(left,y-22,left,y-129);c.line(right,y-22,right,y-129);c.setDash()
+    c.setFont('KRB',9);c.setFillColor(colors.HexColor(GREEN))
+    c.drawCentredString(left,y-9,'입력 화면');c.drawCentredString(right,y-9,'장소 검색 SDK')
+    events=[('A 검색 요청',False,False),('B 검색 요청',False,False),
+            ('B 응답 - 현재 선택에 반영',True,False),('늦은 A 응답 - 순번 불일치로 폐기',True,True)]
+    for n,(label,back,late) in enumerate(events):
+        yy=y-36-n*26;start,end=(right,left) if back else (left,right)
+        c.setStrokeColor(colors.HexColor(MUTED if late else GREEN))
+        if late:c.setDash(3,2)
+        c.line(start,yy,end,yy);c.setDash()
+        d=1 if back else -1
+        c.line(end+d*5,yy+3,end,yy);c.line(end+d*5,yy-3,end,yy)
+        c.setFont('KR',8);c.setFillColor(colors.HexColor(INK))
+        c.drawCentredString((left+right)/2,yy+5,label)
+    y-=151
+    source.append('입력 화면 → SDK: A 요청, B 요청 / SDK → 화면: B 반영, 늦은 A 폐기\n')
+
+def architecture():
+    global y
+    gap=18;bw=(CW-gap*3)/4;bh=43
+    xs=[M+i*(bw+gap) for i in range(4)]
+    def box(x,top,label):
+        c.setFillColor(colors.HexColor(PALE));c.setStrokeColor(colors.HexColor(LINE))
+        c.roundRect(x,top-bh,bw,bh,5,fill=1,stroke=1)
+        p=Paragraph(escape(label).replace('\n','<br/>'),ParagraphStyle('arch',fontName='KRB',fontSize=8.5,leading=13,alignment=1,textColor=colors.HexColor(GREEN)))
+        _,hh=p.wrap(bw-8,bh);p.drawOn(c,x+4,top-(bh+hh)/2)
+    def arrow(a,b):
+        c.setStrokeColor(colors.HexColor(GREEN));c.line(*a,*b)
+        if a[1]==b[1]:c.line(b[0]-4,b[1]+3,*b);c.line(b[0]-4,b[1]-3,*b)
+        else:
+            d=1 if a[1]>b[1] else -1
+            c.line(b[0]-3,b[1]+d*4,*b);c.line(b[0]+3,b[1]+d*4,*b)
+    for x,label in zip(xs,['브라우저\n입력·지도·통계','Vercel\nNext.js / API 프록시','Render\nSpring Boot / JDBC','Neon\nPostgreSQL']):box(x,y,label)
+    for i in range(3):arrow((xs[i]+bw+2,y-bh/2),(xs[i+1]-2,y-bh/2))
+    lower=y-103
+    for i,label in [(0,'Kakao SDK\n장소·좌표·지도'),(2,'Cloudflare Worker\n개방 검증 요청'),(3,'Durable Object\n등록·세대·서명')]:box(xs[i],lower,label)
+    for i in [0,2]:arrow((xs[i]+bw/2,y-bh-3),(xs[i]+bw/2,lower+3))
+    arrow((xs[2]+bw+2,lower-bh/2),(xs[3]-2,lower-bh/2))
+    arrow((xs[3]+bw/2,lower+3),(xs[3]+bw/2,y-bh-3))
+    c.setFont('KR',7);c.setFillColor(colors.HexColor(MUTED))
+    for i,label in [(0,'지도·검색'),(2,'요청별 증거'),(3,'메타데이터 관찰')]:
+        label_width=pdfmetrics.stringWidth(label,'KR',7)
+        c.setFillColor(colors.white)
+        c.rect(xs[i]+bw/2-label_width/2-2,y-79,label_width+4,10,fill=1,stroke=0)
+        c.setFillColor(colors.HexColor(MUTED))
+        c.drawCentredString(xs[i]+bw/2,y-77,label)
+    y-=166
+    source.append('브라우저 → Vercel → Render → Neon / 브라우저 → Kakao / Render → Worker → Durable Object → Neon 메타데이터 관찰\n')
+
 start('01 / PRODUCT', 'Money Map', '지출의 금액과 장소를 연결하는 개인 가계부')
-text('풀스택 개인 프로젝트 / AI 코딩 에이전트 협업',9,color=MUTED,gap=12)
-screenshot('demo-map.png', (472,70,1419,489), '체험 소비 지도: 샘플 지출 위치와 지도 위 이동·배율 조작 패널.')
+text('직접 수행  요구 정의·실사용 테스트·개선 방향과 체험 정책 선택\nAI 협업  설계 보완·코드 구현·자동 검증 실행',8.8,color=MUTED,gap=12)
+screenshot('demo-map.png', (472,70,1419,489), '체험 소비 지도: 샘플 지출 위치와 지도 위 이동·배율 조작 패널.',maxh=200)
 text('기록을 남기는 데서 끝나지 않고, 어디에서 썼는지 돌아볼 수 있게.',16,True,gap=12)
 text('거래에 위치를 선택적으로 저장하고 내역·지도·통계로 연결했습니다. 데스크톱 실사용 중 발견한 입력·상태 관리 문제를 회귀 테스트와 배포 확인까지 이어서 보완했습니다.')
 rows([
     ('체험 데이터', '가상 거래 6건. 지출 5건 53,800원 중 위치 있는 지출 3건 35,000원, 위치 없는 지출 2건 18,800원.'),
-    ('운영 검증', '거래 등록·위치 저장·수정·임시 거래 삭제와 통계 조회 확인. Render d2d0aad Live / readiness 200 UP.'),
+    ('구현·개선', 'Next.js / Java 21·Spring Boot / PostgreSQL. 멱등 저장·응답 순서 제어와 JDBC 실행 구성 정리를 검증했습니다.'),
     ('공개 체험', '개인 데이터와 분리한 공용 체험 계정. 입력 기능에 상한을 두고 일반 회원가입과 체험 계정 탈퇴를 차단했습니다.'),
 ])
 text('서비스  https://money-map-frontend-murex.vercel.app/\n소스  https://github.com/Jimmy0613/money-map',8.2,color=GREEN,gap=0)
@@ -149,8 +222,8 @@ text('위치 정보는 선택 사항입니다. 장소가 없는 구독 지출과
 start('03 / ITERATION', '실사용에서 발견하고 고친 문제', '데스크톱 실사용 테스트에서 발견한 현상을 원인·수정·검증으로 연결했습니다.')
 section('A. 장소 검색 Enter가 거래 저장까지 실행')
 text('현상: 장소를 고르던 중 상세 화면으로 이동하고 위치가 빠진 거래가 남았습니다. 검색 입력이 거래 폼 안에 있어 Enter의 기본 동작이 거래 제출로 이어질 수 있었습니다.')
-flow(['검색어 입력 + Enter','기본 폼 제출 차단','위치 확정 후\n저장 버튼으로 제출'])
-text('선택: 검색 입력의 Enter 기본 동작만 차단했습니다. 검색은 기존 300ms debounce를 유지하고, 장소 확정과 거래 저장을 별도 단계로 두었습니다.\n검증: 검색·확정 중 POST 없음, 명시적 저장 시 선택 장소·좌표 포함. 운영 실사용에서도 위치 저장 성공을 확인했습니다.',9.7)
+pair_screenshots()
+text('결과: Enter의 기본 폼 제출을 차단했습니다. 위치 확정 뒤에도 거래 저장은 별도로 실행합니다. 위 화면은 현재 동작을 촬영했으며 수정 전 결함을 재구성하지 않았습니다.',9.3)
 section('B. 수정 화면의 카테고리가 비어 보임')
 text('원인: 폼이 먼저 렌더링되고 카테고리 옵션이 나중에 도착해 기존 값이 선택란에 반영되지 않았습니다. 폼의 categoryId를 구독하고 select의 value와 연결했습니다.')
 rows([
@@ -160,7 +233,6 @@ rows([
 ])
 section('C. 기본 지도를 실제 소비 맥락으로')
 text('고정 서울시청 중심 대신 위치가 있는 최근 지출을 조회해 중심을 잡습니다. 거래일 내림차순, 같은 날은 생성 시각·ID 순서를 사용합니다. 지난달 기록이면 해당 월을 보여주고, 다시 진입하면 사용자가 보던 위치를 복원합니다.',9.7)
-text('변경 커밋  6112c6d / 2cb5b99 / 6538d64 / ea18597\n편의성 보완  지도 위 방향·배율 조작 패널, 상세 화면 내역 버튼 우측 정렬, 삭제 버튼의 붉은색 구분.',8.2,color=MUTED)
 
 start('04 / RELIABILITY', '응답 유실과 순서 뒤집힘을 다루기', '정상 클릭 한 번보다 실패 후에도 데이터와 사용자의 선택이 일치하는지를 확인했습니다.')
 section('서버: 같은 저장 요청을 식별')
@@ -174,12 +246,12 @@ rows([
 text('대가: 사용자별 쓰기를 직렬화해 판단을 단순하게 만드는 대신, 같은 사용자의 동시 쓰기 처리량에는 제약이 생깁니다.',9.4,color=MUTED)
 section('클라이언트: 최신 선택만 반영')
 text('검색·현재 위치·주소 변환은 완료 순서가 다릅니다. 검색 순번과 위치 선택 순번을 따로 두고, 응답 시 현재 순번과 비교합니다. 위치를 바꾸거나 해제하면 과거 요청을 무효화합니다.')
-flow(['A 장소 요청','B 장소로 변경','늦게 온 A 응답\n현재 순번과 달라 폐기'])
+sequence()
 text('검증: 역순 검색 응답, 늦은 주소 변환, 위치 해제 뒤 응답, 권한 거부와 시간 초과를 자동 테스트로 다룹니다. 외부 SDK 장애나 위치 오차는 없애지 못하므로 위치 없이 저장하는 경로를 유지합니다.',9.7)
 text('근거  LedgerService.java / LedgerRepository.java / location-picker.tsx / location-races.test.tsx / test-report.md',8.1,color=MUTED)
 
 start('05 / ARCHITECTURE', '서비스 경계를 연결한 배포 구성', '브라우저부터 업무 데이터와 외부 지도까지, 각 구간의 책임을 나눴습니다.')
-flow(['브라우저\n거래·지도·통계','Vercel\nNext.js / API 프록시','Render\nSpring Boot / 인증','Neon\nPostgreSQL / Flyway'])
+architecture()
 text('브라우저는 같은 Origin의 API를 호출하고 Next.js가 Render로 전달합니다. Kakao SDK는 장소 검색·지도·주소 변환을 담당하며 어댑터 뒤에 격리했습니다.')
 rows([
     ('프런트엔드', 'Next.js 16 / React 19 / TypeScript. TanStack Query는 서버 상태, React Hook Form은 입력과 검증을 담당합니다.'),
@@ -188,35 +260,34 @@ rows([
     ('연결 분리', '애플리케이션은 pooled DB 연결, Flyway는 direct 연결을 사용합니다.'),
 ])
 section('독립된 운영 등록·개방 제어')
-text('Cloudflare Worker와 Durable Object는 사용자 DB 밖에 등록 상태·세대를 보관합니다. 메타데이터 관찰 결과와 대상 지문·배포·nonce에 결합된 Ed25519 응답을 백엔드가 검증합니다.')
-text('목적은 DB가 교체되거나 복원 상태가 불명확할 때 검증 없이 서비스를 열지 않는 것입니다. 단순 환경변수 개방보다 외부 확인 근거가 추가되지만 매 요청 검증의 지연과 가용성 의존성도 생깁니다.')
-text('개인 MVP에서는 복잡도가 큰 선택입니다. 신규 빈 DB의 최초 등록·서명 검증과 실제 전체 WAL 복원 훈련은 구분하며, 후자는 남은 과제입니다.',9.4,color=MUTED)
+text('복원·교체 상태가 불명확한 DB를 검증 없이 사용하지 않기 위한 독립 등록입니다. 요청별 서명 증거를 확인하는 대신 지연·외부 장애 의존성이 생깁니다. 개인 MVP에는 복잡도가 큰 선택으로, 상세 계약은 저장소 문서로 분리했습니다.',9.5)
 section('실행 중인 것과 준비된 것을 따로 확인')
 text('Render의 Live 표시는 배포 프로세스 성공의 근거입니다. 실제 서비스 준비 여부는 readiness와 Vercel을 경유한 API 응답, 인증 후 화면을 함께 확인합니다.',9.7)
 
-start('06 / PUBLIC DEMO & SECURITY', '체험 공개를 운영 문제로 다루기', '기능을 보여주는 것과 공개된 서비스를 관리하는 것은 다른 과제였습니다.')
-screenshot('demo-home.png',(448,105,1444,191),'공용 체험 계정의 안내: 데이터 공유와 이용 제한을 로그인 후 알립니다.',maxh=55)
-section('선택: 무제한 가입 대신 제한형 체험')
-text('개인 데이터와 분리한 체험 계정과 가상 거래 6건을 준비했습니다. 일반 회원가입은 닫고 등록·수정·삭제는 체험할 수 있게 하되, 공개 계정의 데이터·인증 자원에 상한을 두었습니다.')
+start('06 / STARTUP & OPERATIONS', '느린 첫 접속의 원인을 좁히기', '무료 서버의 절전과 애플리케이션 초기화 비용을 구분했습니다.')
+section('관찰: JDBC 서비스에서 JPA도 초기화')
+text('서버 로그에는 JPA Repository가 0개인데 EntityManagerFactory 초기화가 나타났습니다. 업무 코드를 확인하니 거래·인증·조회는 JDBC였고 엔티티 1개가 시작 시 스키마 검증을 맡고 있었습니다.')
+flow(['실제 참조·설정 조사','JDBC 실행 구성으로 정리','동일 조건 교차 측정'])
+section('선택: 검증을 유지하면서 ORM 제거')
+text('JPA starter·미사용 엔티티·전용 설정을 제거하고 JDBC starter로 교체했습니다. Flyway 이후 거래 테이블의 필수 컬럼·타입을 확인하는 JDBC 검증을 두어 누락·변경 시 기동을 거부합니다. 트랜잭션과 잠금의 회귀 테스트도 실행했습니다.')
 rows([
-    ('데이터 상한', '거래 누적 등록 200회, 기본·보관 분류를 포함한 카테고리 40개. 삭제된 거래의 작업 키도 누적 상한에 포함해 삭제·재등록 우회를 막습니다.'),
-    ('인증·쓰기 보호', '체험 변경 분당 30회, 계정 로그인 분당 10회, 보관 세션 10개, 세션 토큰 60개. 서버에서 체험 계정 탈퇴를 거부합니다.'),
-    ('인증 전 방어', 'Origin·16KiB 본문·전체 요청 예산을 DB와 외부 검증보다 먼저 확인합니다. Vercel Challenge와 별개로 Render 직접 진입도 서버에서 제한합니다.'),
+    ('준비 완료 시간', '로컬 중앙값 4.997초 → 4.185초, 약 16.2% 감소. 각각 예열 후 3회, 순서를 교차해 측정했습니다.'),
+    ('실행 파일', 'JAR 69.99MB → 40.67MB, 약 41.9% 감소. 내부 라이브러리 74개 → 54개. JPA 초기화 로그도 사라졌습니다.'),
+    ('측정 조건', '동일 Windows·Java 21.0.4·로컬 PostgreSQL. JVM 최대 힙 192MB와 다른 메모리 상한도 동일하게 유지했습니다.'),
 ])
-section('의존성·이미지: 발견부터 운영 반영까지')
-text('Next.js 16.4.2와 Java 실행 의존성의 수정판을 적용했습니다. 격리 CI에서 전체 앱 이미지를 검사하고, 앱이 사용하지 않는 서비스 관리자 파일을 제거한 뒤 운영에 반영했습니다.',9.8)
-text('검사 이미지의 비 Java High·Critical은 0건입니다. 기존 Spring 권고 2건은 영향 버전이 남아 있지만 현재 SSE view fragments·XSLT 뷰를 사용하지 않아 노출 조건이 발견되지 않았습니다. 전체 이미지의 중·하위 권고도 남아 있어 취약점 0건으로 표현하지 않습니다.',9.4,color=MUTED)
-section('운영 제약을 제품의 안내로 연결')
-text('무료 서버의 절전 복귀를 안내하고 요청을 60초로 제한했습니다. 저장 응답이 끊겼을 때 자동 재전송하지 않고 내역을 확인하도록 합니다. 제공자별 한도·중지·과금 조건을 문서화했으며, 데이터 상한을 전체 비용 상한으로 간주하지 않았습니다.',9.7)
+text('이 결과는 깨어 있는 로컬 DB 기준입니다. Render의 CPU·절전 복귀, Neon 최초 연결, 외부 서명 검증 지연을 포함하지 않으므로 운영 시작 시간이 같은 비율로 줄었다고 해석하지 않습니다.',9.3,color=MUTED)
+section('공개 체험의 범위와 운영 제약')
+text('개인 기록과 분리한 가상 샘플·공용 체험 계정을 제공하고 가입·탈퇴를 제한했습니다. 저장·인증 상한과 서버 요청 예산을 두되, 조회와 외부 호출까지 막는 비용 상한으로 보지는 않았습니다. 첫 연결 안내·60초 제한·재연결을 제공하며 저장 응답 유실 시 내역 확인을 안내합니다.',9.7)
+text('근거  startup-review-2026-10-20.md / evidence/startup-jdbc-2026-10-20.json',8.1,color=MUTED)
 
 start('07 / EVIDENCE', '검증을 환경과 근거로 구분하기', '자동 테스트, 실제 DB, 운영 화면을 각각 확인했습니다.')
 screenshot('demo-statistics.png',(472,655,1419,810),'2026년 10월 체험 통계. 수입 2,500,000원 / 지출 53,800원 / 잔액 2,446,200원.',maxh=100)
 rows([
     ('프런트엔드', '66개 테스트 통과. 타입·lint·프로덕션 빌드 확인. 장소 선택 경쟁 상태, 수정 분류 유지와 연결 복구를 다룹니다.'),
-    ('백엔드', '단위·HTTP·대기 용량 테스트 69개. 격리 PostgreSQL 통합 16개와 별도 컨테이너 재시작 통합 11개 통과.'),
+    ('백엔드', '단위·HTTP·대기 용량 69개. 실제 DB 통합 19개와 컨테이너 재시작 11개로 멱등 저장·세션 철회·JDBC 롤백·스키마 거부를 확인했습니다.'),
     ('외부 검증 서버', 'Worker 정책 6개·런타임 10개 통과. 별도 Neon DB와 Worker에서 등록 갱신·서명·재실행 거부·차단 보존 검증.'),
     ('운영 기능', '체험 거래 등록, Enter 검색, 장소 확정, 위치 저장, 카테고리·위치 보존 수정, 승인된 임시 거래 삭제 및 통계 합계를 확인했습니다.'),
-    ('운영 배포', 'Render d2d0aad Live / readiness 200 UP. 배포 등록 RELEASED 세대 4. 공개 가입 요청은 403으로 거부했습니다.'),
+    ('운영 배포', '8c250df 배포 Live·readiness 200 확인. 기존 데이터·키를 보존하고 등록 세대를 5로 갱신했습니다. 일반 가입은 계속 차단합니다.'),
 ])
 section('가용성 개선 사례: 동시 조회의 검증 대기')
 text('지도·통계가 여러 조회를 동시에 보낼 때 안전 검증이 간헐적으로 실패했습니다. 동시 실행 8개를 유지하며 최대 3초 대기하도록 바꾸고, 연결 제한을 검증 시간 예산 안에서 조정했습니다. 새 서명·nonce 검사는 그대로 유지했습니다.',9.7)
@@ -239,7 +310,7 @@ section('직접 확인할 수 있는 자료')
 text('서비스  https://money-map-frontend-murex.vercel.app/\n저장소  https://github.com/Jimmy0613/money-map',8.5,color=GREEN)
 text('체험 이메일  demo@money-map.example  /  비밀번호  demo1q2w3e4r5%',9.2,True,gap=5)
 text('공유 체험 계정입니다. 실제 개인정보 입력을 피하고, 일부 기능·이용량 제한을 확인해주세요.',8.1,color=MUTED,gap=5)
-text('검증·보안·이미지 검사 결과는 저장소의 운영 점검 문서에서 확인할 수 있습니다.',8.1,color=MUTED,gap=0)
+text('Spring 조건부 권고 2건과 Flyway의 PostgreSQL 18 지원 경고가 남아 있습니다. 상세 조건·검사 결과는 저장소 문서를 따릅니다.',8.1,color=MUTED,gap=0)
 c.save()
 (ROOT/'output/portfolio/money-map-portfolio-v2.md').write_text('\n'.join(source), encoding='utf-8')
 print(OUT)
