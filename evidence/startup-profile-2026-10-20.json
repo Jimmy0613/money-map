@@ -1,0 +1,377 @@
+{
+  "scope": "Windows, exploded classpath, warm loopback PostgreSQL, JFR enabled; not Render/Neon",
+  "jar_sha256": "c6766b044627af5d083b9a8e807784fe344d5a901bae0bc791218fb8c988875a",
+  "jvm_flags": [
+    "-Xmx192m",
+    "-XX:MaxMetaspaceSize=128m",
+    "-XX:ReservedCodeCacheSize=48m",
+    "-XX:MaxDirectMemorySize=32m",
+    "-Xss512k"
+  ],
+  "method": "One warmup, three measured fresh JVMs; pooled max 3/min idle 0, separate Flyway connection; local authority exemption",
+  "caveats": [
+    "Inclusive phases overlap: do not add them.",
+    "Exploded classpath and profiling overhead: not comparable to the previous packed-jar readiness benchmark.",
+    "Socket events are thresholded and may overlap. CPU samples are too few for stable percentages.",
+    "No production JFR, CPU quota, TLS, Neon wakeup or external signed checks are measured."
+  ],
+  "median_spring_run_seconds": 3.642,
+  "median_phase_ms": {
+    "spring.context.refresh": 3044.121,
+    "spring.context.config-classes.parse": 777.871,
+    "spring.boot.webserver.create": 448.01,
+    "flyway": 342.248,
+    "flywayInitializer": 137.193,
+    "ledgerSchemaValidator": 42.0,
+    "security": 398.184,
+    "recoveryGate": 144.0,
+    "dataSource": 182.001
+  },
+  "runs": [
+    {
+      "run": 1,
+      "spring_run_seconds": 3.751,
+      "configuration": {
+        "maximum_pool_size": 3,
+        "minimum_idle": 0,
+        "keepalive_time_ms": 0,
+        "connection_timeout_ms": 15000,
+        "flyway_separate_datasource": true,
+        "idle_timeout_ms": 30000
+      },
+      "event_count": 429,
+      "inclusive_phase_ms": {
+        "spring.context.refresh": 3122.588,
+        "spring.context.config-classes.parse": 775.101,
+        "spring.boot.webserver.create": 484.797,
+        "flyway": 344.239,
+        "flywayInitializer": 146.002,
+        "ledgerSchemaValidator": 42.0,
+        "security": 398.184,
+        "recoveryGate": 144.0,
+        "dataSource": 182.001
+      },
+      "exclusive_top_steps": [
+        {
+          "name": "spring.context.config-classes.parse",
+          "bean": null,
+          "exclusive_ms": 775.101
+        },
+        {
+          "name": "spring.boot.webserver.create",
+          "bean": null,
+          "exclusive_ms": 271.0
+        },
+        {
+          "name": "spring.boot.application.environment-prepared",
+          "bean": null,
+          "exclusive_ms": 250.766
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "dataSource",
+          "exclusive_ms": 172.002
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "authService",
+          "exclusive_ms": 171.002
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flyway",
+          "exclusive_ms": 151.238
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flywayInitializer",
+          "exclusive_ms": 146.002
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "recoveryGate",
+          "exclusive_ms": 112.999
+        },
+        {
+          "name": "spring.boot.application.starting",
+          "bean": null,
+          "exclusive_ms": 88.169
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "requestMappingHandlerAdapter",
+          "exclusive_ms": 64.001
+        },
+        {
+          "name": "spring.boot.application.started",
+          "bean": null,
+          "exclusive_ms": 62.0
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "requestMappingHandlerMapping",
+          "exclusive_ms": 60.001
+        }
+      ],
+      "gc_count": 24,
+      "full_gc_count": 0,
+      "gc_pause_ms": 56.641,
+      "max_sampled_heap_used_mb": 89.266,
+      "execution_samples": 19,
+      "sampled_leaf_methods": [
+        [
+          "java/util/Objects.equals",
+          2
+        ],
+        [
+          "java/util/TimSort.binarySort",
+          1
+        ],
+        [
+          "java/util/concurrent/ConcurrentHashMap.putVal",
+          1
+        ],
+        [
+          "java/util/zip/ZipFile.getInputStream",
+          1
+        ],
+        [
+          "org/springframework/core/annotation/AnnotationTypeMappings.isAlreadyMapped",
+          1
+        ]
+      ],
+      "recorded_socket_reads": 4,
+      "recorded_socket_read_ms": 91.752
+    },
+    {
+      "run": 2,
+      "spring_run_seconds": 3.571,
+      "configuration": {
+        "minimum_idle": 0,
+        "maximum_pool_size": 3,
+        "idle_timeout_ms": 30000,
+        "flyway_separate_datasource": true,
+        "connection_timeout_ms": 15000,
+        "keepalive_time_ms": 0
+      },
+      "event_count": 429,
+      "inclusive_phase_ms": {
+        "spring.context.refresh": 2965.397,
+        "spring.context.config-classes.parse": 777.871,
+        "spring.boot.webserver.create": 432.02,
+        "flyway": 321.57,
+        "flywayInitializer": 137.193,
+        "ledgerSchemaValidator": 45.0,
+        "security": 366.477,
+        "recoveryGate": 134.956,
+        "dataSource": 175.749
+      },
+      "exclusive_top_steps": [
+        {
+          "name": "spring.context.config-classes.parse",
+          "bean": null,
+          "exclusive_ms": 777.871
+        },
+        {
+          "name": "spring.boot.application.environment-prepared",
+          "bean": null,
+          "exclusive_ms": 255.977
+        },
+        {
+          "name": "spring.boot.webserver.create",
+          "bean": null,
+          "exclusive_ms": 225.61
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "dataSource",
+          "exclusive_ms": 167.748
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "authService",
+          "exclusive_ms": 150.95
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flywayInitializer",
+          "exclusive_ms": 137.193
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flyway",
+          "exclusive_ms": 136.82
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "recoveryGate",
+          "exclusive_ms": 108.304
+        },
+        {
+          "name": "spring.boot.application.starting",
+          "bean": null,
+          "exclusive_ms": 85.002
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "requestMappingHandlerAdapter",
+          "exclusive_ms": 70.0
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "security",
+          "exclusive_ms": 61.467
+        },
+        {
+          "name": "spring.boot.application.started",
+          "bean": null,
+          "exclusive_ms": 54.097
+        }
+      ],
+      "gc_count": 25,
+      "full_gc_count": 0,
+      "gc_pause_ms": 53.983,
+      "max_sampled_heap_used_mb": 89.796,
+      "execution_samples": 21,
+      "sampled_leaf_methods": [
+        [
+          "java/util/zip/ZipFile$Source.getEntryPos",
+          3
+        ],
+        [
+          "org/bouncycastle/crypto/generators/Argon2BytesGenerator$Block.xor",
+          3
+        ],
+        [
+          "java/util/concurrent/ConcurrentHashMap.get",
+          2
+        ],
+        [
+          "java/util/zip/InflaterInputStream.<init>",
+          1
+        ],
+        [
+          "sun/net/www/protocol/file/Handler.openConnection",
+          1
+        ]
+      ],
+      "recorded_socket_reads": 4,
+      "recorded_socket_read_ms": 90.391
+    },
+    {
+      "run": 3,
+      "spring_run_seconds": 3.642,
+      "configuration": {
+        "idle_timeout_ms": 30000,
+        "flyway_separate_datasource": true,
+        "connection_timeout_ms": 15000,
+        "keepalive_time_ms": 0,
+        "minimum_idle": 0,
+        "maximum_pool_size": 3
+      },
+      "event_count": 429,
+      "inclusive_phase_ms": {
+        "spring.context.refresh": 3044.121,
+        "spring.context.config-classes.parse": 786.024,
+        "spring.boot.webserver.create": 448.01,
+        "flyway": 342.248,
+        "flywayInitializer": 134.413,
+        "ledgerSchemaValidator": 41.002,
+        "security": 400.779,
+        "recoveryGate": 145.325,
+        "dataSource": 188.488
+      },
+      "exclusive_top_steps": [
+        {
+          "name": "spring.context.config-classes.parse",
+          "bean": null,
+          "exclusive_ms": 786.024
+        },
+        {
+          "name": "spring.boot.application.environment-prepared",
+          "bean": null,
+          "exclusive_ms": 248.083
+        },
+        {
+          "name": "spring.boot.webserver.create",
+          "bean": null,
+          "exclusive_ms": 228.004
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "dataSource",
+          "exclusive_ms": 179.486
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "authService",
+          "exclusive_ms": 153.0
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flyway",
+          "exclusive_ms": 140.758
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "flywayInitializer",
+          "exclusive_ms": 134.413
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "recoveryGate",
+          "exclusive_ms": 111.325
+        },
+        {
+          "name": "spring.boot.application.starting",
+          "bean": null,
+          "exclusive_ms": 78.0
+        },
+        {
+          "name": "spring.boot.application.started",
+          "bean": null,
+          "exclusive_ms": 59.953
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "security",
+          "exclusive_ms": 56.882
+        },
+        {
+          "name": "spring.beans.instantiate",
+          "bean": "requestMappingHandlerMapping",
+          "exclusive_ms": 55.8
+        }
+      ],
+      "gc_count": 25,
+      "full_gc_count": 0,
+      "gc_pause_ms": 54.004,
+      "max_sampled_heap_used_mb": 91.431,
+      "execution_samples": 20,
+      "sampled_leaf_methods": [
+        [
+          "java/util/zip/ZipFile$Source.getEntryPos",
+          2
+        ],
+        [
+          "java/lang/StringLatin1.lastIndexOf",
+          1
+        ],
+        [
+          "org/springframework/core/type/classreading/SimpleAnnotationMetadataReadingVisitor.<init>",
+          1
+        ],
+        [
+          "java/util/concurrent/ConcurrentHashMap.transfer",
+          1
+        ],
+        [
+          "java/util/Properties$LineReader.readLine",
+          1
+        ]
+      ],
+      "recorded_socket_reads": 4,
+      "recorded_socket_read_ms": 84.751
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # JDBC 실행 구성 정리와 기동 비교
 
+후속 [Spring 단계·JFR 기동 분석](startup-analysis-2026-10-20.md)을 추가했다. 별도 진단의 단계별 수치를 아래 packed JAR 비교와 혼합하지 않는다.
+
 ## 판단과 변경
 
 거래·인증·조회는 JdbcTemplate과 SQL을 사용하고 JPA Repository·EntityManager를 직접 사용하는 업무 코드는 없었다. 다만 LedgerTransaction 엔티티 1개와 ddl-auto=validate가 있어 JPA가 완전히 무역할인 것은 아니었다. Hibernate가 transactions 테이블의 매핑을 시작 시 검증했다.
