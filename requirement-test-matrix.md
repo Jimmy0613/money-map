@@ -1,6 +1,8 @@
 # 요구사항 테스트 추적표
 
-> 최신 종합 점검(2026-10-18): **개발·검증 진행 중, 배포 준비 완료 아님.** 복원 기본 차단·서명 응답 검증·독립 상태 제어 도구를 구현했습니다. 2026-09-25 최종 실행 근거는 Backend 단위·HTTP42/실제 PostgreSQL 통합24/제어 도구11PASS 및 bootJar 성공입니다. Frontend55/생산 Mock2는 이전 화면 보완 실행 근거입니다. 상위 추적표33PASS/38NOT_RUN 유지. [복원 실행 계약](recovery-authority-contract.md)에 구현과 남은 운영 검증기·배포 연결을 구분합니다. 아래 날짜별 기록은 당시 이력입니다.
+> 2026-10-20 정리: 본문의 제품 계약과 당시 추적 결과는 보존합니다. 현재 구조·운영 상태는 [README](README.md), 최근 실행 검증은 [검증 보고서](test-report.md)를 기준으로 확인합니다. 과거 예정·미실행 판정을 현재 완료 여부로 해석하지 않습니다.
+
+> 과거 종합 점검(2026-10-18): **개발·검증 진행 중, 배포 준비 완료 아님.** 복원 기본 차단·서명 응답 검증·독립 상태 제어 도구를 구현했습니다. 2026-09-25 최종 실행 근거는 Backend 단위·HTTP42/실제 PostgreSQL 통합24/제어 도구11PASS 및 bootJar 성공입니다. Frontend55/생산 Mock2는 이전 화면 보완 실행 근거입니다. 상위 추적표33PASS/38NOT_RUN 유지. [복원 실행 계약](recovery-authority-contract.md)에 구현과 남은 운영 검증기·배포 연결을 구분합니다. 아래 날짜별 기록은 당시 이력입니다.
 
 ## 사용 방법과 현재 상태
 
@@ -69,7 +71,7 @@ T2와 T5의 좌표는 T1과 같다. 식비·교통·쇼핑은 EXPENSE, 급여·�
 | FR-019 | Marker와 Cluster | TC-FR-019-02 | API/Component | NOT_RUN | [추가 검증](test-report.md#추가-보완-검증-2026-09-19); [DB 로그](evidence/followup-backend.log) | — | 기대: level 5의 501개, level 7의 301개, level 11의 201개는 빈 items+requiresNarrowing, 합계 보존<br>실행: DB level5/7/11 정확히500/300/200 및 초과501/301/201의 빈 items·합계·안내 플래그 PASS. 실제 Cluster Component 조합 미실행. |
 | FR-020 | Marker 상세 | TC-FR-020-01 | API/E2E | NOT_RUN | [검증 상세](test-report.md) | — | 기대: P1 Marker 16000원·2건과 동일 BBox/기간 상세 합계 일치<br>실행: P1 marker/details 합계16000 PASS. 상세 stale·타인 markerKey·브라우저 sheet 전체 흐름 미실행. |
 | FR-020 | Marker 상세 | TC-FR-020-02 | API/E2E | NOT_RUN | [검증 상세](test-report.md) | — | 기대: revision 변경은 409 후 지도 재조회; 타인 MarkerKey는 404<br>실행: P1 marker/details 합계16000 PASS. 상세 stale·타인 markerKey·브라우저 sheet 전체 흐름 미실행. |
-| FR-021 | 필터 상태 유지 | TC-FR-021-01 | Component/E2E | NOT_RUN | [검증 상세](test-report.md) | — | 기대: 지도 필터 적용·상세 왕복 시 중심과 필터 복원<br>실행: 필터/중심 메모리 상태와 auth 초기화 구현. 왕복/응답 역전/오류 이전 결과 통합 테스트 미실행. 지도 준비/재조회 위험은 self-review.md R-03/04 참조. |
+| FR-021 | 필터 상태 유지 | TC-FR-021-01 | Component/E2E | NOT_RUN | [검증 상세](test-report.md) | — | 기대: 지도 필터 적용·상세 왕복 시 중심과 필터 복원<br>실행: 필터/중심 메모리 상태와 auth 초기화 구현. 왕복/응답 역전/오류 이전 결과 통합 테스트 미실행. 이 행은 당시 미실행 판정이며 이후 지도 회귀 검증은 test-report.md와 frontend/src/tests/map-state.test.tsx 참조. |
 | FR-021 | 필터 상태 유지 | TC-FR-021-02 | Component/E2E | PASS | [추가 자율 검증](test-report.md#추가-자율-검증-2026-09-2425) | — | 기대: 지도 이동 응답 역전 무시; 재조회 실패 시 이전 결과와 오류 함께 표시<br>실행: map-state.test.tsx에서 늦은 이전 영역 응답 무시와 재조회503 시 이전 목록·안내 유지 확인. 실패 재현 후 수정하여 최종 통과. 실제 기기 검증이 아닌 Component 장애 주입이다. |
 | FR-022 | 기간 요약 | TC-FR-022-01 | Unit/API | PASS | [검증 상세](test-report.md); [실제 DB](evidence/backend-integration.log) | — | 기대: F0 9월 수입 150000원·지출 29000원·잔액 121000원<br>실행: F0 실제 DB 150000/29000/121000 및 Mock503 처리 PASS. 빈 기간 전체 계약 미실행. |
 | FR-022 | 기간 요약 | TC-FR-022-02 | Unit/API | NOT_RUN | [추가 검증](test-report.md#추가-보완-검증-2026-09-19); [DB 로그](evidence/followup-backend.log) | — | 기대: 빈 기간은 합계/건수 0, 서버 실패는 503이며 0으로 표시하지 않음<br>실행: 실제 빈 기간0, MSW503를 성공0으로 변환하지 않음 PASS. DB 중단을 통한 실제 HTTP503 장애 주입은 미실행. |

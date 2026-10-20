@@ -185,3 +185,10 @@ Vercel 공개 로그인 화면을 확인하고 Render APP_ORIGIN을 실제 주�
 ## CHG-021 신규 DB bootstrap 및 Cloudflare 설정 (2026-10-18)
 
 독립 Cloudflare Durable Object에 신규 빈 Neon DB를 한 번만 등록하고 매 요청 provider/SQL 관찰 뒤 기존 nonce·Ed25519 계약으로 증거를 발급한다. V6는 개인정보를 반환하지 않는 최소 실행 권한 함수를 추가한다. Render 실제 commit 결합, 공개 회원가입 닫기, 로컬 본인 등록 UI 준비를 포함한다. 공식 Cloudflare 스킬19개/MCP OAuth 및 Wrangler도 연결했다. 신규/복원 경로를 구분하며 WAL 복원 승인은 대체하지 않는다. 상세는 bootstrap-deployment.md와 cloudflare-setup.md를 따른다.
+
+## 2026-10-20 문서 최신화와 다중 기기 정리
+
+- 기존 사용자 요청에 따라 현재 운영 안내와 Windows·macOS 공통 개발 절차를 정리했다.
+- 업무 JDBC 구성 전환에 맞춰 요구사항·ERD의 JPA 표현을 갱신했다. 상세 전환 검증은 startup-review-2026-10-20.md를 따른다. 기능·보안 계약은 완화하지 않는다.
+- 과거 원본·중복 문서·개인 화면·IDE 설정 등 205개를 해시 확인 후 로컬 비공개 백업하고 작업 트리에서 제거했다. migrations·지역 원본·잠금 파일·운영 제어 도구는 보존했다.
+- 세부 목록은 evidence/repository-cleanup-2026-10-20.json, 검증 범위는 test-report.md를 따른다. Git 이력 재작성과 원격 데이터 삭제는 수행하지 않았다.

@@ -1,6 +1,7 @@
 # 데이터 모델
 
-> 현재 상태 안내(2026-09-23): 이 문서의 승인 계약은 유지합니다. Windows 미실행·예정·당시 상태 문구는 작성 시점의 이력이며, 현재 구현/검증 상태와 누락은 [자체 점검](self-review.md)을 따릅니다. 핵심 구현은 있으나 개발·검증 미완료이며 배포만 남은 상태가 아닙니다.
+> 2026-10-20 정리: 본문의 제품 계약과 당시 추적 결과는 보존합니다. 현재 구조·운영 상태는 [README](README.md), 최근 실행 검증은 [검증 보고서](test-report.md)를 기준으로 확인합니다. 과거 예정·미실행 판정을 현재 완료 여부로 해석하지 않습니다.
+
 
 ## 1. 공통 정책
 
@@ -174,7 +175,7 @@ PK와 UNIQUE가 이미 만든 인덱스는 중복 생성하지 않는다. 데이
 
 V1__identity_and_categories.sql: users, categories, PK 및 UNIQUE. V2__ledger.sql: region_dictionary, region_aliases를 먼저 생성한 뒤 places, transactions, transaction_locations, 복합 FK와 CHECK. V3__authentication_and_idempotency.sql: auth_sessions, refresh_tokens, operation_keys 및 privacy 스키마와 deletion_ledger. V4__query_indexes.sql: 조회 인덱스. SQL은 이후 구현 단계에서 작성한다.
 
-가입 시 기본 카테고리는 Service가 생성하므로 사용자 UUID가 없는 전역 category seed는 넣지 않는다. 성능 fixture는 test 전용 seed로 분리하고 운영 Flyway에 넣지 않는다. Migration 후 JPA validate, Testcontainers FK 교차 소유권 및 cascade 검증을 실행할 계획이다. 현재 Migration 실행 결과는 미검증이다.
+가입 시 기본 카테고리는 Service가 생성하므로 사용자 UUID가 없는 전역 category seed는 넣지 않는다. 성능 fixture는 test 전용 seed로 분리하고 운영 Flyway에 넣지 않는다. 현재는 Migration 후 LedgerSchemaValidator의 JDBC 검증을 실행한다. 실제 DB의 소유권·트랜잭션·스키마 검증 결과는 test-report.md와 startup-review-2026-10-20.md를 따른다.
 
 ## 11. 교차 검토 추가 데이터 계약
 
@@ -197,4 +198,4 @@ transaction_locations에 canonical_region_key varchar(180) N을 추가하고 reg
 
 ## macOS 구현 대응 기록 (2026-09-19)
 
-V1~V4 구조 및 인덱스 이후 V5 공식 지역 코드 스냅샷을 추가했다. 실제 PostgreSQL17.6에서 Migration 및 JPA validate 통과. CHAR(3) 통화는 명시적 JDBC CHAR 타입으로 매핑했다. 상세 공식 코드/과거 별칭 한계는 region-data.md 참조.
+V1~V4 구조 및 인덱스 이후 V5 공식 지역 코드 스냅샷을 추가했다. 당시 PostgreSQL17.6에서 Migration 및 JPA validate를 통과했다. 현재 JPA 검증은 JDBC 스키마 검사로 대체됐다. CHAR(3) 통화는 명시적 JDBC CHAR 타입으로 매핑했다. 상세 공식 코드/과거 별칭 한계는 region-data.md 참조.

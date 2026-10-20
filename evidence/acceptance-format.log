@@ -1,7 +1,0 @@
-frontend/src/shared/ui.tsx 64ms
-frontend/src/features/location-picker.tsx 35ms
-frontend/src/app/map/page.tsx 28ms
-frontend/src/app/statistics/page.tsx 26ms
-frontend/src/app/transactions/page.tsx 6ms (unchanged)
-frontend/src/tests/review-regressions.test.tsx 24ms
-frontend/src/tests/map-state.test.tsx 15ms

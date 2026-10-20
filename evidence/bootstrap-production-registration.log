@@ -1,4 +1,0 @@
-PASS public Render API remains fenced before initial registration
-PASS actual production DB is empty; provider provenance and metadata verified
-PASS independent production registration created exactly once
-PASS production authority returns a valid independent Ed25519 decision

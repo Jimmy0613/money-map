@@ -1,7 +1,0 @@
-frontend/src/features/location-picker.tsx 93ms
-frontend/src/features/map-adapter.ts 46ms
-frontend/src/features/map-diagnostics.ts 3ms
-frontend/src/app/map/page.tsx 23ms
-frontend/src/app/statistics/page.tsx 21ms
-frontend/src/tests/review-regressions.test.tsx 18ms
-frontend/src/tests/map-diagnostics.test.ts 5ms

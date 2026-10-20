@@ -1,5 +1,6 @@
 """Build a screenshot-led portfolio from verified production observations."""
 from pathlib import Path
+import os
 import re
 from xml.sax.saxutils import escape
 from PIL import Image as PILImage
@@ -16,8 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SHOTS = ROOT / 'output/portfolio/screenshots'
 OUT = ROOT / 'output/pdf/money-map-fullstack-portfolio-v2.pdf'
 OUT.parent.mkdir(parents=True, exist_ok=True)
-pdfmetrics.registerFont(TTFont('KR', 'C:/Windows/Fonts/malgun.ttf'))
-pdfmetrics.registerFont(TTFont('KRB', 'C:/Windows/Fonts/malgunbd.ttf'))
+font_regular = Path(os.environ.get('MONEY_MAP_FONT_REGULAR', 'C:/Windows/Fonts/malgun.ttf'))
+font_bold = Path(os.environ.get('MONEY_MAP_FONT_BOLD', 'C:/Windows/Fonts/malgunbd.ttf'))
+if not font_regular.is_file() or not font_bold.is_file():
+    raise SystemExit('Set MONEY_MAP_FONT_REGULAR and MONEY_MAP_FONT_BOLD to licensed Korean TTF files; see development.md.')
+pdfmetrics.registerFont(TTFont('KR', str(font_regular)))
+pdfmetrics.registerFont(TTFont('KRB', str(font_bold)))
 W, H = A4
 M = 42
 CW = W - M * 2
@@ -277,13 +282,13 @@ rows([
 ])
 text('이 결과는 깨어 있는 로컬 DB 기준입니다. Render의 CPU·절전 복귀, Neon 최초 연결, 외부 서명 검증 지연을 포함하지 않으므로 운영 시작 시간이 같은 비율로 줄었다고 해석하지 않습니다.',9.3,color=MUTED)
 section('공개 체험의 범위와 운영 제약')
-text('개인 기록과 분리한 가상 샘플·공용 체험 계정을 제공하고 가입·탈퇴를 제한했습니다. 저장·인증 상한과 서버 요청 예산을 두되, 조회와 외부 호출까지 막는 비용 상한으로 보지는 않았습니다. 첫 연결 안내·60초 제한·재연결을 제공하며 저장 응답 유실 시 내역 확인을 안내합니다.',9.7)
+text('개인 기록과 분리한 체험 계정에 저장·인증 상한과 요청 예산을 적용했습니다. 소개 화면의 체험하기를 누르면 서버 준비 여부와 경과 시간을 안내하고, 최대 180초까지 확인 후 재시도를 제공합니다. 완료 시간을 보장하거나 상시 서버를 깨우지는 않습니다. 저장 응답 유실 시에는 내역 확인을 안내합니다.',9.7)
 text('근거  startup-review-2026-10-20.md / evidence/startup-jdbc-2026-10-20.json',8.1,color=MUTED)
 
 start('07 / EVIDENCE', '검증을 환경과 근거로 구분하기', '자동 테스트, 실제 DB, 운영 화면을 각각 확인했습니다.')
 screenshot('demo-statistics.png',(472,655,1419,810),'2026년 10월 체험 통계. 수입 2,500,000원 / 지출 53,800원 / 잔액 2,446,200원.',maxh=100)
 rows([
-    ('프런트엔드', '66개 테스트 통과. 타입·lint·프로덕션 빌드 확인. 장소 선택 경쟁 상태, 수정 분류 유지와 연결 복구를 다룹니다.'),
+    ('프런트엔드', '69개 테스트 통과. 타입·lint·프로덕션 빌드 확인. 장소 선택 경쟁 상태, 수정 분류 유지와 첫 방문 서버 준비 안내를 다룹니다.'),
     ('백엔드', '단위·HTTP·대기 용량 69개. 실제 DB 통합 19개와 컨테이너 재시작 11개로 멱등 저장·세션 철회·JDBC 롤백·스키마 거부를 확인했습니다.'),
     ('외부 검증 서버', 'Worker 정책 6개·런타임 10개 통과. 별도 Neon DB와 Worker에서 등록 갱신·서명·재실행 거부·차단 보존 검증.'),
     ('운영 기능', '체험 거래 등록, Enter 검색, 장소 확정, 위치 저장, 카테고리·위치 보존 수정, 승인된 임시 거래 삭제 및 통계 합계를 확인했습니다.'),

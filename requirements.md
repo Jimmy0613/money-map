@@ -1,6 +1,7 @@
 # 소비 위치 기록 지도 기반 가계부 요구사항
 
-> 현재 상태 안내(2026-09-23): 이 문서의 승인 계약은 유지합니다. Windows 미실행·예정·당시 상태 문구는 작성 시점의 이력이며, 현재 구현/검증 상태와 누락은 [자체 점검](self-review.md)을 따릅니다. 핵심 구현은 있으나 개발·검증 미완료이며 배포만 남은 상태가 아닙니다.
+> 2026-10-20 정리: 본문의 제품 계약과 당시 추적 결과는 보존합니다. 현재 구조·운영 상태는 [README](README.md), 최근 실행 검증은 [검증 보고서](test-report.md)를 기준으로 확인합니다. 과거 예정·미실행 판정을 현재 완료 여부로 해석하지 않습니다.
+
 
 ## 1. 문서 목적과 범위
 
@@ -96,7 +97,7 @@
 ## 5. 확정 전제와 제약
 
 - Frontend는 Next.js, React, TypeScript 기반 모바일 우선 반응형 웹으로 구성한다.
-- Backend는 Java 21, Spring Boot, Spring Data JPA 기반 모놀리식 애플리케이션으로 구성한다.
+- Backend는 Java 21, Spring Boot, Spring JDBC 기반 모놀리식 애플리케이션으로 구성한다. 초기 설계의 JPA 구성은 2026-10-20 JDBC 전환으로 대체했으며 Flyway와 JDBC 스키마 검증을 유지한다.
 - Database는 PostgreSQL을 사용하고 스키마 변경은 Flyway Migration으로 관리한다.
 - 로컬 개발 인프라는 Docker와 Docker Compose를 우선한다.
 - 지도는 Kakao Maps JavaScript API, 현재 위치는 Web Geolocation API를 사용한다.

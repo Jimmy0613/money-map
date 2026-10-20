@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run known development commands, loading dotenv without shell evaluation."""
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -20,9 +21,19 @@ if p.exists():
 node = root / '.tooling/node/node_modules/node/bin'
 if node.exists(): env['PATH'] = str(node)+os.pathsep+env['PATH']
 env['GRADLE_USER_HOME'] = str(root / '.tooling/gradle')
+if os.name == 'nt':
+    wrapper = root / 'backend/gradlew.bat'
+    gradle = str(wrapper) if wrapper.exists() else shutil.which('gradle', path=env['PATH'])
+    if sys.argv[1] == 'backend' and not gradle:
+        raise SystemExit('Install Gradle 8.14.3 on PATH for Windows; see development.md.')
+else:
+    gradle = './gradlew'
+npm = shutil.which('npm.cmd' if os.name == 'nt' else 'npm', path=env['PATH'])
+if sys.argv[1] == 'frontend' and not npm:
+    raise SystemExit('Install Node 22.22.0 and npm on PATH; see development.md.')
 commands = {
-    'backend': (root/'backend', ['./gradlew','bootRun']),
-    'frontend': (root/'frontend', ['npm','run','dev','--','--port',env.get('FRONTEND_PORT','3000')]),
+    'backend': (root/'backend', [gradle,'bootRun']),
+    'frontend': (root/'frontend', [npm,'run','dev','--','--port',env.get('FRONTEND_PORT','3000')]),
     'db': (root,['docker','compose','up','-d','db']),
     'stop': (root,['docker','compose','stop'])
 }
